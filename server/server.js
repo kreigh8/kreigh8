@@ -3,10 +3,11 @@ import express from 'express'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import router from './routes/root.js'
+import userRouter from './routes/userRoutes.js'
 import { logger, logEvents } from './middleware/logger.js'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import mongoose, { mongo } from 'mongoose'
+import mongoose from 'mongoose'
 import { errorHandler } from './middleware/errorHandler.js'
 import { corsOptions } from './config/corsOptions.js'
 import { connectDb } from './config/dbConn.js'
@@ -34,6 +35,7 @@ app.use(cookieParser())
 app.use('/', express.static(path.join(__dirname, 'public')))
 
 app.use('/', router)
+app.use('/users', userRouter)
 
 app.all('*', (req, res) => {
   res.status(404)
