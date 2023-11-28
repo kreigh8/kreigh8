@@ -16,8 +16,6 @@ import { connectDb } from './config/dbConn.js'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-console.log(process.env.NODE_ENV)
-
 connectDb()
 
 const PORT = process.env.PORT || 3500
