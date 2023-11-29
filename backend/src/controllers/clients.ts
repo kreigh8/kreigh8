@@ -1,11 +1,11 @@
 import { RequestHandler } from "express"
-import UserModel from '../models/User'
+import ClientsModel from '../models/Clients'
 import createHttpError from "http-errors"
 
-export const getUsers: RequestHandler = async (req, res, next) => {
+export const getClients: RequestHandler = async (req, res, next) => {
   try {
-    const users = await UserModel.find().select('-password').lean().exec()
-    res.status(200).json(users)
+    const clients = await ClientsModel.find().lean().exec()
+    res.status(200).json(clients)
   } catch (error) {
     next(error)
   }

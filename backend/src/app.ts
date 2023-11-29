@@ -2,15 +2,19 @@ import 'dotenv/config'
 import express, { NextFunction, Request, Response } from 'express'
 import morgan from 'morgan'
 import userRoutes from './routes/users'
+import clientRoutes from './routes/clients'
 import createHttpError, { isHttpError } from 'http-errors'
+import path from 'path'
 
 const app = express()
 
 app.use(morgan('dev'))
 
 app.use(express.json())
+app.use('/assets', express.static(path.join(__dirname, 'public/assets')))
 
 app.use('/api/users', userRoutes)
+app.use('/api/clients', clientRoutes)
 
 app.use((req, res, next) => {
   next(createHttpError(404, 'Endpoint not found'))
