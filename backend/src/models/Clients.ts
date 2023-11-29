@@ -2,7 +2,6 @@ import { InferSchemaType, Schema, model } from 'mongoose'
 
 const ClientSchema = new Schema({
   client: { type: String, required: true },
-  title: { type: String, required: true },
   date: { type: String, default: '' },
   description: { type: String, default: '' },
   picturePath: { type: String, default: '' },

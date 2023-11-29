@@ -1,6 +1,6 @@
 import { RequestHandler } from "express"
 import UserModel from '../models/User'
-import createHttpError from "http-errors"
+// import createHttpError from "http-errors"
 
 export const getUsers: RequestHandler = async (req, res, next) => {
   try {
@@ -11,22 +11,8 @@ export const getUsers: RequestHandler = async (req, res, next) => {
   }
 }
 
-interface CreateUserBody {
-  email: string,
-  username?: string,
-  password: string
-}
-
-export const createUser: RequestHandler<unknown, unknown, CreateUserBody, unknown> = async (req, res, next) => {
-  const { email, username, password } = req.body
-
-
-  try {
-
-    if (!email) {
-      throw createHttpError(400, 'New user must have email')
-    }
-  } catch (error) {
-    next(error)
-  }
-}
+// interface CreateUserBody {
+//   email: string,
+//   username?: string,
+//   password: string
+// }

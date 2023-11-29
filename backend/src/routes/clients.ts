@@ -5,4 +5,12 @@ const router = express.Router()
 
 router.get('/', ClientsController.getClients)
 
+router.get('/:clientId', ClientsController.getClient)
+
+router.post('/', ClientsController.createClient)
+
+router.patch('/:clientId', ClientsController.updateClient)
+
+router.delete('/:clientId', ClientsController.deleteClient)
+
 export default router
