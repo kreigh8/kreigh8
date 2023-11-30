@@ -1,5 +1,6 @@
-import { createSelector, createEntityAdapter } from '@reduxjs/toolkit'
+import { createSelector, createEntityAdapter, EntityState } from '@reduxjs/toolkit'
 import { apiSlice } from './apiSlice'
+import { RootState } from '../store'
 
 const usersAdapter = createEntityAdapter({})
 
@@ -15,26 +16,38 @@ interface Users {
 
 export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
-    getUsers: builder.query<Users[], void>({
+    getUsers: builder.query<EntityState<unknown>, void>({
       query: () => ({
         url: '/users',
         validateStatus: (response, result) => response.status === 200 && !result.isError,
       }),
       keepUnusedDataFor: 5,
-      transformResponse: (responseData: Users[]): Users[] => {
-        usersAdapter.setAll(initialState, responseData)
-        return responseData
+      transformResponse: (responseData: Users[]) => {
+        return usersAdapter.setAll(initialState, responseData)
       },
       providesTags: (result) => result ? [ ...result.map(({ _id }) => ({ type: 'Users' as const, _id })),
         { type: 'Users', id: 'LIST' }
         ]
         : [{ type: 'Users', id: 'LIST' }],
+    }),
+    addNewUser: builder.mutation({
+      query: initialUserData => ({
+        url: '/users',
+        method: 'POST',
+        body: {
+          ...initialUserData
+        }
+      }),
+      invalidatesTags: [
+        { type: 'Users', id: 'LIST' }
+      ]
     })
   })
 })
 
 export const {
-  useGetUsersQuery
+  useGetUsersQuery,
+  useAddNewUserMutation
 } = usersApiSlice
 
 export const selectUsersResult = usersApiSlice.endpoints.getUsers.select()
@@ -45,4 +58,4 @@ export const {
   selectAll: selectAllUsers,
   selectById: selectUserById,
   selectIds: selectUserIds
-} = usersAdapter.getSelectors(state => selectUsersData(state) ?? initialState)
+} = usersAdapter.getSelectors((state: RootState) => selectUsersData(state) ?? initialState)
