@@ -1,4 +1,4 @@
-import { createSelector, createEntityAdapter, EntityState } from '@reduxjs/toolkit'
+import { createSelector, createEntityAdapter } from '@reduxjs/toolkit'
 import { apiSlice } from './apiSlice'
 import { RootState } from '../store'
 
@@ -7,8 +7,15 @@ const usersAdapter = createEntityAdapter({})
 const initialState = usersAdapter.getInitialState()
 
 
-interface Users {
+interface UserResponse {
   _id: string
+  email: string
+  username: string
+  active: boolean
+}
+
+interface User {
+  id: string
   email: string
   username: string
   active: boolean
@@ -16,16 +23,22 @@ interface Users {
 
 export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
-    getUsers: builder.query<EntityState<unknown>, void>({
+    getUsers: builder.query<User[], void>({
       query: () => ({
         url: '/users',
         validateStatus: (response, result) => response.status === 200 && !result.isError,
       }),
       keepUnusedDataFor: 5,
-      transformResponse: (responseData: Users[]) => {
-        return usersAdapter.setAll(initialState, responseData)
+      transformResponse: (rawResult: UserResponse[]) => {
+        const users: User[] = rawResult.map((user) => {
+          return {
+            ...user,
+            id: user._id
+          }
+        })
+        return users
       },
-      providesTags: (result) => result ? [ ...result.map(({ _id }) => ({ type: 'Users' as const, _id })),
+      providesTags: (result) => result ? [ ...result.map(({ id }) => ({ type: 'Users' as const, id })),
         { type: 'Users', id: 'LIST' }
         ]
         : [{ type: 'Users', id: 'LIST' }],
