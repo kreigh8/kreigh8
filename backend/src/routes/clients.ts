@@ -11,6 +11,6 @@ router.post('/', ClientsController.createClient)
 
 router.patch('/:clientId', ClientsController.updateClient)
 
-router.delete('/:clientId', ClientsController.deleteNote)
+router.delete('/:clientId', ClientsController.deleteClient)
 
 export default router

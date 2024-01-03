@@ -35,20 +35,27 @@ export const getClient: RequestHandler = async (req, res, next) => {
 interface CreateClientBody {
   name?: string
   description?: string
+  active?: boolean
 }
 
 export const createClient: RequestHandler<unknown, unknown, CreateClientBody, unknown> = async (req, res, next) => {
   const name = req.body.name
   const description = req.body.description
+  const active = req.body.active
   
   try {
     if (!name) {
       throw createHttpError(400, 'Client must have a name')
     }
 
+    if (typeof active !== 'boolean') {
+      throw createHttpError(400, 'Active must be type boolean')
+    }
+
     const newClient = await ClientModel.create({
       name: name,
-      description: description
+      description: description,
+      active: active
     })
 
     res.status(201).json(newClient)
@@ -64,12 +71,14 @@ interface UpdateClientParams {
 interface UpdateClientBody {
   name?: string
   description?: string
+  active?: boolean
 }
 
 export const updateClient: RequestHandler<UpdateClientParams, unknown, UpdateClientBody, unknown> = async (req, res, next) => {
   const clientId = req.params.clientId
   const newName = req.body.name
   const newDescription = req.body.description
+  const newActive = req.body.active
 
   try {
     if (!mongoose.isValidObjectId(clientId)) {
@@ -80,6 +89,10 @@ export const updateClient: RequestHandler<UpdateClientParams, unknown, UpdateCli
       throw createHttpError(400, 'Client must have a name')
     }
 
+    if (typeof newActive !== 'boolean') {
+      throw createHttpError(400, 'Active must be type boolean')
+    }
+
     const client = await ClientModel.findById(clientId).exec()
 
     if (!client) {
@@ -88,6 +101,7 @@ export const updateClient: RequestHandler<UpdateClientParams, unknown, UpdateCli
 
     client.name = newName
     client.description = newDescription
+    client.active = newActive
 
     const updatedClient = await client.save()
 
@@ -98,7 +112,7 @@ export const updateClient: RequestHandler<UpdateClientParams, unknown, UpdateCli
   }
 }
 
-export const deleteNote: RequestHandler = async (req, res, next) => {
+export const deleteClient: RequestHandler = async (req, res, next) => {
   const clientId = req.params.clientId
 
   try {
