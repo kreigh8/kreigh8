@@ -1,4 +1,5 @@
-import { AppBar, Box, Button, Container, Grid, Toolbar, Typography } from "@mui/material"
+import { Brightness4, LinkedIn } from "@mui/icons-material"
+import { AppBar, Box, Button, Container, Divider, Grid, IconButton, Toolbar, Typography } from "@mui/material"
 
 const Home = () => {
   return (
@@ -8,7 +9,7 @@ const Home = () => {
           <Typography component='div' variant="h6" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
             kreigh8
           </Typography>
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+          <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
             <Button sx={{ color: 'rgba(0, 0, 0, 0.87)' }}>
               About
             </Button>
@@ -18,6 +19,13 @@ const Home = () => {
             <Button sx={{ color: 'rgba(0, 0, 0, 0.87)' }}>
               Contact
             </Button>
+            <Divider orientation='vertical' flexItem />
+            <IconButton>
+              <Brightness4 />
+            </IconButton>
+            <IconButton>
+              <LinkedIn />
+            </IconButton>
           </Box>
         </Toolbar>
       </AppBar>
