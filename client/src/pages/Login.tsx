@@ -76,6 +76,7 @@ const Login = () => {
                 <Grid item xs={12}>
                   <TextField
                     fullWidth
+                    type="password"
                     label="Password"
                     onBlur={handleBlur}
                     onChange={handleChange}
