@@ -1,4 +1,5 @@
 import { User } from '../models/user'
+import { API_URL } from './config'
 
 const fetchData = async (input: RequestInfo, init?: RequestInit) => {
   const response = await fetch(input, init)
@@ -14,7 +15,7 @@ const fetchData = async (input: RequestInfo, init?: RequestInit) => {
 
 
 export const getLoggedInUser = async (): Promise<User> => {
-  const response = await fetchData('/api/users', { method: 'GET' })
+  const response = await fetchData(`${API_URL}/api/users`, { method: 'GET' })
   return response.json()
 }
 
@@ -25,7 +26,7 @@ export interface SignUpCredentials {
 }
 
 export const signup = async (credentials: SignUpCredentials): Promise<User> => {
-  const response = await fetchData('/api/users/signup',
+  const response = await fetchData(`${API_URL}/api/users/signup`,
   {
     method: 'POST',
     headers: {
@@ -42,7 +43,7 @@ export interface LoginCredentials {
 }
 
 export const login = async (credentials: LoginCredentials): Promise<User> => {
-  const response = await fetchData('/api/users/login',
+  const response = await fetchData(`${API_URL}/api/users/login`,
   {
     method: 'POST',
     headers: {
@@ -54,5 +55,5 @@ export const login = async (credentials: LoginCredentials): Promise<User> => {
 }
 
 export const logout = async () => {
-  await fetchData('/api/users/logout', { method: 'POST' })
+  await fetchData(`${API_URL}/api/users/logout`, { method: 'POST' })
 }

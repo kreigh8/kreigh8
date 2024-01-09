@@ -1,5 +1,6 @@
 import 'dotenv/config'
 import express, { Request, Response, NextFunction } from 'express'
+import cors from 'cors'
 import clientRoutes from './routes/clients'
 import userRoutes from './routes/users'
 import morgan from 'morgan'
@@ -13,6 +14,10 @@ const app = express()
 app.use(morgan('dev'))
 
 app.use(express.json())
+
+app.use(cors({
+  origin: '*'
+}))
 
 app.use(session({
   secret: env.SESSION_SECRET,
