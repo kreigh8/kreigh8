@@ -4,6 +4,7 @@
   "main": "dist/server.js",
   "license": "ISC",
   "scripts": {
+    "build": "tsc",
     "start": "nodemon src/server.ts",
     "lint": "eslint . --ext .ts"
   },
