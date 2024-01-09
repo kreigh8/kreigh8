@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
+import UnderConstruction from './pages/UnderConstruction'
 import Login from './pages/Login'
 import Auth from './pages/Auth'
 import { useAppSelector } from './state/hooks'
@@ -24,7 +25,7 @@ function App() {
           <CssBaseline />
           <Routes>
 
-            <Route index element={<Home />}/>
+            <Route index element={import.meta.env.VITE_UNDER_CONSTRUCTION ? <UnderConstruction /> :<Home />}/>
             <Route path="/login" element={<Login />} />
             <Route path="/auth" element={<Auth />} />
 
