@@ -1,11 +1,11 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "dist/server.js",
+  "main": "dist/index.js",
   "license": "ISC",
   "scripts": {
     "build": "tsc",
-    "start": "nodemon src/server.ts",
+    "start": "nodemon src/index.ts",
     "lint": "eslint . --ext .ts"
   },
   "devDependencies": {
