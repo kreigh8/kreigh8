@@ -18,6 +18,8 @@ function App() {
     }
   }), [mode])
 
+  console.log('VITE_UNDER_CONSTRUCTION', import.meta.env.VITE_UNDER_CONSTRUCTION)
+
   return (
     <>
       <BrowserRouter>
@@ -25,7 +27,7 @@ function App() {
           <CssBaseline />
           <Routes>
 
-            <Route index element={import.meta.env.VITE_UNDER_CONSTRUCTION ? <UnderConstruction /> :<Home />}/>
+            <Route index element={import.meta.env.VITE_UNDER_CONSTRUCTION === 'true' ? <UnderConstruction /> :<Home />}/>
             <Route path="/login" element={<Login />} />
             <Route path="/auth" element={<Auth />} />
 
