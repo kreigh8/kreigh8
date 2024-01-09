@@ -28,7 +28,7 @@ const Home = () => {
             <Button sx={{ color: (theme) => theme.palette.mode ==='light' ? 'rgba(0, 0, 0, 0.87)' : 'rgba(255, 255, 255, 1)' }}>
               Contact
             </Button>
-            <Divider orientation='vertical' flexItem sx={{ margin: '0 1.5rem' }} />
+            <Divider orientation='vertical' flexItem sx={{ margin: '0 1rem' }} />
             <IconButton onClick={handleThemeToggle}>
               {theme.palette.mode === "dark" ? (
                 <DarkMode />
