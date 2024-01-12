@@ -4,7 +4,9 @@
   "main": "dist/index.js",
   "license": "ISC",
   "scripts": {
-    "build": "tsc",
+    "build": "rimraf public && tsc",
+    "ts.check": "tsc --project ts.config",
+    "add-build": "git add public",
     "start": "nodemon src/index.ts",
     "lint": "eslint . --ext .ts"
   },
@@ -19,6 +21,8 @@
     "@typescript-eslint/parser": "^6.17.0",
     "eslint": "^8.56.0",
     "nodemon": "^3.0.2",
+    "pre-commit": "^1.2.2",
+    "rimraf": "^5.0.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
@@ -33,5 +37,10 @@
     "http-errors": "^2.0.0",
     "mongoose": "^8.0.3",
     "morgan": "^1.10.0"
-  }
+  },
+  "pre-commit": [
+    "ts.check",
+    "build",
+    "add-build"
+  ]
 }
