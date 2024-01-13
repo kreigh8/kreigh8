@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "license": "ISC",
   "scripts": {
-    "build": "rimraf public && tsc",
+    "build": "rm -rf ./dist && tsc",
     "ts.check": "tsc --project ts.config",
     "add-build": "git add public",
     "start": "nodemon src/index.ts",
