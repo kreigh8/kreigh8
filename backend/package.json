@@ -8,7 +8,8 @@
     "add-build": "git add dist",
     "dev": "nodemon src/index.ts",
     "start": "NODE_ENV=production node dist/index.js",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "vercel-build": "echo hello"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -21,8 +22,6 @@
     "@typescript-eslint/parser": "^6.17.0",
     "eslint": "^8.56.0",
     "nodemon": "^3.0.2",
-    "pre-commit": "^1.2.2",
-    "rimraf": "^5.0.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
