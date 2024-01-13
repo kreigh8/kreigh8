@@ -18,8 +18,8 @@ const http_errors_1 = __importDefault(require("http-errors"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const getClients = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const notes = yield client_1.default.find().exec();
-        res.status(200).json(notes);
+        const clients = yield client_1.default.find().exec();
+        res.status(200).json(clients);
     }
     catch (error) {
         next(error);

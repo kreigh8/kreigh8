@@ -27,6 +27,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("dotenv/config");
+const mongoose_1 = __importDefault(require("mongoose"));
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const clients_1 = __importDefault(require("./routes/clients"));
@@ -70,11 +71,9 @@ app.use((error, req, res, next) => {
     }
     res.status(statusCode).json({ error: errorMessage });
 });
-const mongoose_1 = __importDefault(require("mongoose"));
-const port = validateEnv_1.default.PORT;
 mongoose_1.default.connect(validateEnv_1.default.MONGO_URL).then(() => {
     console.log('Mongoose Connected');
-    app.listen(port, () => {
-        console.log(`Server running on port: ${port}`);
+    app.listen(validateEnv_1.default.PORT, () => {
+        console.log(`Server running on port: ${validateEnv_1.default.PORT}`);
     });
 }).catch(console.error);
