@@ -1,13 +1,13 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "src/index.ts",
   "license": "ISC",
   "scripts": {
     "build": "rm -rf ./dist && tsc",
-    "ts.check": "tsc --project ts.config",
-    "add-build": "git add public",
-    "start": "nodemon src/index.ts",
+    "add-build": "git add dist",
+    "dev": "nodemon src/index.ts",
+    "start": "NODE_ENV=production node dist/index.js",
     "lint": "eslint . --ext .ts"
   },
   "devDependencies": {
@@ -39,7 +39,6 @@
     "morgan": "^1.10.0"
   },
   "pre-commit": [
-    "ts.check",
     "build",
     "add-build"
   ]
