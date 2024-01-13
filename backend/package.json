@@ -4,8 +4,7 @@
   "main": "src/index.ts",
   "license": "ISC",
   "scripts": {
-    "build": "rm -rf ./dist && tsc",
-    "add-build": "git add dist",
+    "build": "tsc",
     "dev": "nodemon src/index.ts",
     "start": "NODE_ENV=production node dist/index.js",
     "lint": "eslint . --ext .ts",
@@ -36,9 +35,5 @@
     "http-errors": "^2.0.0",
     "mongoose": "^8.0.3",
     "morgan": "^1.10.0"
-  },
-  "pre-commit": [
-    "build",
-    "add-build"
-  ]
+  }
 }

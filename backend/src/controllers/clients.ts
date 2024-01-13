@@ -5,9 +5,9 @@ import mongoose from 'mongoose'
 
 export const getClients: RequestHandler = async (req, res, next) => {
   try {
-    const notes = await ClientModel.find().exec()
+    const clients = await ClientModel.find().exec()
 
-    res.status(200).json(notes)
+    res.status(200).json(clients)
   } catch (error) {
     next(error)
   }
