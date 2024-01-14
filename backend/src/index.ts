@@ -10,7 +10,7 @@ import session from 'express-session'
 import env from './util/validateEnv'
 import MongoStore from 'connect-mongo'
 
-const app = express()
+export const app = express()
 
 app.use(morgan('dev'))
 

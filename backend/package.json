@@ -5,7 +5,10 @@
   "license": "ISC",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon dist/index.js"
+    "start": "ts-node src/index.js",
+    "dev": "nodemon dist/index.js",
+    "lint": "eslint --fix src test",
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
