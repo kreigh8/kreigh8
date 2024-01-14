@@ -16,7 +16,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 // mongoose.set('strictQuery', false);
 const connectDB = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield mongoose_1.default.connect(process.env.MONGO_URI, {
+        yield mongoose_1.default.connect(process.env.MONGO_URL, {
             //mongodb://localhost:27017/wordle_db
             useNewUrlParser: true,
             useUnifiedTopology: true,
