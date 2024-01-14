@@ -1,27 +1,33 @@
-import 'dotenv/config'
-import mongoose from 'mongoose'
-import express, { Request, Response, NextFunction } from 'express'
-import cors from 'cors'
-import clientRoutes from './routes/clients'
-import userRoutes from './routes/users'
-import morgan from 'morgan'
-import createHttpError, { isHttpError } from 'http-errors'
+import express, { Application, Request, Response } from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import connectDB from "./config/db";
 import session from 'express-session'
-import env from './util/validateEnv'
 import MongoStore from 'connect-mongo'
+import { notFound, errorHandler } from "./middlewares/ErrorMiddleware";
+import clientRoutes from "./routes/clientRoutes";
+import userRoutes from "./routes/userRoutes";
 
-const app = express()
+const app: Application = express();
 
-app.use(morgan('dev'))
+dotenv.config();
 
-app.use(express.json())
+connectDB();
 
+app.use(express.json());
+
+// Enable CORS for all routes
 app.use(cors({
-  origin: '*'
-}))
+  origin: "*",
+}));
+
+// Default
+app.get("/api", (req: Request, res: Response) => {
+  res.status(201).json({ message: "Welcome to Auth ts" });
+});
 
 app.use(session({
-  secret: env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {
@@ -29,33 +35,18 @@ app.use(session({
   },
   rolling: true,
   store: MongoStore.create({
-    mongoUrl: env.MONGO_URL
+    mongoUrl: process.env.MONGO_URL
   })
 }))
 
+// User Route
 app.use('/api/clients', clientRoutes)
 app.use('/api/users', userRoutes)
 
-app.use((req, res, next) => {
-  next(createHttpError(404, 'Endpoint not found'))
-})
+// Middleware
+app.use(notFound);
+app.use(errorHandler);
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
-  console.error(error)
-  let errorMessage = 'An uknown error occured'
-  let statusCode = 500
-  if (isHttpError(error)) {
-    statusCode = error.status
-    errorMessage = error.message
-  }
+const PORT = process.env.PORT || 3001;
 
-  res.status(statusCode).json({ error: errorMessage })
-})
-
-mongoose.connect(env.MONGO_URL).then(() => {
-  console.log('Mongoose Connected')
-  app.listen(env.PORT, () => {
-    console.log(`Server running on port: ${env.PORT}`)
-  })
-}).catch(console.error)
+app.listen(PORT, (): void => console.log(`Server is running on ${PORT}`));

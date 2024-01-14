@@ -2,6 +2,13 @@ import { RequestHandler } from 'express'
 import createHttpError from 'http-errors'
 import bcrypt from 'bcrypt'
 import UserModel from '../models/user'
+import 'express-session';
+
+declare module 'express-session' {
+  export interface SessionData {
+    userId: { [key: string]: any };
+  }
+}
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   const authenticatedUserId = req.session.userId

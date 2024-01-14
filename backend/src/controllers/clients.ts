@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express'
-import ClientModel from '../models/client'
 import createHttpError from 'http-errors'
 import mongoose from 'mongoose'
+import ClientModel from '../models/client'
 
 export const getClients: RequestHandler = async (req, res, next) => {
   try {
