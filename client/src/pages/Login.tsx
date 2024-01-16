@@ -32,7 +32,7 @@ const Login = () => {
       const user = await UserApi.login(values)
       onSubmitProps.resetForm()
       dispatch(setLogin(user))
-      navigate('/auth')
+      navigate('/admin')
     } catch (error) {
       console.error(error)
     }

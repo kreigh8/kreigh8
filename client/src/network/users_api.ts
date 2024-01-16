@@ -1,21 +1,8 @@
 import { User } from '../models/user'
-import { API_URL } from './config'
-
-const fetchData = async (input: RequestInfo, init?: RequestInit) => {
-  const response = await fetch(input, init)
-
-  if (response.ok) {
-    return response
-  } else {
-    const errorBody = await response.json()
-    const errorMessage = errorBody.error
-    throw Error(errorMessage)
-  }
-}
-
+import { API_URL, fetchData } from './config'
 
 export const getLoggedInUser = async (): Promise<User> => {
-  const response = await fetchData(`${API_URL}/api/users`, { method: 'GET' })
+  const response = await fetchData(`${API_URL}/api/users`, { method: 'GET', credentials: 'include' })
   return response.json()
 }
 
@@ -29,6 +16,7 @@ export const signup = async (credentials: SignUpCredentials): Promise<User> => {
   const response = await fetchData(`${API_URL}/api/users/signup`,
   {
     method: 'POST',
+    credentials: 'include',
     headers: {
     'Content-Type': 'application/json'
     },
@@ -46,6 +34,7 @@ export const login = async (credentials: LoginCredentials): Promise<User> => {
   const response = await fetchData(`${API_URL}/api/users/login`,
   {
     method: 'POST',
+    credentials: 'include',
     headers: {
     'Content-Type': 'application/json'
     },

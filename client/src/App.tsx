@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
-import UnderConstruction from './pages/UnderConstruction'
 import Login from './pages/Login'
-import Auth from './pages/Auth'
+import Auth from './pages/admin/Auth'
 import { useAppSelector } from './state/hooks'
 import { CssBaseline, createTheme } from '@mui/material'
 import { ThemeProvider } from '@emotion/react'
 import { useMemo } from 'react'
+import Clients from './pages/admin/Clients'
 
 
 
@@ -18,8 +18,6 @@ function App() {
     }
   }), [mode])
 
-  console.log('VITE_UNDER_CONSTRUCTION', import.meta.env.VITE_UNDER_CONSTRUCTION)
-
   return (
     <>
       <BrowserRouter>
@@ -27,9 +25,12 @@ function App() {
           <CssBaseline />
           <Routes>
 
-            <Route index element={import.meta.env.VITE_UNDER_CONSTRUCTION === 'true' ? <UnderConstruction /> :<Home />}/>
+            <Route index element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/auth" element={<Auth />} />
+            
+            <Route path="/admin" element={<Auth />} />
+            <Route path="/admin/clients" element={<Clients />} />
+            {/* <Route path="/auth/client/:clientId" element={<EditClient />} />   */}
 
 
           </Routes>
