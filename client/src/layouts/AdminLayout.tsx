@@ -33,11 +33,9 @@ const AdminLayout = ({ children }: LayoutProps) => {
   const checkUser = async () => {
     const user = await UserApi.getLoggedInUser()
 
-    console.log('user', user)
-
-    // if (!user) {
-    //   navigate('/')
-    // }
+    if (!user) {
+      navigate('/')
+    }
   }
 
   return (
