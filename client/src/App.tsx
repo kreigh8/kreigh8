@@ -7,6 +7,7 @@ import { CssBaseline, createTheme } from '@mui/material'
 import { ThemeProvider } from '@emotion/react'
 import { useMemo } from 'react'
 import Clients from './pages/admin/Clients'
+import CreateClient from './pages/admin/CreateClient'
 
 
 
@@ -30,6 +31,7 @@ function App() {
             
             <Route path="/admin" element={<Auth />} />
             <Route path="/admin/clients" element={<Clients />} />
+            <Route path="/admin/clients/create" element={<CreateClient />} />
             {/* <Route path="/auth/client/:clientId" element={<EditClient />} />   */}
 
 

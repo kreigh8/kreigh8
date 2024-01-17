@@ -1,10 +1,8 @@
 import { DarkMode, LightMode, LinkedIn } from "@mui/icons-material"
 import { AppBar, Toolbar, Typography, Box, Button, Divider, IconButton, useTheme, Drawer, List, ListItem, ListItemButton } from "@mui/material"
 import { useAppDispatch } from "../state/hooks"
-import { setMode } from "../state/commonSlice"
-import * as UserApi from '../network/users_api'
-import React from "react"
-import { useNavigate } from "react-router-dom"
+import { setMode } from '../state/commonSlice'
+import React from 'react'
 
 interface LayoutProps {
   children: React.ReactNode

@@ -43,11 +43,12 @@ app.use(session({
   })
 }))
 
-app.use('/assets', express.static(path.join(__dirname, '../public/assets')))
+app.use('/assets', express.static(path.join(__dirname, path.resolve('./public/assets'))))
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, '../public/assets')
+    console.log('file', file)
+    cb(null, path.resolve('./public/assets'))
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname)

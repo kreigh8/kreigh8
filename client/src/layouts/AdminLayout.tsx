@@ -1,6 +1,5 @@
 import { DarkMode, LightMode } from "@mui/icons-material"
-import { styled } from '@mui/material/styles'
-import { AppBar, Toolbar, Typography, Box, Button, Divider, IconButton, useTheme, MenuItem, Drawer, List, ListItem, ListItemButton, Grid } from "@mui/material"
+import { AppBar, Toolbar, Typography, Box, Button, Divider, IconButton, useTheme, MenuItem, Drawer, List, ListItem, ListItemButton, Grid, Container } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "../state/hooks"
 import { setMode } from "../state/commonSlice"
 import * as UserApi from '../network/users_api'
@@ -74,11 +73,9 @@ const AdminLayout = ({ children }: LayoutProps) => {
         </List>
       </Drawer>
       <Box component='main' sx={{ p: 2, display: 'flex', marginTop: '4rem', flexGrow: '1' }}>
-        <Grid container spacing={2}>
-          <Grid item lg={12}>
-            { children }
-          </Grid>
-        </Grid>
+        <Container maxWidth="xl">
+          { children }
+        </Container>
       </Box>
     </Box>
   )

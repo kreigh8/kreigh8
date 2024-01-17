@@ -33,22 +33,24 @@ export const getClient: RequestHandler = async (req, res, next) => {
 }
 
 interface CreateClientBody {
-  name?: string
+  client?: string
   url?: string
   picturePath?: string
   description?: string
-  active?: boolean
+  active?: string
 }
 
 export const createClient: RequestHandler<unknown, unknown, CreateClientBody, unknown> = async (req, res, next) => {
-  const name = req.body.name
+  console.log('req.body', req.body)
+  console.log('req.file', req.file)
+  const client = req.body.client
   const url = req.body.url
   const picturePath = req.body.picturePath
   const description = req.body.description
   const active = req.body.active
   
   try {
-    if (!name) {
+    if (!client) {
       throw createHttpError(400, 'Client must have a name')
     }
 
@@ -56,12 +58,8 @@ export const createClient: RequestHandler<unknown, unknown, CreateClientBody, un
       throw createHttpError(400, 'Client must have an image')
     }
 
-    if (typeof active !== 'boolean') {
-      throw createHttpError(400, 'Active must be type boolean')
-    }
-
     const newClient = await ClientModel.create({
-      name: name,
+      client: client,
       picturePath: picturePath,
       description: description,
       url: url,
@@ -79,7 +77,7 @@ interface UpdateClientParams {
 }
 
 interface UpdateClientBody {
-  name?: string
+  client?: string
   url?: string
   picturePath?: string
   description?: string
@@ -88,7 +86,7 @@ interface UpdateClientBody {
 
 export const updateClient: RequestHandler<UpdateClientParams, unknown, UpdateClientBody, unknown> = async (req, res, next) => {
   const clientId = req.params.clientId
-  const newName = req.body.name
+  const newClient = req.body.client
   const newUrl = req.body.url
   const newPicturePath = req.body.picturePath
   const newDescription = req.body.description
@@ -99,7 +97,7 @@ export const updateClient: RequestHandler<UpdateClientParams, unknown, UpdateCli
       throw createHttpError(400, 'Invalid client id')
     }
 
-    if (!newName) {
+    if (!newClient) {
       throw createHttpError(400, 'Client must have a name')
     }
 
@@ -113,7 +111,7 @@ export const updateClient: RequestHandler<UpdateClientParams, unknown, UpdateCli
       throw createHttpError(404, 'Client not found')
     }
 
-    client.name = newName
+    client.client = newClient
     client.url = newUrl
     client.description = newDescription
     client.active = newActive
