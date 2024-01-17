@@ -1,31 +1,25 @@
-import { Box, Button, Checkbox, FormControl, FormControlLabel, FormHelperText, Grid, IconButton, InputLabel, OutlinedInput, Switch, TextField, Typography } from "@mui/material"
+import { Box, Button, FormControlLabel, FormHelperText, Grid, IconButton, InputLabel, OutlinedInput, Switch, TextField, Typography } from "@mui/material"
 import AdminLayout from '../../layouts/AdminLayout'
-import { Formik, FormikHelpers, useFormik, useFormikContext } from 'formik'
+import { FormikHelpers, useFormik } from 'formik'
 import * as ClientApi from '../../network/clients_api'
 import * as yup from 'yup'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { EditOutlined } from "@mui/icons-material"
 import { useDropzone } from "react-dropzone"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
+import { Client } from "../../models/client"
 
-const initialCreateClientFormValues = {
-  client: '',
-  url: '',
-  picture: null,
-  description: '',
-  active: false
-}
-
-interface createClientValues {
+interface editClientValues {
   client: string
   url: string
-  picture: File
+  picture?: File
+  picturePath?: string
   description: string
   active: boolean
 
 }
 
-const createClientSchema = yup.object().shape({
+const editClientSchema = yup.object().shape({
   client: yup.string().required('required'),
   url: yup.string().required('required'),
   picture: yup.string().required('required'),
@@ -33,12 +27,34 @@ const createClientSchema = yup.object().shape({
   active: yup.boolean().required('required')
 })
 
-const CreateClient = () => {
+const EditClient = () => {
   const navigate = useNavigate()
+  const clientId = useParams()
+  const [client, setClient] = useState<Client>()
 
-  const handleFormSubmit = async (values: typeof initialCreateClientFormValues, onSubmitProps: FormikHelpers<createClientValues>) => {
+  useEffect(() => {
+    getClient()
+  }, []) 
+
+  const getClient = async () => {
+    const client = await ClientApi.getClient(clientId.clientId)
+    setClient(client)
+
+    console.log('client', client)
+
+    // form.setFieldValue('client', client.client)
+    // form.setFieldValue('url', client.url)
+    // form.setFieldValue('picture', client.picture)
+    // form.setFieldValue('picturePath', client.picturePath)
+    // form.setFieldValue('active', client.active)
+    // form.setFieldValue('description', client.description)
+  }
+
+  
+
+  const handleFormSubmit = async (values: any, onSubmitProps: FormikHelpers<editClientValues>) => {
     try {
-      await ClientApi.createClient(values)
+      await ClientApi.editClient(clientId, values)
       onSubmitProps.resetForm()
       navigate('/admin/clients')
     } catch (error) {
@@ -56,8 +72,16 @@ const CreateClient = () => {
   } = useDropzone({ accept: { 'image/*': [] }, onDrop, multiple: false })
 
   const form = useFormik({
-    initialValues: initialCreateClientFormValues,
-    validationSchema: createClientSchema,
+    initialValues: {
+      client: client?.client,
+      url: client?.url,
+      description: client?.description,
+      picture: client?.picturePath,
+      picturePath: client?.picturePath,
+      active: client?.active
+    },
+    validationSchema: editClientSchema,
+    enableReinitialize: true,
     onSubmit: handleFormSubmit
   })
 
@@ -65,7 +89,7 @@ const CreateClient = () => {
     <AdminLayout>
       <Grid container spacing={2} alignItems='center'>
         <Grid item xs={12}>
-          <Typography variant='h1'>Create Client</Typography>
+          <Typography variant='h1'>Edit Client</Typography>
         </Grid>
         <form onSubmit={form.handleSubmit} style={{ width: '100%' }} encType="multipart/form-data">
           <Grid container item rowSpacing={2}>
@@ -75,7 +99,7 @@ const CreateClient = () => {
                 label="Client"
                 onBlur={form.handleBlur}
                 onChange={form.handleChange}
-                value={form.values.client}
+                value={form.values.client ?? ''}
                 name="client"
                 error={Boolean(form.touched.client) && Boolean(form.errors.client)}
                 helperText={form.touched.client && form.errors.client}
@@ -88,7 +112,7 @@ const CreateClient = () => {
                 label="Client Url"
                 onBlur={form.handleBlur}
                 onChange={form.handleChange}
-                value={form.values.url}
+                value={form.values.url ?? ''}
                 name="url"
                 error={Boolean(form.touched.url) && Boolean(form.errors.url)}
                 helperText={form.touched.url && form.errors.url}
@@ -107,11 +131,11 @@ const CreateClient = () => {
                   sx={{ "&:hover": { cursor: "pointer" } }}
                 >
                   <input {...getInputProps()} />
-                  {!form.values.picture ? (
+                  {!form.values.picture && !form.values.picturePath ? (
                     <p>Add Picture Here</p>
                   ) : (
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Typography>{form.values.picture.name}</Typography>
+                      <Typography>{form.values.picture && form.values.picture.name ? form.values.picture.name : form.values.picturePath}</Typography>
                       <EditOutlined />
                     </Box>
                   )}
@@ -126,7 +150,7 @@ const CreateClient = () => {
                 label="Description"
                 onBlur={form.handleBlur}
                 onChange={form.handleChange}
-                value={form.values.description}
+                value={form.values.description ?? ''}
                 name="description"
                 error={Boolean(form.touched.description) && Boolean(form.errors.description)}
                 helperText={form.touched.description && form.errors.description}
@@ -137,21 +161,18 @@ const CreateClient = () => {
                 onBlur={form.handleBlur}
                 name="active"
                 onChange={form.handleChange}
-                control={<Switch checked={form.values.active} onChange={() => form.setFieldValue("active", !form.values.active)} />}
+                control={<Switch checked={!!form.values.active} onChange={() => form.setFieldValue("active", !form.values.active)} />}
                 label="Active"
               />
             </Grid>
             <Grid item xs={12}>
-              <Button variant='contained' type='submit' fullWidth>Create</Button>
+              <Button variant='contained' type='submit' fullWidth disabled={!form.dirty}>Edit</Button>
             </Grid>
           </Grid>
         </form>
-        <Grid item xs={12}>
-
-        </Grid>
       </Grid>
     </AdminLayout>
   )
 }
 
-export default CreateClient
+export default EditClient

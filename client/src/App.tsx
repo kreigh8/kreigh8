@@ -8,6 +8,7 @@ import { ThemeProvider } from '@emotion/react'
 import { useMemo } from 'react'
 import Clients from './pages/admin/Clients'
 import CreateClient from './pages/admin/CreateClient'
+import EditClient from './pages/admin/EditClient'
 
 
 
@@ -32,7 +33,7 @@ function App() {
             <Route path="/admin" element={<Auth />} />
             <Route path="/admin/clients" element={<Clients />} />
             <Route path="/admin/clients/create" element={<CreateClient />} />
-            {/* <Route path="/auth/client/:clientId" element={<EditClient />} />   */}
+            <Route path="/admin/clients/:clientId" element={<EditClient />} />  
 
 
           </Routes>

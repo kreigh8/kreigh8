@@ -1,24 +1,30 @@
-import { Grid, TableContainer, Table, TableBody, TableHead, TableCell, Button, Typography } from "@mui/material"
-import { Add } from "@mui/icons-material"
+import { Grid, TableContainer, Table, TableBody, TableHead, TableCell, Button, Typography, TableRow, Switch, IconButton } from "@mui/material"
+import { Add, Edit } from "@mui/icons-material"
 import AdminLayout from "../../layouts/AdminLayout"
-import { useEffect } from "react"
+import { Client } from '../../models/client'
+import { useEffect, useState } from "react"
 import * as ClientAPI from '../../network/clients_api'
 import { useNavigate } from "react-router-dom"
 
 const Clients = () => {
   const navigate = useNavigate()
+  const [clients, setClients] = useState<Client[]>([])
 
   useEffect(() => {
     getClients()
   }, [])
 
   const getClients = async () => {
-    const clients = await ClientAPI.getClients()
-    console.log('clients', clients)
+    const clientResponse = await ClientAPI.getClients()
+    setClients(clientResponse)
   }
 
   const handleCreateClient = () => {
     navigate('/admin/clients/create')
+  }
+
+  const handleEditClient = (id: string) => {
+    navigate(`/admin/clients/${id}`)
   }
 
   return (
@@ -34,6 +40,7 @@ const Clients = () => {
           <TableContainer>
             <Table>
               <TableHead>
+                <TableCell></TableCell>
                 <TableCell>
                   Client
                 </TableCell>
@@ -51,7 +58,16 @@ const Clients = () => {
                 </TableCell>
               </TableHead>
               <TableBody>
-
+                {clients.length && clients.map((client) => (
+                  <TableRow>
+                    <TableCell><IconButton onClick={() => handleEditClient(client._id)}><Edit /></IconButton></TableCell>
+                    <TableCell>{client.client}</TableCell>
+                    <TableCell><Typography component='a' href={client.url}>{client.url}</Typography></TableCell>
+                    <TableCell>{client.description}</TableCell>
+                    <TableCell><img width="150" src={`${import.meta.env.VITE_API_URL}/assets/${client.picturePath}`} /></TableCell>
+                    <TableCell><Switch checked={client.active} /></TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>

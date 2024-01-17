@@ -66,7 +66,7 @@ const AdminLayout = ({ children }: LayoutProps) => {
         <Toolbar />
         <List>
           <ListItem>
-            <ListItemButton onClick={() =>navigate('/admin/clients')}>
+            <ListItemButton onClick={() => navigate('/admin/clients')}>
               Clients
             </ListItemButton>
           </ListItem>
