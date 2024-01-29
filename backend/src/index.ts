@@ -10,7 +10,7 @@ import MongoStore from 'connect-mongo'
 import { notFound, errorHandler } from "./middlewares/ErrorMiddleware"
 import clientRoutes from "./routes/clientRoutes"
 import userRoutes from "./routes/userRoutes"
-import { createClient } from "./controllers/clients"
+import { createClient, updateClient } from "./controllers/clients"
 
 const app: Application = express()
 
@@ -23,7 +23,7 @@ app.use(express.json())
 // Enable CORS for all routes
 app.use(cors({
   origin: "http://localhost:3000",
-  methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD"],
+  methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD", "PATCH", "DELETE"],
   credentials: true,
 }))
 
@@ -75,3 +75,4 @@ app.use(errorHandler)
 const PORT = process.env.PORT || 3001
 
 app.listen(PORT, (): void => console.log(`Server is running on ${PORT}`))
+

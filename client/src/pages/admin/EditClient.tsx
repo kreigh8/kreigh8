@@ -12,11 +12,9 @@ import { Client } from "../../models/client"
 interface editClientValues {
   client: string
   url: string
-  picture?: File
-  picturePath?: string
+  picture: File
   description: string
   active: boolean
-
 }
 
 const editClientSchema = yup.object().shape({
@@ -29,32 +27,42 @@ const editClientSchema = yup.object().shape({
 
 const EditClient = () => {
   const navigate = useNavigate()
-  const clientId = useParams()
+  const { clientId } = useParams()
   const [client, setClient] = useState<Client>()
 
   useEffect(() => {
     getClient()
-  }, []) 
+  }, [])
+
+  useEffect(() => {
+
+    console.log('client picture', client?.picturePath)
+    const image = `http://localhost:3001/assets/${client?.picturePath}`
+    const file = new File([new Blob()], image, { type: 'image/png'})
+    console.log('file', )
+    form.setFieldValue('picture', file)
+    console.log('form', form.values)
+  }, [client])
 
   const getClient = async () => {
-    const client = await ClientApi.getClient(clientId.clientId)
+    const client = await ClientApi.getClient(clientId!)
     setClient(client)
 
     console.log('client', client)
 
-    // form.setFieldValue('client', client.client)
-    // form.setFieldValue('url', client.url)
-    // form.setFieldValue('picture', client.picture)
-    // form.setFieldValue('picturePath', client.picturePath)
-    // form.setFieldValue('active', client.active)
-    // form.setFieldValue('description', client.description)
+    form.setFieldValue('client', client.client)
+    form.setFieldValue('url', client.url)
+    form.setFieldValue('picturePath', client.picturePath)
+    form.setFieldValue('active', client.active)
+    form.setFieldValue('description', client.description)
   }
 
   
 
-  const handleFormSubmit = async (values: any, onSubmitProps: FormikHelpers<editClientValues>) => {
+  const handleFormSubmit = async (values: editClientValues, onSubmitProps: FormikHelpers<editClientValues>) => {
+    console.log('values', values)
     try {
-      await ClientApi.editClient(clientId, values)
+      await ClientApi.editClient(clientId!, values)
       onSubmitProps.resetForm()
       navigate('/admin/clients')
     } catch (error) {
@@ -76,8 +84,7 @@ const EditClient = () => {
       client: client?.client,
       url: client?.url,
       description: client?.description,
-      picture: client?.picturePath,
-      picturePath: client?.picturePath,
+      picture: null,
       active: client?.active
     },
     validationSchema: editClientSchema,
@@ -131,11 +138,11 @@ const EditClient = () => {
                   sx={{ "&:hover": { cursor: "pointer" } }}
                 >
                   <input {...getInputProps()} />
-                  {!form.values.picture && !form.values.picturePath ? (
+                  {!form.values.picture ? (
                     <p>Add Picture Here</p>
                   ) : (
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Typography>{form.values.picture && form.values.picture.name ? form.values.picture.name : form.values.picturePath}</Typography>
+                      <Typography>{form.values.picture.name.split('/assets/')[1]}</Typography>
                       <EditOutlined />
                     </Box>
                   )}

@@ -39,10 +39,10 @@ const AdminLayout = ({ children }: LayoutProps) => {
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <AppBar color="primary" position="fixed" sx={{ boxShadow: 'none', zIndex: (theme) => theme.zIndex.drawer + 1 }} component="nav">
+      <AppBar color='default' position="fixed" sx={{ boxShadow: 'none', zIndex: (theme) => theme.zIndex.drawer + 1 }} component="nav">
         <Toolbar>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
-            <Typography sx={{ color: '#fff', textDecoration: 'none' }} component='a' href="/admin" variant="h6">
+            <Typography sx={{ textDecoration: 'none' }} component='a' href="/admin" variant="h6">
               kreigh8
             </Typography>
           </Box>

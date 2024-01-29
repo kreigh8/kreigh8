@@ -16,8 +16,8 @@ function App() {
   const mode = useAppSelector((state) => state.common.mode)
   const theme = useMemo(() => createTheme({
     palette: {
-      mode
-    }
+      mode,
+    },
   }), [mode])
 
   return (

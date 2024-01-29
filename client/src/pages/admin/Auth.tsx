@@ -1,7 +1,11 @@
 import { Container, Grid } from "@mui/material"
 import AdminLayout from "../../layouts/AdminLayout"
+import { useEffect } from "react"
 
 const Auth = () => {
+  useEffect(() => {
+    console.log('loading')
+  })
   return (
     <AdminLayout>
       <Container maxWidth="xl">

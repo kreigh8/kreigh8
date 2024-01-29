@@ -32,7 +32,6 @@ export const createClient = async (client: ClientInput): Promise<Client> => {
 }
 
 export const getClient = async (clientId: string): Promise<Client> => {
-  console.log('clientId', clientId)
   const response = await fetchData(`${API_URL}/api/clients/${clientId}`, {
     method: 'GET',
     credentials: 'include'
@@ -41,6 +40,7 @@ export const getClient = async (clientId: string): Promise<Client> => {
 }
 
 export const editClient = async (clientId: string, client: ClientInput): Promise<Client> => {
+  console.log('client', client)
   const formData = new FormData()
 
   formData.append('client', client.client)
@@ -55,4 +55,11 @@ export const editClient = async (clientId: string, client: ClientInput): Promise
     credentials: 'include' }
   )
   return response.json()
+}
+
+export const deleteClient = async (clientId: string) => {
+  await fetchData(`${API_URL}/api/clients/${clientId}`, {
+    method: 'DELETE',
+    credentials: 'include'
+  })
 }

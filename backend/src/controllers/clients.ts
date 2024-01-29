@@ -85,6 +85,10 @@ interface UpdateClientBody {
 }
 
 export const updateClient: RequestHandler<UpdateClientParams, unknown, UpdateClientBody, unknown> = async (req, res, next) => {
+  console.log('req.body', req.body)
+  console.log('req.file', req.file)
+  console.log('req.params', req.params)
+  console.log('req', req)
   const clientId = req.params.clientId
   const newClient = req.body.client
   const newUrl = req.body.url
@@ -139,7 +143,7 @@ export const deleteClient: RequestHandler = async (req, res, next) => {
       throw createHttpError(404, 'Client not found')
     }
 
-    ClientModel.findByIdAndDelete(clientId)
+    await client.remove();
 
     res.sendStatus(204)
   } catch (error) {
