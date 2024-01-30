@@ -5,6 +5,7 @@ import * as UserApi from '../network/users_api'
 import { useAppDispatch } from '../state/hooks'
 import { setLogin } from '../state/authSlice'
 import { useNavigate } from 'react-router-dom'
+import PublicLayout from '../layouts/PublicLayout'
 
 
 const initialLoginValues = {
@@ -39,63 +40,64 @@ const Login = () => {
   }
 
   return (
-    <Container maxWidth="xl">
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Typography variant='h1' textAlign='center'>Login</Typography>
+    <PublicLayout>
+      <Container maxWidth="xl">
+        <Grid container spacing={2}>
+          <Grid item xs={12} sx={{ marginBottom: '2rem' }}>
+            <Typography variant='h1' textAlign='center'>Login</Typography>
+          </Grid>
+          <Formik 
+            onSubmit={handleFormSubmit}
+            initialValues={initialLoginValues}
+            validationSchema={loginSchema}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleBlur,
+              handleChange,
+              handleSubmit,
+              // setFieldValue,
+              // resetForm
+            }) => (
+              <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+                <Grid container item rowSpacing={2}>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Username"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.username}
+                      name="username"
+                      error={Boolean(touched.username) && Boolean(errors.username)}
+                      helperText={touched.username && errors.username}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      type="password"
+                      label="Password"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.password}
+                      name="password"
+                      error={Boolean(touched.password) && Boolean(errors.password)}
+                      helperText={touched.password && errors.password}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Button variant='contained' type='submit' fullWidth>Login</Button>
+                  </Grid>
+                </Grid>
+              </form>
+            )}
+          </Formik>
         </Grid>
-        <Formik 
-          onSubmit={handleFormSubmit}
-          initialValues={initialLoginValues}
-          validationSchema={loginSchema}
-        >
-          {({
-            values,
-            errors,
-            touched,
-            handleBlur,
-            handleChange,
-            handleSubmit,
-            // setFieldValue,
-            // resetForm
-          }) => (
-            <form onSubmit={handleSubmit} style={{ width: '100%' }}>
-              <Grid container item rowSpacing={2}>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    label="Username"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.username}
-                    name="username"
-                    error={Boolean(touched.username) && Boolean(errors.username)}
-                    helperText={touched.username && errors.username}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    type="password"
-                    label="Password"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.password}
-                    name="password"
-                    error={Boolean(touched.password) && Boolean(errors.password)}
-                    helperText={touched.password && errors.password}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Button variant='contained' type='submit' fullWidth>Login</Button>
-                </Grid>
-              </Grid>
-            </form>
-          )}
-        </Formik>
-      </Grid>
-    </Container>
-    
+      </Container>
+    </PublicLayout>
   )
 }
 
