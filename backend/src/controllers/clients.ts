@@ -2,6 +2,7 @@ import { RequestHandler } from 'express'
 import createHttpError from 'http-errors'
 import mongoose from 'mongoose'
 import ClientModel from '../models/client'
+import { assertIsDefined } from '../utils/assertIsDefined'
 
 export const getClients: RequestHandler = async (req, res, next) => {
   try {
@@ -41,15 +42,17 @@ interface CreateClientBody {
 }
 
 export const createClient: RequestHandler<unknown, unknown, CreateClientBody, unknown> = async (req, res, next) => {
-  console.log('req.body', req.body)
-  console.log('req.file', req.file)
   const client = req.body.client
   const url = req.body.url
   const picturePath = req.body.picturePath
   const description = req.body.description
   const active = req.body.active
+
+  const authenticatedUserId = req.session.userId
   
   try {
+    assertIsDefined(authenticatedUserId)
+
     if (!client) {
       throw createHttpError(400, 'Client must have a name')
     }
@@ -85,10 +88,6 @@ interface UpdateClientBody {
 }
 
 export const updateClient: RequestHandler<UpdateClientParams, unknown, UpdateClientBody, unknown> = async (req, res, next) => {
-  console.log('req.body', req.body)
-  console.log('req.file', req.file)
-  console.log('req.params', req.params)
-  console.log('req', req)
   const clientId = req.params.clientId
   const newClient = req.body.client
   const newUrl = req.body.url
@@ -96,7 +95,11 @@ export const updateClient: RequestHandler<UpdateClientParams, unknown, UpdateCli
   const newDescription = req.body.description
   const newActive = req.body.active
 
+  const authenticatedUserId = req.session.userId
+
   try {
+    assertIsDefined(authenticatedUserId);
+
     if (!mongoose.isValidObjectId(clientId)) {
       throw createHttpError(400, 'Invalid client id')
     }
@@ -132,7 +135,11 @@ export const updateClient: RequestHandler<UpdateClientParams, unknown, UpdateCli
 export const deleteClient: RequestHandler = async (req, res, next) => {
   const clientId = req.params.clientId
 
+  const authenticatedUserId = req.session.userId
+
   try {
+    assertIsDefined(authenticatedUserId)
+
     if (!mongoose.isValidObjectId(clientId)) {
       throw createHttpError(400, 'Invalid client id')
     }

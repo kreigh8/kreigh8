@@ -3,6 +3,7 @@ import { AppBar, Toolbar, Typography, Box, Button, Divider, IconButton, useTheme
 import { useAppDispatch } from "../state/hooks"
 import { setMode } from '../state/commonSlice'
 import React, { useState } from 'react'
+import Footer from "../components/Footer/Footer"
 
 interface LayoutProps {
   children: React.ReactNode
@@ -128,6 +129,7 @@ const PublicLayout = ({ children }: LayoutProps) => {
         <Toolbar />
         { children }
       </Box>
+      <Footer />
     </>
   )
 }

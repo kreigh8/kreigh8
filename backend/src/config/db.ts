@@ -7,7 +7,6 @@ const connectDB = async () => {
     await mongoose.connect(
       process.env.MONGO_URL as string,
       {
-        //mongodb://localhost:27017/wordle_db
         useNewUrlParser: true,
         useUnifiedTopology: true,
       } as ConnectOptions

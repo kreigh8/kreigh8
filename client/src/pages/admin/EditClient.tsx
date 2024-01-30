@@ -60,7 +60,6 @@ const EditClient = () => {
   
 
   const handleFormSubmit = async (values: editClientValues, onSubmitProps: FormikHelpers<editClientValues>) => {
-    console.log('values', values)
     try {
       await ClientApi.editClient(clientId!, values)
       onSubmitProps.resetForm()

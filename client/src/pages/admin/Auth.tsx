@@ -1,4 +1,4 @@
-import { Container, Grid } from "@mui/material"
+import { Container, Grid, Typography } from "@mui/material"
 import AdminLayout from "../../layouts/AdminLayout"
 import { useEffect } from "react"
 
@@ -11,8 +11,9 @@ const Auth = () => {
       <Container maxWidth="xl">
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <h1>Auth Home Page</h1></Grid>
+            <Typography variant='h1'>Auth Home Page</Typography>
           </Grid>
+        </Grid>
       </Container>
     </AdminLayout>
   )
