@@ -16,7 +16,7 @@ const ClientContainer = () => {
     setClients(clientResponse)
   }
 
-  const handleChangeSort = (e) => {
+  const handleChangeSort = (e: React.ChangeEvent<{ value: number }>) => {
     const copyArray = [...clients]
 
     copyArray.sort((a, b) => {
