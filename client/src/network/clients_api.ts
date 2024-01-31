@@ -40,7 +40,6 @@ export const getClient = async (clientId: string): Promise<Client> => {
 }
 
 export const editClient = async (clientId: string, client: ClientInput): Promise<Client> => {
-  console.log('client', client)
   const formData = new FormData()
 
   formData.append('client', client.client)

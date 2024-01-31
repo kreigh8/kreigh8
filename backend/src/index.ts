@@ -8,7 +8,8 @@ import session from 'express-session'
 import cookieParser from 'cookie-parser'
 import MongoStore from 'connect-mongo'
 import { notFound, errorHandler } from "./middlewares/ErrorMiddleware"
-import clientRoutes from "./routes/clientRoutes"
+import clientRoutes from './routes/clientRoutes'
+import emailRoutes from './routes/emailRoutes'
 import userRoutes from "./routes/userRoutes"
 import { createClient, updateClient } from "./controllers/clients"
 
@@ -47,7 +48,6 @@ app.use('/assets', express.static('./public/assets'))
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    console.log('file', file)
     cb(null, path.resolve('./public/assets'))
   },
   filename: function (req, file, cb) {
@@ -63,10 +63,12 @@ app.get("/api", (req: Request, res: Response) => {
 })
 
 app.post('/api/clients', upload.single('picture'), createClient)
+app.post('/api/clients/:clientId', upload.single('picture'), updateClient)
 
 // User Route
 app.use('/api/clients', clientRoutes)
 app.use('/api/users', userRoutes)
+app.use('/api/email', emailRoutes)
 
 // Middleware
 app.use(notFound)

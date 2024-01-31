@@ -95,8 +95,7 @@ const Clients = () => {
               <TableBody>
                 {clients.length ? clients.map((client) => (
                   <TableRow key={client._id}>
-                    <TableCell><IconButton onClick={() => handleDeleteClient(client)}><Delete /></IconButton></TableCell>
-                    <TableCell><IconButton onClick={() => handleEditClient(client._id)}><Edit /></IconButton></TableCell>
+                    <TableCell><IconButton onClick={() => handleDeleteClient(client)}><Delete /></IconButton><IconButton onClick={() => handleEditClient(client._id)}><Edit /></IconButton></TableCell>
                     <TableCell>{client.client}</TableCell>
                     <TableCell><Typography component='a' href={client.url}>{client.url}</Typography></TableCell>
                     <TableCell>{client.description}</TableCell>

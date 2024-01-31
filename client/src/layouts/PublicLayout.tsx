@@ -2,7 +2,7 @@ import { DarkMode, LightMode, LinkedIn, Menu as MenuIcon } from "@mui/icons-mate
 import { AppBar, Toolbar, Typography, Box, Button, Divider, IconButton, useTheme, Drawer, List, ListItem, ListItemButton, Container, Menu } from "@mui/material"
 import { useAppDispatch } from "../state/hooks"
 import { setMode } from '../state/commonSlice'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Footer from "../components/Footer/Footer"
 
 interface LayoutProps {
@@ -26,6 +26,13 @@ const PublicLayout = ({ children }: LayoutProps) => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   }
+
+  useEffect(() => {
+    const url = window.location.href.split("/");
+    const target = url[url.length - 1].toLowerCase();
+    const element = document.getElementById(target);
+    element && element.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
 
   return (
     <>
@@ -103,7 +110,13 @@ const PublicLayout = ({ children }: LayoutProps) => {
               <Button sx={{ color: (theme) => theme.palette.mode ==='light' ? 'rgba(0, 0, 0, 0.87)' : 'rgba(255, 255, 255, 1)' }}>
                 About
               </Button>
-              <Button sx={{ color: (theme) => theme.palette.mode ==='light' ? 'rgba(0, 0, 0, 0.87)' : 'rgba(255, 255, 255, 1)' }}>
+              <Button 
+                onClick={() => {
+                  const contact = document.getElementById("contact")
+                  contact && contact.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+                sx={{ color: (theme) => theme.palette.mode ==='light' ? 'rgba(0, 0, 0, 0.87)' : 'rgba(255, 255, 255, 1)' }}
+              >
                 Clients
               </Button>
               <Button sx={{ color: (theme) => theme.palette.mode ==='light' ? 'rgba(0, 0, 0, 0.87)' : 'rgba(255, 255, 255, 1)' }}>

@@ -10,7 +10,7 @@ router.get('/:clientId',  ClientsController.getClient)
 
 router.post('/', requiresAuth, ClientsController.createClient)
 
-router.patch('/:clientId', ClientsController.updateClient)
+router.patch('/:clientId', requiresAuth, ClientsController.updateClient)
 
 router.delete('/:clientId', requiresAuth, ClientsController.deleteClient)
 

@@ -1,10 +1,10 @@
-import { RequestHandler } from 'express'
+import { NextFunction, Request, Response, RequestHandler } from 'express'
 import createHttpError from 'http-errors'
 import mongoose from 'mongoose'
 import ClientModel from '../models/client'
 import { assertIsDefined } from '../utils/assertIsDefined'
 
-export const getClients: RequestHandler = async (req, res, next) => {
+export const getClients = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const clients = await ClientModel.find().exec()
 
@@ -14,7 +14,7 @@ export const getClients: RequestHandler = async (req, res, next) => {
   }
 }
 
-export const getClient: RequestHandler = async (req, res, next) => {
+export const getClient = async (req: Request, res: Response, next: NextFunction) => {
   const clientId = req.params.clientId
   try {
     if (!mongoose.isValidObjectId(clientId)) {
@@ -33,15 +33,15 @@ export const getClient: RequestHandler = async (req, res, next) => {
   }
 }
 
-interface CreateClientBody {
-  client?: string
-  url?: string
-  picturePath?: string
-  description?: string
-  active?: string
-}
+// interface CreateClientBody {
+//   client?: string
+//   url?: string
+//   picturePath?: string
+//   description?: string
+//   active?: string
+// }
 
-export const createClient: RequestHandler<unknown, unknown, CreateClientBody, unknown> = async (req, res, next) => {
+export const createClient = async (req: Request, res: Response, next: NextFunction) => {
   const client = req.body.client
   const url = req.body.url
   const picturePath = req.body.picturePath
@@ -75,19 +75,19 @@ export const createClient: RequestHandler<unknown, unknown, CreateClientBody, un
   }
 }
 
-interface UpdateClientParams {
-  clientId: string
-}
+// interface UpdateClientParams {
+//   clientId: string
+// }
 
-interface UpdateClientBody {
-  client?: string
-  url?: string
-  picturePath?: string
-  description?: string
-  active?: boolean
-}
+// interface UpdateClientBody {
+//   client?: string
+//   url?: string
+//   picturePath?: string
+//   description?: string
+//   active?: boolean
+// }
 
-export const updateClient: RequestHandler<UpdateClientParams, unknown, UpdateClientBody, unknown> = async (req, res, next) => {
+export const updateClient = async (req: Request, res: Response, next: NextFunction) => {
   const clientId = req.params.clientId
   const newClient = req.body.client
   const newUrl = req.body.url
@@ -132,7 +132,7 @@ export const updateClient: RequestHandler<UpdateClientParams, unknown, UpdateCli
   }
 }
 
-export const deleteClient: RequestHandler = async (req, res, next) => {
+export const deleteClient = async (req: Request, res: Response, next: NextFunction) => {
   const clientId = req.params.clientId
 
   const authenticatedUserId = req.session.userId
