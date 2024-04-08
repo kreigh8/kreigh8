@@ -44,5 +44,12 @@ export const login = async (credentials: LoginCredentials): Promise<User> => {
 }
 
 export const logout = async () => {
-  await fetchData(`${API_URL}/api/users/logout`, { method: 'POST' })
+  await fetchData(`${API_URL}/api/users/logout`,
+  { 
+    method: 'POST', 
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  })
 }
