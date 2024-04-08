@@ -1,5 +1,5 @@
 import { DarkMode, LightMode } from "@mui/icons-material"
-import { AppBar, Toolbar, Typography, Box, Button, Divider, IconButton, useTheme, MenuItem, Drawer, List, ListItem, ListItemButton, Grid, Container } from "@mui/material"
+import { AppBar, Toolbar, Typography, Box, Button, Divider, IconButton, useTheme, MenuItem, Drawer, List, ListItem, ListItemButton, Container } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "../state/hooks"
 import { setMode } from "../state/commonSlice"
 import * as UserApi from '../network/users_api'

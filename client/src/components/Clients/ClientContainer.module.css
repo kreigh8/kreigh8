@@ -1,0 +1,7 @@
+.cardContent {
+  padding: 0;
+}
+
+.cardContent &:last-child {
+  padding-bottom: 0;
+}

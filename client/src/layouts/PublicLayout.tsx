@@ -1,9 +1,10 @@
-import { DarkMode, LightMode, LinkedIn, Menu as MenuIcon } from "@mui/icons-material"
-import { AppBar, Toolbar, Typography, Box, Button, Divider, IconButton, useTheme, Drawer, List, ListItem, ListItemButton, Container, Menu } from "@mui/material"
+import { DarkMode, GitHub, LightMode, LinkedIn, Menu as MenuIcon } from "@mui/icons-material"
+import { AppBar, Toolbar, Typography, Box, Button, Divider, IconButton, useTheme, Container, Menu } from "@mui/material"
 import { useAppDispatch } from "../state/hooks"
 import { setMode } from '../state/commonSlice'
 import React, { useEffect, useState } from 'react'
 import Footer from "../components/Footer/Footer"
+import { Link } from "react-router-dom"
 
 interface LayoutProps {
   children: React.ReactNode
@@ -85,7 +86,12 @@ const PublicLayout = ({ children }: LayoutProps) => {
                   About
                 </Button>
                 <Button fullWidth sx={{ color: (theme) => theme.palette.mode ==='light' ? 'rgba(0, 0, 0, 0.87)' : 'rgba(255, 255, 255, 1)', display: 'block' }}>
-                  Clients
+                  <Link 
+                    to="/clients"
+                    onClick={() => {
+                      const clients = document.getElementById("clients");
+                      clients && clients.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }}>Clients</Link>
                 </Button>
                 <Button fullWidth sx={{ color: (theme) => theme.palette.mode ==='light' ? 'rgba(0, 0, 0, 0.87)' : 'rgba(255, 255, 255, 1)', display: 'block' }}>
                   Contact
@@ -98,6 +104,9 @@ const PublicLayout = ({ children }: LayoutProps) => {
                     ) : (
                       <LightMode />
                     )}
+                  </IconButton>
+                  <IconButton>
+                    <GitHub />
                   </IconButton>
                   <IconButton>
                     <LinkedIn />
@@ -129,6 +138,9 @@ const PublicLayout = ({ children }: LayoutProps) => {
                 ) : (
                   <LightMode />
                 )}
+              </IconButton>
+              <IconButton>
+                <GitHub />
               </IconButton>
               <IconButton>
                 <LinkedIn />

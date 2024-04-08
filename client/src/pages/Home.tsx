@@ -9,8 +9,9 @@ const Home = () => {
     <PublicLayout>
       <Container maxWidth="lg">
         <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Typography variant='h1' textAlign='center'>Home</Typography>
+          <Grid item xs={12} lg={7}>
+            <Typography variant='h3'>Welcome to kreigh8!</Typography>
+            <Typography>I'm Kreigh Hirschy, a full-stack developer from Indianapolis, Indiana.</Typography>
           </Grid>
           <Grid id="clients" item xs={12}>
             <ClientContainer />

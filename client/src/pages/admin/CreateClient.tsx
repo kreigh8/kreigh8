@@ -1,6 +1,6 @@
-import { Box, Button, Checkbox, FormControl, FormControlLabel, FormHelperText, Grid, IconButton, InputLabel, OutlinedInput, Switch, TextField, Typography } from "@mui/material"
+import { Box, Button, FormControlLabel, Grid, Switch, TextField, Typography } from "@mui/material"
 import AdminLayout from '../../layouts/AdminLayout'
-import { Formik, FormikHelpers, useFormik, useFormikContext } from 'formik'
+import { FormikHelpers, useFormik } from 'formik'
 import * as ClientApi from '../../network/clients_api'
 import * as yup from 'yup'
 import { useCallback } from 'react'
@@ -19,7 +19,7 @@ const initialCreateClientFormValues = {
 interface createClientValues {
   client: string
   url: string
-  picture: File
+  picture?: File | null
   description: string
   active: boolean
 
@@ -46,7 +46,7 @@ const CreateClient = () => {
     }
   }
 
-  const onDrop = useCallback((acceptedFiles: any[]) => {
+  const onDrop = useCallback((acceptedFiles: File[]) => {
     form.setFieldValue('picture', acceptedFiles[0])
   }, [])
   
