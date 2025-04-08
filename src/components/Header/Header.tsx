@@ -1,5 +1,6 @@
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
 import Link from 'next/link'
+import ThemeToggle from './ThemeToggle'
 
 const Header = () => {
   return (
@@ -8,6 +9,8 @@ const Header = () => {
         <Link href="/">kreigh8</Link>
 
         <div className="flex gap-2">
+          <ThemeToggle />
+
           <SignedOut>
             <SignInButton />
           </SignedOut>
