@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { ClerkProvider } from '@clerk/nextjs'
 import './globals.css'
 import Header from '@/components/Header/Header'
+import Footer from '@/components/Footer'
 import { ThemeProvider } from '@/components/theme-provider'
 
 const geistSans = Geist({
@@ -39,6 +40,7 @@ export default function RootLayout({
           >
             <Header />
             {children}
+            <Footer />
           </ThemeProvider>
         </body>
       </html>
