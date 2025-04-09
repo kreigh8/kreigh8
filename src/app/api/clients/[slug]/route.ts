@@ -1,12 +1,17 @@
 import { connectToMongoDb } from '@/lib/db'
 import Client from '@/models/client'
 import { NextRequest, NextResponse } from 'next/server'
+import { auth } from '@clerk/nextjs/server'
 
 export async function GET(req: NextRequest) {
   try {
-    await connectToMongoDb()
+    const { userId } = await auth()
 
-    console.log(`req.url.split('/').slice(-1)`, req.url.split('/').slice(-1)[0])
+    if (!userId) {
+      throw new Error('You must be signed in to view this client')
+    }
+
+    await connectToMongoDb()
 
     const client = await Client.findById(req.url.split('/').slice(-1)[0])
 
