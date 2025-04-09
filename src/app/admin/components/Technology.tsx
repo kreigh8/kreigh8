@@ -1,47 +1,38 @@
 'use client'
 
 import { DataTable } from '@/components/DataTable'
-import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Button } from '@/components/ui/button'
+import { AspectRatio } from '@radix-ui/react-aspect-ratio'
 import { ColumnDef } from '@tanstack/react-table'
-import { Check, Pencil, X } from 'lucide-react'
+import { Pencil } from 'lucide-react'
+import { useRouter } from 'next/router'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 
 interface Props {
-  clients: Client[]
+  technologies: Technology[]
 }
 
-export interface Client {
+export interface Technology {
   _id: string
-  clientName: string
-  active: 'true' | 'false'
-  clientUrl: string
+  techName: string
+  techUrl: string
   imageUrl: string
-  user: string
   lastUpdated: Date
 }
 
-const columns: ColumnDef<Client>[] = [
+const columns: ColumnDef<Technology>[] = [
   {
-    accessorKey: 'clientName',
-    header: 'Client'
+    accessorKey: 'techName',
+    header: 'Technology'
   },
   {
-    accessorKey: 'clientUrl',
-    header: 'Client URL',
+    accessorKey: 'techUrl',
+    header: 'Tech URL',
     cell: ({ row }) => (
-      <a className="link" href={row.getValue('clientUrl')} target="_blank">
-        {row.getValue('clientUrl')}
+      <a className="link" href={row.original.techUrl} target="_blank">
+        {row.original.techName}
       </a>
     )
-  },
-  {
-    accessorKey: 'active',
-    header: 'Active',
-    cell: ({ row }) => {
-      return row.original.active === 'true' ? <Check /> : <X />
-    }
   },
   {
     accessorKey: 'imageUrl',
@@ -51,8 +42,8 @@ const columns: ColumnDef<Client>[] = [
         <Image
           width={64}
           height={280}
-          alt={row.original.clientName}
-          src={row.original.imageUrl}
+          alt={row.original.techName}
+          src={row.original.techUrl}
           className="h-full w-full rounded-md object-cover"
         />
       </AspectRatio>
@@ -101,12 +92,12 @@ const columns: ColumnDef<Client>[] = [
   }
 ]
 
-const Clients = ({ clients }: Props) => {
+const Technology = ({ technologies }: Props) => {
   return (
     <div>
-      <DataTable columns={columns} data={clients} />
+      <DataTable columns={columns} data={technologies} />
     </div>
   )
 }
 
-export default Clients
+export default Technology
