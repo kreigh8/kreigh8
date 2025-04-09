@@ -1,5 +1,5 @@
 import Sidebar from '../../components/Sidebar'
-import ClientForm from '../../components/ClientForm'
+import BackButton from '../../components/BackButton'
 // import Clients from '../components/Clients'
 
 export default async function Client({
@@ -24,11 +24,12 @@ export default async function Client({
     <div className="m-auto flex min-h-max w-full max-w-[1400px] gap-2">
       <Sidebar />
       <main className="flex w-full flex-col gap-4 p-4">
-        <h1>Client</h1>
+        <div className="flex items-center gap-2">
+          <BackButton />
+          <h1>Client</h1>
+        </div>
 
-        <section>
-          <ClientForm clientId={slug as string} />
-        </section>
+        <section></section>
       </main>
     </div>
   )

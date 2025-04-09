@@ -8,6 +8,5 @@ const technologySchema = new mongoose.Schema({
   lastUpdated: { type: Date, required: true }
 })
 
-const Technology = mongoose.model('Technology', technologySchema)
-
-export default Technology
+export const Technology =
+  mongoose.models.Technology || mongoose.model('Technology', technologySchema)

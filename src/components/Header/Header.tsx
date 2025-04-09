@@ -4,7 +4,7 @@ import ThemeToggle from './ThemeToggle'
 
 const Header = () => {
   return (
-    <header className="@container sticky top-0 border-b py-4 shadow-2xs">
+    <header className="bg-background @container sticky top-0 z-10 border-b py-4 shadow-2xs">
       <div className="m-auto flex items-center justify-between px-4 @lg:max-w-[1400px]">
         <Link href="/">kreigh8</Link>
 

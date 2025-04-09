@@ -1,7 +1,7 @@
-import { connectToMongoDb } from '@/lib/db'
 import Client from '@/models/client'
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
+import { connectToMongoDb } from '@/lib/db'
 
 export async function GET(req: NextRequest) {
   try {

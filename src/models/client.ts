@@ -9,6 +9,6 @@ const clientSchema = new mongoose.Schema({
   lastUpdated: { type: Date, required: true }
 })
 
-const Client = mongoose.model('Client', clientSchema)
+const Client = mongoose.models.Client || mongoose.model('Client', clientSchema)
 
 export default Client
