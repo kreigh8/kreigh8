@@ -1,4 +1,5 @@
 import Sidebar from '../../components/Sidebar'
+import ClientForm from '../../components/ClientForm'
 // import Clients from '../components/Clients'
 
 export default async function Client({
@@ -17,7 +18,7 @@ export default async function Client({
 
   const { client } = await data.json()
 
-  console.log('client', client)
+  console.log('client#####', client)
 
   return (
     <div className="m-auto flex min-h-max w-full max-w-[1400px] gap-2">
@@ -25,7 +26,9 @@ export default async function Client({
       <main className="flex w-full flex-col gap-4 p-4">
         <h1>Client</h1>
 
-        <section></section>
+        <section>
+          <ClientForm clientId={slug as string} />
+        </section>
       </main>
     </div>
   )
