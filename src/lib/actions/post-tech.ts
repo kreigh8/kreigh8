@@ -15,7 +15,7 @@ const TechSchema = z.object({
     .min(2, 'Technology name must be at least 2 characters long')
 })
 
-export const postTech = async (prevState: any, formData: FormData) => {
+export const postTech = async (prevState: unknown, formData: FormData) => {
   console.log('prevState', prevState)
   const validatedFields = TechSchema.safeParse(
     Object.fromEntries(formData.entries())
