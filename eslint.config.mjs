@@ -14,7 +14,7 @@ const eslintConfig = [
       'plugin:prettier/recommended',
       'plugin:jsx-a11y/recommended'
     ],
-    plugins: ['prettier', 'jsx-a11y'],
+    plugins: ['prettier', 'jsx-a11y', '@typescript-eslint'],
     rules: {
       'prettier/prettier': [
         'error',
