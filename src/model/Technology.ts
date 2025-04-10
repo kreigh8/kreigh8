@@ -1,12 +1,27 @@
 import mongoose, { Document, Schema } from 'mongoose'
 
-interface ITechnology extends Document {
+export interface ITechnology extends Document {
+  _id: string
   techName: string
+  techUrl: string
+  imageUrl: string
   lastUpdated: Date
 }
 
 const TechnologySchema: Schema = new Schema({
   techName: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  techUrl: {
+    type: String,
+    required: true
+  },
+  imageUrl: {
+    type: String
+  },
+  user: {
     type: String,
     required: true
   },

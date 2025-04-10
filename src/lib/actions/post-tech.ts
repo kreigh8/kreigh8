@@ -3,20 +3,20 @@
 import connectDB from '../db'
 import { z } from 'zod'
 import Technology from '@/model/Technology'
+import { TechSchema } from '@/schemas/Technology'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-
-const TechSchema = z.object({
-  techName: z
-    .string({
-      required_error: 'Technology name is required',
-      invalid_type_error: 'Technology name must be a string'
-    })
-    .min(2, 'Technology name must be at least 2 characters long')
-})
+import { currentUser } from '@clerk/nextjs/server'
+import { uploadImage } from '../uploadImage'
 
 export const postTech = async (prevState: unknown, formData: FormData) => {
-  console.log('prevState', prevState)
+  const user = await currentUser()
+
+  console.log('user', user)
+  if (!user) {
+    throw new Error('Not authenticated')
+  }
+
   const validatedFields = TechSchema.safeParse(
     Object.fromEntries(formData.entries())
   )
@@ -28,12 +28,28 @@ export const postTech = async (prevState: unknown, formData: FormData) => {
   }
 
   const techName = formData.get('techName') as string
+  const techUrl = formData.get('techUrl') as string
+  const imageFile = formData.get('imageFile') as File
 
   await connectDB()
   try {
-    const validatedData = TechSchema.parse({ techName })
+    const validatedData = TechSchema.parse({ techName, techUrl, imageFile })
+
+    const existingTechnology = await Technology.findOne({
+      techName: techName
+    })
+
+    if (existingTechnology) {
+      throw new Error('Technology already exists')
+    }
+
+    const imageUrl = await uploadImage(imageFile)
+
     await Technology.create({
       techName: validatedData.techName,
+      techUrl: validatedData.techUrl,
+      imageUrl: imageUrl,
+      user: user.id,
       lastUpdated: new Date()
     })
   } catch (error) {
@@ -44,6 +60,7 @@ export const postTech = async (prevState: unknown, formData: FormData) => {
     console.error('Error creating technology', error)
     throw new Error('Error creating technology')
   }
-  revalidatePath('/')
-  redirect('/')
+
+  revalidatePath('/admin/technology')
+  redirect('/admin/technology')
 }

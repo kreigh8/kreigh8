@@ -1,30 +1,102 @@
 'use client'
 
-import { useActionState } from 'react'
 import { postTech } from '@/lib/actions/post-tech'
-import { SubmitButton } from './SubmitButton'
+import {
+  Form,
+  FormLabel,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage
+} from '@/components/ui/form'
+import { z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { TechSchema } from '@/schemas/Technology'
+import { Input } from '@/components/ui/input'
+import { Button } from './ui/button'
 
 export function TechnologyForm() {
-  const [state, formAction] = useActionState(postTech, null)
+  // const [state, formAction] = useActionState(postTech, null)
+
+  const form = useForm<z.infer<typeof TechSchema>>({
+    resolver: zodResolver(TechSchema),
+    defaultValues: {
+      techName: '',
+      techUrl: '',
+      imageUrl: '',
+      imageFile: undefined
+    }
+  })
+
+  const onSubmit = async (data: z.infer<typeof TechSchema>) => {
+    const formData = new FormData()
+    formData.append('techName', data.techName)
+    formData.append('techUrl', data.techUrl)
+    formData.append('imageFile', data.imageFile as File)
+
+    postTech(null, formData)
+  }
 
   return (
-    <form action={formAction}>
-      <label
-        htmlFor="techName"
-        className="block text-sm font-medium text-gray-900"
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-4 py-4"
       >
-        Tech Name
-      </label>
-      <input
-        type="text"
-        name="techName"
-        className="w-full rounded-sm border-black bg-gray-50 p-2 text-sm text-gray-900"
-      />
-      <div id="tech-error" aria-label="polite" aria-atomic="true">
-        <p>{state?.Error?.techName}</p>
-      </div>
+        <FormField
+          control={form.control}
+          name="techName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Techology Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Technology Name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <SubmitButton />
-    </form>
+        <FormField
+          control={form.control}
+          name="techUrl"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Techology URL</FormLabel>
+              <FormControl>
+                <Input placeholder="Technology URL" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="imageFile"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Techology URL</FormLabel>
+              <FormControl>
+                <Input
+                  type="file"
+                  accept=".jpg, .jpeg, .png"
+                  placeholder="Technology URL"
+                  onChange={(event) =>
+                    field.onChange(
+                      event.target.files ? event.target.files[0] : null
+                    )
+                  }
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button type="submit">Create Technology</Button>
+      </form>
+    </Form>
   )
 }
