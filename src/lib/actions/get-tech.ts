@@ -20,11 +20,7 @@ export const getTechnology = async (id: string) => {
   try {
     await connectDB()
 
-    console.log('id', id)
-
     const technology = await Technology.findById(id)
-
-    console.log('technology', technology)
 
     if (!technology) {
       throw new Error('Technology not found')

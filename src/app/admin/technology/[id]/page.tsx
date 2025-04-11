@@ -5,11 +5,7 @@ import { getTechnology } from '@/lib/actions/get-tech'
 async function EditTechnology({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
 
-  console.log('slug', id)
-
   const technology = await getTechnology(id)
-
-  console.log('technology', technology)
 
   return (
     <main className="min-h-screen">

@@ -100,7 +100,9 @@ export function TechnologyForm({ technology }: Props) {
           )}
         />
 
-        <Button type="submit">Create Technology</Button>
+        <Button type="submit">
+          {technology ? 'Edit' : 'Create'} Technology
+        </Button>
       </form>
     </Form>
   )
