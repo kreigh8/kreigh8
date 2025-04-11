@@ -4,7 +4,7 @@ import Login from './Login'
 
 function Header() {
   return (
-    <header className="bg-background @container sticky top-0 border-b px-4 py-2 shadow-2xs">
+    <header className="bg-background @container sticky top-0 z-10 overflow-hidden border-b px-4 py-2 shadow-2xs">
       <div className="mx-auto flex items-center justify-between lg:max-w-[1400px]">
         <Link href="/">kreigh8</Link>
 

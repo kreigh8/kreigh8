@@ -17,6 +17,9 @@ import { Input } from '@/components/ui/input'
 import { ITechnology } from '@/model/Technology'
 import { editTech } from '@/lib/actions/technology/edit-tech'
 import { Button } from '@/components/ui/button'
+import { getImageData } from '@/lib/getImageData'
+import Image from 'next/image'
+import { useState } from 'react'
 
 type Props = {
   technology?: ITechnology
@@ -24,6 +27,9 @@ type Props = {
 
 export function TechnologyForm({ technology }: Props) {
   // const [state, formAction] = useActionState(postTech, null)
+  const [preview, setPreview] = useState<string>(
+    technology ? technology.imageUrl : ''
+  )
 
   const form = useForm<z.infer<typeof TechSchema>>({
     resolver: zodResolver(TechSchema),
@@ -85,6 +91,10 @@ export function TechnologyForm({ technology }: Props) {
           )}
         />
 
+        {preview !== '' && (
+          <Image src={preview} alt="Preview Image" width={240} height={240} />
+        )}
+
         <FormField
           control={form.control}
           name="imageFile"
@@ -94,13 +104,13 @@ export function TechnologyForm({ technology }: Props) {
               <FormControl>
                 <Input
                   type="file"
-                  accept=".jpg, .jpeg, .png"
+                  accept=".jpg, .jpeg, .png, .svg"
                   placeholder="Technology URL"
-                  onChange={(event) =>
-                    field.onChange(
-                      event.target.files ? event.target.files[0] : null
-                    )
-                  }
+                  onChange={(event) => {
+                    const { files, displayUrl } = getImageData(event)
+                    setPreview(displayUrl)
+                    field.onChange(files.length > 0 ? files[0] : null)
+                  }}
                 />
               </FormControl>
               <FormMessage />

@@ -17,6 +17,9 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { editClient } from '@/lib/actions/client/edit-client'
 import { postClient } from '@/lib/actions/client/post-client'
+import { useState } from 'react'
+import Image from 'next/image'
+import { getImageData } from '@/lib/getImageData'
 
 type Props = {
   client?: IClient
@@ -24,6 +27,7 @@ type Props = {
 
 export function ClientForm({ client }: Props) {
   // const [state, formAction] = useActionState(postTech, null)
+  const [preview, setPreview] = useState<string>(client ? client.imageUrl : '')
 
   const form = useForm<z.infer<typeof ClientSchema>>({
     resolver: zodResolver(ClientSchema),
@@ -64,7 +68,7 @@ export function ClientForm({ client }: Props) {
           name="clientName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Techology Name</FormLabel>
+              <FormLabel>Client Name</FormLabel>
               <FormControl>
                 <Input placeholder="Client Name" {...field} />
               </FormControl>
@@ -78,7 +82,7 @@ export function ClientForm({ client }: Props) {
           name="clientUrl"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Techology URL</FormLabel>
+              <FormLabel>Client URL</FormLabel>
               <FormControl>
                 <Input placeholder="Client URL" {...field} />
               </FormControl>
@@ -87,22 +91,26 @@ export function ClientForm({ client }: Props) {
           )}
         />
 
+        {preview !== '' && (
+          <Image src={preview} alt="Preview Image" width={240} height={240} />
+        )}
+
         <FormField
           control={form.control}
           name="imageFile"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Techology URL</FormLabel>
+              <FormLabel>Client URL</FormLabel>
               <FormControl>
                 <Input
                   type="file"
-                  accept=".jpg, .jpeg, .png"
+                  accept=".jpg, .jpeg, .png, .svg"
                   placeholder="Technology URL"
-                  onChange={(event) =>
-                    field.onChange(
-                      event.target.files ? event.target.files[0] : null
-                    )
-                  }
+                  onChange={(event) => {
+                    const { files, displayUrl } = getImageData(event)
+                    setPreview(displayUrl)
+                    field.onChange(files.length > 0 ? files[0] : null)
+                  }}
                 />
               </FormControl>
               <FormMessage />

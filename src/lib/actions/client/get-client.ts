@@ -15,3 +15,20 @@ export const getClients = async () => {
     return []
   }
 }
+
+export const getClient = async (id: string) => {
+  try {
+    await connectDB()
+
+    const client = await Client.findById(id)
+
+    if (!client) {
+      throw new Error('Client not found')
+    }
+
+    return JSON.parse(JSON.stringify(client))
+  } catch (error) {
+    console.log('Error getting technology ' + error)
+    return []
+  }
+}

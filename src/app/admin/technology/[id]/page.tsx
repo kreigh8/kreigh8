@@ -8,7 +8,7 @@ async function EditTechnology({ params }: { params: Promise<{ id: string }> }) {
   const technology = await getTechnology(id)
 
   return (
-    <main className="min-h-screen">
+    <main className="flex h-full min-h-[calc(100svh-53px)]">
       <div className="flex gap-4">
         <AdminSidebar />
         <section className="flex w-full flex-col p-4">

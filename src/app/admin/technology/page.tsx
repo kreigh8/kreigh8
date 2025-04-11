@@ -6,7 +6,7 @@ import Technologies from './(components)/Technologies'
 
 function TechnologyPage() {
   return (
-    <main className="flex h-[calc(100vh-60px)]">
+    <main className="flex h-full min-h-[calc(100svh-53px)]">
       <AdminSidebar />
       <section className="flex w-full flex-col p-4">
         <div className="flex justify-between">
