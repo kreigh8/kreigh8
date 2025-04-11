@@ -1,7 +1,4 @@
-import { Button } from '@/components/ui/button'
-import { deleteResume } from '@/lib/actions/resume/delete-resume'
 import { getResumes } from '@/lib/actions/resume/get-resume'
-import { Trash } from 'lucide-react'
 import { ResumeCard } from './ResumeCard'
 
 async function ResumeList() {
