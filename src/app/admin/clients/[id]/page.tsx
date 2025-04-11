@@ -1,11 +1,11 @@
 import AdminSidebar from '@/components/AdminSidebar'
-import { getTechnology } from '@/lib/actions/technology/get-tech'
-import { TechnologyForm } from '../(components)/TechnologyForm'
+// import { getTechnology } from '@/lib/actions/technology/get-tech'
+// import { TechnologyForm } from '../(components)/TechnologyForm'
 
 async function EditTechnology({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
 
-  const technology = await getTechnology(id)
+  // const technology = await getClient(id)
 
   return (
     <main className="min-h-screen">
@@ -13,9 +13,9 @@ async function EditTechnology({ params }: { params: Promise<{ id: string }> }) {
         <AdminSidebar />
         <section className="flex w-full flex-col p-4">
           <div className="flex">
-            <h1>Edit {technology.techName}</h1>
+            {/* <h1>Edit {technology.techName}</h1> */}
           </div>
-          <TechnologyForm technology={technology} />
+          {/* <TechnologyForm technology={technology} /> */}
         </section>
       </div>
     </main>

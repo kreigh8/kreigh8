@@ -64,7 +64,7 @@ export const ClientColumns: ColumnDef<IClient>[] = [
       return (
         <div className="flex gap-2">
           <Button
-            onClick={() => router.push(`/admin/client/${row.original._id}`)}
+            onClick={() => router.push(`/admin/clients/${row.original._id}`)}
           >
             <Pencil />
           </Button>
