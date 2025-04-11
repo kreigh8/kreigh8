@@ -2,6 +2,7 @@ import AdminSidebar from '@/components/AdminSidebar'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import Link from 'next/link'
+import Clients from './(components)/Clients'
 
 function ClientsPage() {
   return (
@@ -18,6 +19,8 @@ function ClientsPage() {
               </Link>
             </Button>
           </div>
+
+          <Clients />
         </section>
       </div>
     </main>

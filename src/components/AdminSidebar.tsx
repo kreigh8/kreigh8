@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 function AdminSidebar() {
   return (
-    <aside className="bg-accent hidden h-screen min-w-[15%] flex-col gap-4 px-4 py-4 md:flex">
+    <aside className="bg-accent hidden min-w-[15%] flex-col gap-4 px-4 py-4 md:flex">
       <Link href="/admin" className="flex items-center gap-2">
         <House /> Home
       </Link>

@@ -1,7 +1,7 @@
 'use server'
 
 import Technology from '@/model/Technology'
-import connectDB from '../db'
+import connectDB from '../../db'
 
 export const getTechnologies = async () => {
   try {

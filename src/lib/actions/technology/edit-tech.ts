@@ -1,12 +1,12 @@
 'use server'
 
-import connectDB from '../db'
+import connectDB from '../../db'
 import { z } from 'zod'
 import Technology from '@/model/Technology'
 import { TechSchema } from '@/schemas/Technology'
 import { currentUser } from '@clerk/nextjs/server'
-import { uploadImage } from '../uploadImage'
-import cloudinary from '../cloudinary'
+import { uploadImage } from '../../uploadImage'
+import cloudinary from '../../cloudinary'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 

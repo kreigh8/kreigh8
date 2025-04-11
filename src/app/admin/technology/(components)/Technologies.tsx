@@ -1,5 +1,5 @@
 import { DataTable } from '@/components/DataTable'
-import { getTechnologies } from '@/lib/actions/get-tech'
+import { getTechnologies } from '@/lib/actions/technology/get-tech'
 import { TechColumns } from './TechColumns'
 // import { ITechnology } from '@/model/Technology'
 

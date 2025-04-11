@@ -1,14 +1,15 @@
-// import { DataTable } from '@/components/DataTable'
-// import { getTechnologies } from '@/lib/actions/get-tech'
-// import { ClientColumns } from './ClientColumns'
-// import { ITechnology } from '@/model/Technology'
+import { DataTable } from '@/components/DataTable'
+import { getClients } from '@/lib/actions/client/get-client'
+import { ClientColumns } from './ClientColumns'
 
 async function Clients() {
-  // const clients = await getClients()
+  const clients = await getClients()
+
+  console.log('client', clients)
 
   return (
     <article className="mt-4">
-      {/* <DataTable columns={ClientColumns} data={clients} /> */}
+      <DataTable columns={ClientColumns} data={clients} />
     </article>
   )
 }

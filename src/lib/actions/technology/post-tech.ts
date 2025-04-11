@@ -1,13 +1,13 @@
 'use server'
 
-import connectDB from '../db'
+import connectDB from '../../db'
 import { z } from 'zod'
 import Technology from '@/model/Technology'
 import { TechSchema } from '@/schemas/Technology'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { currentUser } from '@clerk/nextjs/server'
-import { uploadImage } from '../uploadImage'
+import { uploadImage } from '../../uploadImage'
 
 export const postTech = async (prevState: unknown, formData: FormData) => {
   const user = await currentUser()

@@ -1,7 +1,7 @@
 'use server'
 
 import Technology from '@/model/Technology'
-import connectDB from '../db'
+import connectDB from '../../db'
 import { currentUser } from '@clerk/nextjs/server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'

@@ -1,5 +1,5 @@
 import AdminSidebar from '@/components/AdminSidebar'
-import { getTechnology } from '@/lib/actions/get-tech'
+import { getTechnology } from '@/lib/actions/technology/get-tech'
 import { TechnologyForm } from '../(components)/TechnologyForm'
 
 async function EditTechnology({ params }: { params: Promise<{ id: string }> }) {

@@ -12,28 +12,28 @@ import {
   AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { ITechnology } from '@/model/Technology'
 import { ColumnDef } from '@tanstack/react-table'
 import { Pencil, Trash } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { deleteTechnology } from '@/lib/actions/technology/delete-tech'
+import { IClient } from '@/model/Client'
+import { deleteClient } from '@/lib/actions/client/delete-client'
 
-export const TechColumns: ColumnDef<ITechnology>[] = [
+export const ClientColumns: ColumnDef<IClient>[] = [
   {
-    accessorKey: 'techName',
-    header: 'Technology Name'
+    accessorKey: 'clientName',
+    header: 'Client Name'
   },
   {
-    accessorKey: 'techUrl',
-    header: 'Technology URL',
+    accessorKey: 'clientUrl',
+    header: 'Client URL',
     cell: ({ row }) => (
       <a
-        href={row.original.techUrl}
-        aria-label={row.original.techName}
+        href={row.original.clientUrl}
+        aria-label={row.original.clientName}
         target="_blank"
       >
-        {row.original.techUrl}
+        {row.original.clientUrl}
       </a>
     )
   },
@@ -43,7 +43,7 @@ export const TechColumns: ColumnDef<ITechnology>[] = [
     cell: ({ row }) => (
       <Image
         src={row.original.imageUrl}
-        alt={row.original.techName}
+        alt={row.original.clientName}
         width={80}
         height={80}
         className="object-cover"
@@ -58,13 +58,13 @@ export const TechColumns: ColumnDef<ITechnology>[] = [
       const router = useRouter()
 
       const handleClick = async () => {
-        deleteTechnology(row.original._id)
+        deleteClient(row.original._id)
       }
 
       return (
         <div className="flex gap-2">
           <Button
-            onClick={() => router.push(`/admin/technology/${row.original._id}`)}
+            onClick={() => router.push(`/admin/client/${row.original._id}`)}
           >
             <Pencil />
           </Button>
@@ -78,11 +78,11 @@ export const TechColumns: ColumnDef<ITechnology>[] = [
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>
-                  Are you sure you want to delete this technolgy?
+                  Are you sure you want to delete this client?
                 </AlertDialogTitle>
                 <AlertDialogDescription>
                   This action cannot be undone. This will permanently delete the
-                  technology and remove the data from the database.
+                  client and remove the data from the database.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>

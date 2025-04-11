@@ -1,6 +1,6 @@
 'use client'
 
-import { postTech } from '@/lib/actions/post-tech'
+import { postTech } from '@/lib/actions/technology/post-tech'
 import {
   Form,
   FormLabel,
@@ -15,7 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { TechSchema } from '@/schemas/Technology'
 import { Input } from '@/components/ui/input'
 import { ITechnology } from '@/model/Technology'
-import { editTech } from '@/lib/actions/edit-tech'
+import { editTech } from '@/lib/actions/technology/edit-tech'
 import { Button } from '@/components/ui/button'
 
 type Props = {
