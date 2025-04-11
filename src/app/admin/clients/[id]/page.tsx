@@ -5,6 +5,8 @@ import AdminSidebar from '@/components/AdminSidebar'
 async function EditTechnology({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
 
+  console.log('id', id)
+
   // const technology = await getClient(id)
 
   return (
@@ -13,7 +15,7 @@ async function EditTechnology({ params }: { params: Promise<{ id: string }> }) {
         <AdminSidebar />
         <section className="flex w-full flex-col p-4">
           <div className="flex">
-            {/* <h1>Edit {technology.techName}</h1> */}
+            <h1>Edit</h1>
           </div>
           {/* <TechnologyForm technology={technology} /> */}
         </section>

@@ -2,15 +2,15 @@
 
 import connectDB from '../../db'
 import { z } from 'zod'
-import Technology from '@/model/Technology'
-import { TechSchema } from '@/schemas/Technology'
 import { currentUser } from '@clerk/nextjs/server'
 import { uploadImage } from '../../uploadImage'
 import cloudinary from '../../cloudinary'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { ClientSchema } from '@/schemas/Client'
+import Client from '@/model/Client'
 
-export const editTech = async (prevState: unknown, formData: FormData) => {
+export const editClient = async (prevState: unknown, formData: FormData) => {
   try {
     const user = await currentUser()
 
@@ -18,7 +18,7 @@ export const editTech = async (prevState: unknown, formData: FormData) => {
       throw new Error('Not authenticated')
     }
 
-    const validatedFields = TechSchema.safeParse(
+    const validatedFields = ClientSchema.safeParse(
       Object.fromEntries(formData.entries())
     )
 
@@ -28,45 +28,47 @@ export const editTech = async (prevState: unknown, formData: FormData) => {
       }
     }
 
-    const techId = formData.get('_id') as string
-    const techName = formData.get('techName') as string
-    const techUrl = formData.get('techUrl') as string
+    const clientId = formData.get('_id') as string
+    const clientName = formData.get('clientName') as string
+    const clientUrl = formData.get('clientUrl') as string
+    const active = formData.get('active') as string
     const imageFile = formData.get('imageFile') as File | string
 
     await connectDB()
 
-    const technology = await Technology.findById(techId).exec()
+    const client = await Client.findById(clientId).exec()
 
-    if (!technology) {
+    if (!client) {
       throw new Error('Technology not found')
     }
 
-    technology.techName = techName
-    technology.techUrl = techUrl
-    technology.lastUpdated = new Date()
+    client.clientName = clientName
+    client.clientUrl = clientUrl
+    client.active = active
+    client.lastUpdated = new Date()
 
     if (imageFile !== 'undefined') {
       const imageUrl = await uploadImage(imageFile as File)
 
-      if (imageUrl !== technology.imageUrl) {
+      if (imageUrl !== client.imageUrl) {
         await cloudinary.uploader.destroy(
-          technology.imageUrl.split('/').pop()!.split('.')[0]
+          client.imageUrl.split('/').pop()!.split('.')[0]
         )
       }
 
-      technology.imageUrl = imageUrl
+      client.imageUrl = imageUrl
     }
 
-    await technology.save()
+    await client.save()
   } catch (error) {
     if (error instanceof z.ZodError) {
       console.error('Validation error:', error.errors)
       throw new Error('Validation errors')
     }
-    console.error('Error editing technology', error)
-    throw new Error('Error editing technology')
+    console.error('Error editing client', error)
+    throw new Error('Error editing client')
   }
 
-  revalidatePath('/admin/technology')
-  redirect('/admin/technology')
+  revalidatePath('/admin/clients')
+  redirect('/admin/clients')
 }

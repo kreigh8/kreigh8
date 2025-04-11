@@ -16,9 +16,9 @@ export const deleteClient = async (id: string) => {
 
     await connectDB()
 
-    const technology = await Client.findByIdAndDelete(id)
+    const client = await Client.findByIdAndDelete(id)
 
-    if (!technology) {
+    if (!client) {
       throw new Error('Client not found')
     }
 
@@ -26,6 +26,6 @@ export const deleteClient = async (id: string) => {
     redirect('/admin/clients')
   } catch (error) {
     console.log('Error deleting client ' + error)
-    return []
+    throw new Error('Error deleting client')
   }
 }

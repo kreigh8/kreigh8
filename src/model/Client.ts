@@ -4,6 +4,7 @@ export interface IClient extends Document {
   _id: string
   clientName: string
   clientUrl: string
+  active: string
   imageUrl: string
   lastUpdated: Date
 }
@@ -17,6 +18,10 @@ const ClientSchema: Schema = new Schema({
   clientUrl: {
     type: String,
     required: true
+  },
+  active: {
+    type: String,
+    require: true
   },
   imageUrl: {
     type: String
