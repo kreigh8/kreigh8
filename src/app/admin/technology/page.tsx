@@ -1,6 +1,5 @@
 import AdminSidebar from '@/components/AdminSidebar'
 import { Button } from '@/components/ui/button'
-// import { getTechnologies } from '@/lib/actions/get-tech'
 import { Plus } from 'lucide-react'
 import Link from 'next/link'
 import Technologies from './(components)/Technologies'
@@ -21,9 +20,7 @@ function TechnologyPage() {
             </Button>
           </div>
 
-          <article>
-            <Technologies />
-          </article>
+          <Technologies />
         </section>
       </div>
     </main>

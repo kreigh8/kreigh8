@@ -15,16 +15,21 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { TechSchema } from '@/schemas/Technology'
 import { Input } from '@/components/ui/input'
 import { Button } from './ui/button'
+import { ITechnology } from '@/model/Technology'
 
-export function TechnologyForm() {
+type Props = {
+  technology?: ITechnology
+}
+
+export function TechnologyForm({ technology }: Props) {
   // const [state, formAction] = useActionState(postTech, null)
 
   const form = useForm<z.infer<typeof TechSchema>>({
     resolver: zodResolver(TechSchema),
     defaultValues: {
-      techName: '',
-      techUrl: '',
-      imageUrl: '',
+      techName: technology ? technology.techName : '',
+      techUrl: technology ? technology.techUrl : '',
+      imageUrl: technology ? technology.imageUrl : '',
       imageFile: undefined
     }
   })
