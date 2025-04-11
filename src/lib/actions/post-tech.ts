@@ -12,7 +12,6 @@ import { uploadImage } from '../uploadImage'
 export const postTech = async (prevState: unknown, formData: FormData) => {
   const user = await currentUser()
 
-  console.log('user', user)
   if (!user) {
     throw new Error('Not authenticated')
   }

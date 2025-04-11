@@ -16,6 +16,7 @@ import { TechSchema } from '@/schemas/Technology'
 import { Input } from '@/components/ui/input'
 import { Button } from './ui/button'
 import { ITechnology } from '@/model/Technology'
+import { editTech } from '@/lib/actions/edit-tech'
 
 type Props = {
   technology?: ITechnology
@@ -35,12 +36,20 @@ export function TechnologyForm({ technology }: Props) {
   })
 
   const onSubmit = async (data: z.infer<typeof TechSchema>) => {
+    console.log('data', data)
     const formData = new FormData()
+    if (technology) {
+      formData.append('_id', technology._id)
+    }
     formData.append('techName', data.techName)
     formData.append('techUrl', data.techUrl)
     formData.append('imageFile', data.imageFile as File)
 
-    postTech(null, formData)
+    if (technology) {
+      editTech(null, formData)
+    } else {
+      postTech(null, formData)
+    }
   }
 
   return (

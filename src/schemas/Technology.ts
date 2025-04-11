@@ -14,23 +14,21 @@ export const TechSchema = z.object({
     })
     .url('Invalid URL format'),
   imageFile: z
-    .instanceof(File)
-    .refine(
-      (file) =>
-        [
-          'image/png',
-          'image/jpeg',
-          'image/jpg',
-          'image/svg+xml',
-          'image/gif'
-        ].includes(file.type),
-      { message: 'Invalid image file type' }
+    .any(
+      z
+        .instanceof(File)
+        .refine(
+          (file) =>
+            [
+              'image/png',
+              'image/jpeg',
+              'image/jpg',
+              'image/svg+xml',
+              'image/gif'
+            ].includes(file.type),
+          { message: 'Invalid image file type' }
+        )
     )
     .optional(),
-  imageUrl: z
-    .string({
-      required_error: 'Technology URL is required',
-      invalid_type_error: 'Technology URL must be a string'
-    })
-    .optional()
+  imageUrl: z.string().optional()
 })
