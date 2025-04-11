@@ -16,7 +16,6 @@ export async function getResumes() {
       response.push({ name: file, extension, fileSizeInBytes, dateOfUpload })
     }
 
-    console.log('response', response)
     return response
   } catch (error) {
     console.error('Error reading resume directory', error)
