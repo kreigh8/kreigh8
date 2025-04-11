@@ -1,5 +1,6 @@
 import { getResumes } from '@/lib/actions/resume/get-resume'
-import { ResumeCard } from './ResumeCard'
+import { DataTable } from '@/components/DataTable'
+import { ResumeTableColumns } from './ResumeColumns'
 
 async function ResumeList() {
   const resumes = await getResumes()
@@ -7,9 +8,7 @@ async function ResumeList() {
   return (
     <article className="mt-4">
       <div className="flex flex-col gap-4">
-        {resumes.map((resume, index) => (
-          <ResumeCard key={index} resume={resume} />
-        ))}
+        <DataTable columns={ResumeTableColumns} data={resumes} />
       </div>
     </article>
   )
