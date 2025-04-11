@@ -12,19 +12,19 @@ type Props = {
 
 export function TechCard({ technology }: Props) {
   return (
-    <Card className="justify-center">
+    <Card className="justify-center py-4">
       <CardContent>
         <Link href={technology.techUrl} target="_blank">
           <div className="flex items-center justify-center gap-4">
             <Image
               src={technology.imageUrl}
               alt={technology.techName}
-              width={80}
-              height={80}
+              width={60}
+              height={60}
               className="object-over"
             />
 
-            <h3 className="text-bold text-xl">{technology.techName}</h3>
+            <h3 className="text-bold text-lg">{technology.techName}</h3>
           </div>
         </Link>
       </CardContent>
