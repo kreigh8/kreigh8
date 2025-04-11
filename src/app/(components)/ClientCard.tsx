@@ -23,7 +23,9 @@ export function ClientCard({ client }: Props) {
               className="object-over"
             />
 
-            <h3 className="text-bold text-lg">{client.clientName}</h3>
+            <h3 className="text-bold text-sm md:text-lg">
+              {client.clientName}
+            </h3>
           </div>
         </Link>
       </CardContent>
