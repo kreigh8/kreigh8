@@ -1,6 +1,6 @@
 import AdminSidebar from '@/components/AdminSidebar'
-import { TechnologyForm } from '@/components/TechnologyForm'
 import { getTechnology } from '@/lib/actions/get-tech'
+import { TechnologyForm } from '../(components)/TechnologyForm'
 
 async function EditTechnology({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params

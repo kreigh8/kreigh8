@@ -1,20 +1,19 @@
 import AdminSidebar from '@/components/AdminSidebar'
-import { TechnologyForm } from '../(components)/TechnologyForm'
 
-function CreateTechnologyPage() {
+function CreateClientPage() {
   return (
     <main className="min-h-screen">
       <div className="flex gap-4">
         <AdminSidebar />
         <section className="flex w-full flex-col p-4">
           <div className="flex">
-            <h1>Create New Technology</h1>
+            <h1>Create New Client</h1>
           </div>
-          <TechnologyForm />
+          {/* <TechnologyForm /> */}
         </section>
       </div>
     </main>
   )
 }
 
-export default CreateTechnologyPage
+export default CreateClientPage

@@ -14,9 +14,9 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { TechSchema } from '@/schemas/Technology'
 import { Input } from '@/components/ui/input'
-import { Button } from './ui/button'
 import { ITechnology } from '@/model/Technology'
 import { editTech } from '@/lib/actions/edit-tech'
+import { Button } from '@/components/ui/button'
 
 type Props = {
   technology?: ITechnology
@@ -36,7 +36,6 @@ export function TechnologyForm({ technology }: Props) {
   })
 
   const onSubmit = async (data: z.infer<typeof TechSchema>) => {
-    console.log('data', data)
     const formData = new FormData()
     if (technology) {
       formData.append('_id', technology._id)

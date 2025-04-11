@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button'
 import { ITechnology } from '@/model/Technology'
 import { ColumnDef } from '@tanstack/react-table'
 import { Pencil, Trash } from 'lucide-react'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { deleteTechnology } from '@/lib/actions/delete-tech'
 
@@ -40,10 +41,12 @@ export const TechColumns: ColumnDef<ITechnology>[] = [
     accessorKey: 'imageUrl',
     header: 'Image URL',
     cell: ({ row }) => (
-      <img
+      <Image
         src={row.original.imageUrl}
         alt={row.original.techName}
-        className="max-h-20 max-w-20 object-cover"
+        width={80}
+        height={80}
+        className="object-cover"
       />
     )
   },
