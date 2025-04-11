@@ -6,23 +6,21 @@ import Technologies from './(components)/Technologies'
 
 function TechnologyPage() {
   return (
-    <main className="min-h-screen">
-      <div className="flex gap-4">
-        <AdminSidebar />
-        <section className="flex w-full flex-col p-4">
-          <div className="flex justify-between">
-            <h1>Technology</h1>
+    <main className="flex h-[calc(100vh-60px)]">
+      <AdminSidebar />
+      <section className="flex w-full flex-col p-4">
+        <div className="flex justify-between">
+          <h1>Technology</h1>
 
-            <Button asChild>
-              <Link href="/admin/technology/new">
-                <Plus /> Add
-              </Link>
-            </Button>
-          </div>
+          <Button asChild>
+            <Link href="/admin/technology/new">
+              <Plus /> Add
+            </Link>
+          </Button>
+        </div>
 
-          <Technologies />
-        </section>
-      </div>
+        <Technologies />
+      </section>
     </main>
   )
 }
