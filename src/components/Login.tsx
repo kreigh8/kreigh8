@@ -13,7 +13,7 @@ export default async function Login() {
         <SignInButton>
           <Button variant="ghost" size="icon">
             <User />
-            <span className="Sign In"></span>
+            <span className="sr-only">Sign In</span>
           </Button>
         </SignInButton>
       </SignedOut>
