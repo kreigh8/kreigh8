@@ -1,6 +1,7 @@
 // import { TechnologyForm } from '@/components/TechnologyForm'
 // import Image from 'next/image'
 
+import ClientList from './(components)/Clients'
 import TechnologyList from './(components)/Technologies'
 
 export default function Home() {
@@ -12,6 +13,8 @@ export default function Home() {
 
           <article>Right</article>
         </section>
+
+        <ClientList />
 
         <TechnologyList />
       </main>
