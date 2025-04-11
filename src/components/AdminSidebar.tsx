@@ -1,4 +1,4 @@
-import { Boxes, Cpu, House } from 'lucide-react'
+import { Boxes, Cpu, File, House } from 'lucide-react'
 import Link from 'next/link'
 
 function AdminSidebar() {
@@ -15,6 +15,10 @@ function AdminSidebar() {
         <Link href="/admin/technology" className="flex items-center gap-2">
           <Cpu />
           Technology
+        </Link>
+        <Link href="/admin/resume" className="flex items-center gap-2">
+          <File />
+          Resume
         </Link>
       </div>
     </aside>
