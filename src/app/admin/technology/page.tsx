@@ -9,7 +9,7 @@ function TechnologyPage() {
     <main className="flex h-full min-h-[calc(100svh-53px)]">
       <AdminSidebar />
       <section className="flex w-full flex-col p-4">
-        <div className="flex justify-between">
+        <div className="flex items-center justify-between">
           <h1>Technology</h1>
 
           <Button asChild>
