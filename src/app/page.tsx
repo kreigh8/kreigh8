@@ -4,6 +4,7 @@
 import { Button } from '@/components/ui/button'
 import ClientList from './(components)/Clients'
 import TechnologyList from './(components)/Technologies'
+import ContactMe from './(components)/ContactMe'
 
 export default function Home() {
   return (
@@ -27,7 +28,7 @@ export default function Home() {
                 Download Resume
               </Button>
 
-              <Button className="w-fit">Contact Me</Button>
+              <ContactMe />
             </div>
           </article>
 
