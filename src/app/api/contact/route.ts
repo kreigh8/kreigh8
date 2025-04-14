@@ -4,15 +4,12 @@ import nodemailer from 'nodemailer'
 import Mail from 'nodemailer/lib/mailer'
 
 export async function POST(req: NextRequest) {
-  console.log('request', req)
   if (req.method !== 'POST') {
     return NextResponse.json(
       { message: 'This route does not exist' },
       { status: 405 }
     )
   }
-
-  console.log('req', req)
 
   const { name, email, message, recaptchaToken } = await req.json()
 

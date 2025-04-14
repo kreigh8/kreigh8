@@ -1,11 +1,10 @@
 // import { TechnologyForm } from '@/components/TechnologyForm'
 // import Image from 'next/image'
 
-import { Button } from '@/components/ui/button'
 import ClientList from './(components)/Clients'
 import TechnologyList from './(components)/Technologies'
 import ContactMe from './(components)/ContactMe'
-import { Download } from 'lucide-react'
+import ResumeDownload from './(components)/ResumeDownload'
 
 export default function Home() {
   return (
@@ -25,9 +24,7 @@ export default function Home() {
             </p>
 
             <div className="flex justify-center gap-2">
-              <Button variant="secondary" className="w-fit">
-                <Download /> Resume
-              </Button>
+              <ResumeDownload />
 
               <ContactMe />
             </div>
