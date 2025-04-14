@@ -20,7 +20,7 @@ import {
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import ReCAPTCHA from 'react-google-recaptcha'
-import { useRef } from 'react'
+import { useRef, useState, useTransition } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -53,6 +53,8 @@ const formSchema = z.object({
 
 function ContactMe() {
   const recaptchaRef = useRef<ReCAPTCHA>(null)
+  const [open, setOpen] = useState<boolean>(false)
+  const [isPending, startTransition] = useTransition()
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -64,42 +66,45 @@ function ContactMe() {
   })
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    let token
-    if (recaptchaRef.current) {
-      token = recaptchaRef.current.getValue()
-      if (!token) {
-        alert('Please complete the reCAPTCHA.')
-        return
-      }
-    }
-
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ ...data, recaptchaToken: token })
-      })
-
-      const responseData = await response.json()
-
-      if (response.ok) {
-        toast.success('Email has been sent')
-      } else {
-        throw new Error(responseData.message || 'Something went wrong.')
-      }
-    } catch (error) {
-      console.error(error)
-    } finally {
+    startTransition(async () => {
+      let token
       if (recaptchaRef.current) {
-        recaptchaRef.current.reset()
+        token = recaptchaRef.current.getValue()
+        if (!token) {
+          alert('Please complete the reCAPTCHA.')
+          return
+        }
       }
-    }
+
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ ...data, recaptchaToken: token })
+        })
+
+        const responseData = await response.json()
+
+        if (response.ok) {
+          toast.success('Email has been sent')
+          setOpen(false)
+        } else {
+          throw new Error(responseData.message || 'Something went wrong.')
+        }
+      } catch (error) {
+        console.error(error)
+      } finally {
+        if (recaptchaRef.current) {
+          recaptchaRef.current.reset()
+        }
+      }
+    })
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="w-fit">Contact Me</Button>
       </DialogTrigger>
@@ -174,9 +179,9 @@ function ContactMe() {
                 />
               )}
 
-              <DialogClose asChild>
-                <Button type="submit">Send</Button>
-              </DialogClose>
+              <Button disabled={!form.formState.isValid} type="submit">
+                {isPending ? 'Sending...' : 'Send'}
+              </Button>
             </DialogFooter>
           </form>
         </Form>
