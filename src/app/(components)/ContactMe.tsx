@@ -105,7 +105,10 @@ function ContactMe() {
       </DialogTrigger>
       <DialogContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col gap-4"
+          >
             <DialogTitle>Contact Me</DialogTitle>
             <DialogDescription className="text-black dark:text-white">
               Let&apos;s work together! Drop me a line and I&apos;ll get back to
