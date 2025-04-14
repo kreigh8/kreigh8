@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import ClientList from './(components)/Clients'
 import TechnologyList from './(components)/Technologies'
 import ContactMe from './(components)/ContactMe'
+import { Download } from 'lucide-react'
 
 export default function Home() {
   return (
@@ -25,7 +26,7 @@ export default function Home() {
 
             <div className="flex justify-center gap-2">
               <Button variant="secondary" className="w-fit">
-                Download Resume
+                <Download /> Resume
               </Button>
 
               <ContactMe />
