@@ -20,7 +20,7 @@ import {
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import ReCAPTCHA from 'react-google-recaptcha'
-import { useRef, useState, useTransition } from 'react'
+import { useEffect, useRef, useState, useTransition } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -64,6 +64,12 @@ function ContactMe() {
       message: ''
     }
   })
+
+  useEffect(() => {
+    if (!open) {
+      form.reset()
+    }
+  }, [open, setOpen])
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     startTransition(async () => {
@@ -172,6 +178,7 @@ function ContactMe() {
                   Cancel
                 </Button>
               </DialogClose>
+
               {process.env.NODE_ENV === 'production' && (
                 <ReCAPTCHA
                   sitekey={process.env.NEXT_GOOGLE_CAPTHA_KEY as string}
