@@ -8,7 +8,7 @@ async function TechnologyList() {
   return (
     <div className="flex w-full flex-col py-4">
       <h1 className="text-bold text-xl">Technologies</h1>
-      <section className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
+      <section className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-6">
         {technologies.map((technology) => (
           <TechCard key={technology._id} technology={technology} />
         ))}
