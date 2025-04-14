@@ -12,7 +12,7 @@ import {
 function ContactMe() {
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button className="w-fit">Contact Me</Button>
       </DialogTrigger>
       <DialogContent>
