@@ -31,6 +31,9 @@ function AnimatedClient({ client }: { client: IClient }) {
         <div className="relative block overflow-hidden text-center text-2xl whitespace-nowrap">
           <div>
             {client.clientName.split('').map((c, i) => {
+              if (c === ' ') {
+                return ' '
+              }
               return (
                 <motion.span
                   variants={{ initial: { y: 0 }, hovered: { y: '-100%' } }}
@@ -49,6 +52,9 @@ function AnimatedClient({ client }: { client: IClient }) {
           </div>
           <div className="absolute inset-0">
             {client.clientName.split('').map((c, i) => {
+              if (c === ' ') {
+                return ' '
+              }
               return (
                 <motion.span
                   variants={{ initial: { y: '-100%' }, hovered: { y: 0 } }}

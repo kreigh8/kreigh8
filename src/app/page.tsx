@@ -13,7 +13,7 @@ export default function Home() {
       <main className="mx-auto lg:max-w-[1400px]">
         <section className="my-4 grid gap-2 md:grid-cols-2">
           <article className="flex flex-col gap-4">
-            <h1 className="text-bold text-accent text-2xl md:text-3xl">
+            <h1 className="text-accent text-2xl font-bold md:text-3xl">
               Welcome to kreigh8!
             </h1>
             <h3>
