@@ -16,7 +16,7 @@ export function TechCard({ technology }: Props) {
       <CardContent>
         <Link href={technology.techUrl} target="_blank">
           <div className="flex items-center justify-center gap-4">
-            <div className="bg-accent-background over relative flex h-[60px] w-[60px] items-center justify-center overflow-hidden rounded-full p-1">
+            <div className="bg-accent-background over relative flex h-15 min-h-15 w-15 min-w-15 items-center justify-center overflow-hidden rounded-full p-1">
               <Image
                 src={technology.imageUrl}
                 alt={technology.techName}

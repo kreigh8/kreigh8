@@ -25,6 +25,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from 'sonner'
+import { AnimatePresence } from 'motion/react'
 
 const formSchema = z.object({
   contactName: z
@@ -110,90 +111,92 @@ function ContactMe() {
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="w-fit">Contact Me</Button>
-      </DialogTrigger>
-      <DialogContent>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-4"
-          >
-            <DialogTitle>Contact Me</DialogTitle>
-            <DialogDescription className="text-black dark:text-white">
-              Let&apos;s work together! Drop me a line and I&apos;ll get back to
-              you in a timely manner.
-            </DialogDescription>
-            <FormField
-              control={form.control}
-              name="contactName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Your name" {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+    <AnimatePresence>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Button className="w-fit">Contact Me</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex flex-col gap-4"
+            >
+              <DialogTitle>Contact Me</DialogTitle>
+              <DialogDescription className="text-black dark:text-white">
+                Let&apos;s work together! Drop me a line and I&apos;ll get back
+                to you in a timely manner.
+              </DialogDescription>
+              <FormField
+                control={form.control}
+                name="contactName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Your name" {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Your email" {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Your email" {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="message"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="How can I assist you?"
-                      className="resize-none"
-                      {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="message"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="How can I assist you?"
+                        className="resize-none"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button
-                  variant="secondary"
-                  type="button"
-                  onClick={() => form.reset()}
-                >
-                  Cancel
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button
+                    variant="secondary"
+                    type="button"
+                    onClick={() => form.reset()}
+                  >
+                    Cancel
+                  </Button>
+                </DialogClose>
+
+                {process.env.NODE_ENV === 'production' && (
+                  <ReCAPTCHA
+                    sitekey={process.env.NEXT_GOOGLE_CAPTHA_KEY as string}
+                    ref={recaptchaRef}
+                  />
+                )}
+
+                <Button disabled={!form.formState.isValid} type="submit">
+                  {isPending ? 'Sending...' : 'Send'}
                 </Button>
-              </DialogClose>
-
-              {process.env.NODE_ENV === 'production' && (
-                <ReCAPTCHA
-                  sitekey={process.env.NEXT_GOOGLE_CAPTHA_KEY as string}
-                  ref={recaptchaRef}
-                />
-              )}
-
-              <Button disabled={!form.formState.isValid} type="submit">
-                {isPending ? 'Sending...' : 'Send'}
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
+              </DialogFooter>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+    </AnimatePresence>
   )
 }
 
