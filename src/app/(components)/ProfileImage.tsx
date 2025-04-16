@@ -39,9 +39,9 @@ function ProfileImage() {
           strokeWidth="4"
           strokeLinecap="round"
           strokeLinejoin="round"
-          initial={{ strokeDasharray: '24 10 0 0' }}
+          initial={{ strokeDasharray: '24 10 0 90' }}
           animate={{
-            strokeDasharray: ['15 120 25 25', '16 25 92 72', '4 250 22 22'],
+            strokeDasharray: ['15 80 25 90', '16 25 92 72', '200 250 22 22'],
             rotate: [60, 360]
           }}
           transition={{
