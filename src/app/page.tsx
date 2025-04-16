@@ -5,6 +5,7 @@ import ClientList from './(components)/Clients'
 import TechnologyList from './(components)/Technologies'
 import ContactMe from './(components)/ContactMe'
 import ResumeDownload from './(components)/ResumeDownload'
+import ProfileImage from './(components)/ProfileImage'
 
 export default function Home() {
   return (
@@ -12,7 +13,9 @@ export default function Home() {
       <main className="mx-auto lg:max-w-[1400px]">
         <section className="my-4 grid gap-2 md:grid-cols-2">
           <article className="flex flex-col gap-4">
-            <h1 className="text-2xl md:text-3xl">Welcome to kreigh8!</h1>
+            <h1 className="text-bold text-accent text-2xl md:text-3xl">
+              Welcome to kreigh8!
+            </h1>
             <h3>
               Hello! I&apos;m Kreigh Hirschy, a software engineer with over 10
               years of experience based in Indianapolis, Indiana.
@@ -30,7 +33,9 @@ export default function Home() {
             </div>
           </article>
 
-          <article>Right</article>
+          <article className="my-4 flex flex-col items-center justify-center">
+            <ProfileImage />
+          </article>
         </section>
 
         <ClientList />

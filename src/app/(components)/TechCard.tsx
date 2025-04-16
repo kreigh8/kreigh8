@@ -16,13 +16,15 @@ export function TechCard({ technology }: Props) {
       <CardContent>
         <Link href={technology.techUrl} target="_blank">
           <div className="flex items-center justify-center gap-4">
-            <Image
-              src={technology.imageUrl}
-              alt={technology.techName}
-              width={60}
-              height={60}
-              className="object-over"
-            />
+            <div className="bg-accent-background over relative flex h-[60px] w-[60px] items-center justify-center overflow-hidden rounded-full p-1">
+              <Image
+                src={technology.imageUrl}
+                alt={technology.techName}
+                width={60}
+                height={60}
+                className="object-cover"
+              />
+            </div>
 
             <h3 className="text-bold text-sm md:text-lg">
               {technology.techName}

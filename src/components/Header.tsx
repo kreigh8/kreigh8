@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import ThemeToggle from './ThemeToggle'
 import Login from './Login'
+import LinkedIn from './LinkedIn'
 
 function Header() {
   return (
@@ -8,7 +9,8 @@ function Header() {
       <div className="mx-auto flex items-center justify-between lg:max-w-[1400px]">
         <Link href="/">kreigh8</Link>
 
-        <div className="flex">
+        <div className="flex gap-2">
+          <LinkedIn />
           <ThemeToggle />
 
           <Login />
