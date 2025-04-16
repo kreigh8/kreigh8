@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const ClientSchema = z.object({
+export const ClientFormSchema = z.object({
   clientName: z
     .string({
       required_error: 'Client name is required',
@@ -13,10 +13,12 @@ export const ClientSchema = z.object({
       invalid_type_error: 'Client URL must be a string'
     })
     .url('Invalid URL format'),
-  active: z.boolean({
-    required_error: 'Active status is required',
-    invalid_type_error: 'Active status must be a boolean'
-  }),
+  active: z
+    .boolean({
+      required_error: 'Active status is required',
+      invalid_type_error: 'Active status must be a boolean'
+    })
+    .optional(),
   imageFile: z
     .any(
       z

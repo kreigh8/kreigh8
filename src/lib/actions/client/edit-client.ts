@@ -7,7 +7,7 @@ import { uploadImage } from '../../uploadImage'
 import cloudinary from '../../cloudinary'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { ClientSchema } from '@/schemas/Client'
+import { ClientFormSchema } from '@/schemas/Client'
 import Client from '@/model/Client'
 
 export const editClient = async (prevState: unknown, formData: FormData) => {
@@ -18,9 +18,14 @@ export const editClient = async (prevState: unknown, formData: FormData) => {
       throw new Error('Not authenticated')
     }
 
-    const validatedFields = ClientSchema.safeParse(
-      Object.fromEntries(formData.entries())
-    )
+    const data = Object.fromEntries(formData.entries())
+
+    const activeFormData = data.active === 'true' ? true : false
+
+    const validatedFields = ClientFormSchema.safeParse({
+      ...data,
+      active: activeFormData
+    })
 
     if (!validatedFields.success) {
       return {
@@ -44,7 +49,7 @@ export const editClient = async (prevState: unknown, formData: FormData) => {
 
     client.clientName = clientName
     client.clientUrl = clientUrl
-    client.active = active
+    client.active = active ? 'true' : 'false'
     client.lastUpdated = new Date()
 
     if (imageFile !== 'undefined') {

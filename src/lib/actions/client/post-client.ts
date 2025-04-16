@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { currentUser } from '@clerk/nextjs/server'
 import { uploadImage } from '../../uploadImage'
-import { ClientSchema } from '@/schemas/Client'
+import { ClientFormSchema } from '@/schemas/Client'
 import Client from '@/model/Client'
 
 export const postClient = async (prevState: unknown, formData: FormData) => {
@@ -16,9 +16,14 @@ export const postClient = async (prevState: unknown, formData: FormData) => {
     throw new Error('Not authenticated')
   }
 
-  const validatedFields = ClientSchema.safeParse(
-    Object.fromEntries(formData.entries())
-  )
+  const data = Object.fromEntries(formData.entries())
+
+  const activeFormData = data.active === 'true' ? true : false
+
+  const validatedFields = ClientFormSchema.safeParse({
+    ...data,
+    active: activeFormData
+  })
 
   if (!validatedFields.success) {
     return {
@@ -26,17 +31,19 @@ export const postClient = async (prevState: unknown, formData: FormData) => {
     }
   }
 
-  const clientName = formData.get('techName') as string
-  const clientUrl = formData.get('techUrl') as string
+  const clientName = formData.get('clientName') as string
+
+  const clientUrl = formData.get('clientUrl') as string
+
   const active = formData.get('active') as string
   const imageFile = formData.get('imageFile') as File
 
   await connectDB()
   try {
-    const validatedData = ClientSchema.parse({
+    const validatedData = ClientFormSchema.parse({
       clientName,
       clientUrl,
-      active,
+      activeFormData,
       imageFile
     })
 
@@ -51,10 +58,10 @@ export const postClient = async (prevState: unknown, formData: FormData) => {
     const imageUrl = await uploadImage(imageFile)
 
     await Client.create({
-      techName: validatedData.clientName,
-      techUrl: validatedData.clientUrl,
+      clientName: validatedData.clientName,
+      clientUrl: validatedData.clientUrl,
       imageUrl: imageUrl,
-      active: active,
+      active: active ? 'true' : 'false',
       user: user.id,
       lastUpdated: new Date()
     })
@@ -63,10 +70,10 @@ export const postClient = async (prevState: unknown, formData: FormData) => {
       console.error('Validation error:', error.errors)
       throw new Error('Validation errors')
     }
-    console.error('Error creating technology', error)
-    throw new Error('Error creating technology')
+    console.error('Error creating clients', error)
+    throw new Error('Error creating clients')
   }
 
-  revalidatePath('/admin/technology')
-  redirect('/admin/technology')
+  revalidatePath('/admin/clients')
+  redirect('/admin/clients')
 }

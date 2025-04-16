@@ -12,7 +12,7 @@ import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { IClient } from '@/model/Client'
-import { ClientSchema } from '@/schemas/Client'
+import { ClientFormSchema } from '@/schemas/Client'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { editClient } from '@/lib/actions/client/edit-client'
@@ -20,6 +20,7 @@ import { postClient } from '@/lib/actions/client/post-client'
 import { useState } from 'react'
 import Image from 'next/image'
 import { getImageData } from '@/lib/getImageData'
+import { Checkbox } from '@/components/ui/checkbox'
 
 type Props = {
   client?: IClient
@@ -29,18 +30,19 @@ export function ClientForm({ client }: Props) {
   // const [state, formAction] = useActionState(postTech, null)
   const [preview, setPreview] = useState<string>(client ? client.imageUrl : '')
 
-  const form = useForm<z.infer<typeof ClientSchema>>({
-    resolver: zodResolver(ClientSchema),
+  const form = useForm<z.infer<typeof ClientFormSchema>>({
+    resolver: zodResolver(ClientFormSchema),
     defaultValues: {
       clientName: client ? client.clientName : '',
       clientUrl: client ? client.clientUrl : '',
       imageUrl: client ? client.imageUrl : '',
-      active: client ? client.active === 'true' : false,
+      active: client && client.active === 'true' ? true : false,
       imageFile: undefined
     }
   })
 
-  const onSubmit = async (data: z.infer<typeof ClientSchema>) => {
+  const onSubmit = async (data: z.infer<typeof ClientFormSchema>) => {
+    console.log('data', data)
     const formData = new FormData()
     if (client) {
       formData.append('_id', client._id)
@@ -85,6 +87,23 @@ export function ClientForm({ client }: Props) {
               <FormLabel>Client URL</FormLabel>
               <FormControl>
                 <Input placeholder="Client URL" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="active"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Active</FormLabel>
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
