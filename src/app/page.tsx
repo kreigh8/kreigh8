@@ -1,6 +1,3 @@
-// import { TechnologyForm } from '@/components/TechnologyForm'
-// import Image from 'next/image'
-
 import ClientList from './(components)/Clients'
 import TechnologyList from './(components)/Technologies'
 import ContactMe from './(components)/ContactMe'

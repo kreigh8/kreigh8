@@ -28,7 +28,7 @@ function AnimatedClient({ client }: { client: IClient }) {
           />
         </motion.div>
 
-        <div className="relative block overflow-hidden text-center text-sm whitespace-nowrap md:text-lg">
+        <div className="md:text-md relative block overflow-hidden text-center text-sm whitespace-nowrap">
           <div>
             {client.clientName.split('').map((c, i) => {
               if (c === ' ') {
