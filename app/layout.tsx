@@ -43,7 +43,7 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <Header />
-              {children}
+              <main className="container mx-auto py-4">{children}</main>
             </ThemeProvider>
           </ConvexClientProvider>
         </body>
