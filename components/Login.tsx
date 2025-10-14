@@ -1,6 +1,8 @@
+'use client'
+
 import { Authenticated, Unauthenticated } from 'convex/react'
 import { Button } from '@/components/ui/button'
-import { LogIn, LogOutIcon } from 'lucide-react'
+import { LogIn, LogOutIcon, Settings } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { SignOutButton } from '@clerk/clerk-react'
 
@@ -10,11 +12,16 @@ export default function Login() {
   return (
     <>
       <Authenticated>
-        <SignOutButton>
-          <Button size="icon" variant="outline">
-            <LogOutIcon />
+        <div className="flex items-center gap-2">
+          <Button onClick={() => router.push('/admin')} size="icon">
+            <Settings />
           </Button>
-        </SignOutButton>
+          <SignOutButton>
+            <Button size="icon">
+              <LogOutIcon />
+            </Button>
+          </SignOutButton>
+        </div>
       </Authenticated>
 
       <Unauthenticated>
