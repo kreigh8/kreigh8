@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Login from './Login'
+import ThemeToggle from './ThemeToggle'
 
 export default function Header() {
   return (
@@ -7,7 +8,10 @@ export default function Header() {
       <nav className="bg-background p-4 border-b-2 border-slate-200 dark:border-slate-800 flex flex-row justify-between items-center">
         <Link href="/">kreigh8</Link>
 
-        <Login />
+        <div className="flex gap-2">
+          <ThemeToggle />
+          <Login />
+        </div>
       </nav>
     </header>
   )
