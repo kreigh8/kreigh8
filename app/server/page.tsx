@@ -1,13 +1,13 @@
-import Home from "./inner";
-import { preloadQuery, preloadedQueryResult } from "convex/nextjs";
-import { api } from "@/convex/_generated/api";
+import Home from './inner'
+import { preloadQuery, preloadedQueryResult } from 'convex/nextjs'
+import { api } from '@/convex/_generated/api'
 
 export default async function ServerPage() {
   const preloaded = await preloadQuery(api.myFunctions.listNumbers, {
-    count: 3,
-  });
+    count: 3
+  })
 
-  const data = preloadedQueryResult(preloaded);
+  const data = preloadedQueryResult(preloaded)
 
   return (
     <main className="p-8 flex flex-col gap-4 mx-auto max-w-2xl">
@@ -20,5 +20,5 @@ export default async function ServerPage() {
       </div>
       <Home preloaded={preloaded} />
     </main>
-  );
+  )
 }
