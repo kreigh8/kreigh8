@@ -6,10 +6,13 @@ import { DataTable } from '@/components/DataTable'
 import { ColumnDef } from '@tanstack/react-table'
 import { Button } from '../ui/button'
 import { Pencil, Trash } from 'lucide-react'
+import Link from 'next/link'
 
 type Technology = {
+  _id: string
   name: string
   url: string
+  imageId: string
   imageUrl: string | null
 }
 
@@ -40,18 +43,18 @@ export const columns: ColumnDef<Technology>[] = [
     accessorKey: 'actions',
     header: undefined,
     maxSize: 80,
-    cell: () => {
-      return (
-        <div className="flex justify-end gap-2">
-          <Button>
+    cell: ({ row }) => (
+      <div className="flex justify-end gap-2">
+        <Button asChild>
+          <Link href={`/admin/technology/${row.original._id}`}>
             <Pencil />
-          </Button>
-          <Button>
-            <Trash />
-          </Button>
-        </div>
-      )
-    }
+          </Link>
+        </Button>
+        <Button>
+          <Trash />
+        </Button>
+      </div>
+    )
   }
 ]
 

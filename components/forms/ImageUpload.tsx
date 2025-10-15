@@ -5,7 +5,6 @@ import { useFormContext } from 'react-hook-form'
 import { Input } from '../ui/input'
 import Image from 'next/image'
 import { Skeleton } from '../ui/skeleton'
-import { set } from 'zod'
 
 export default function ImageUpload() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
@@ -49,13 +48,7 @@ export default function ImageUpload() {
 
       {!previewUrl && <Skeleton className="h-10 w-10 mt-4" />}
       {previewUrl && (
-        <Image
-          src={previewUrl}
-          alt="Selected Image"
-          height={100}
-          width={100}
-          // style={{ maxWidth: '200px', maxHeight: '200px' }}
-        />
+        <Image src={previewUrl} alt="Selected Image" height={100} width={100} />
       )}
     </div>
   )
