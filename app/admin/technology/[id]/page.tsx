@@ -18,7 +18,7 @@ export default async function EditTechnologyPage(
 
   return (
     <section className="flex flex-col gap-4">
-      <h1>Edit Client</h1>
+      <h1>Edit Technology</h1>
 
       <TechnologyForm />
     </section>
