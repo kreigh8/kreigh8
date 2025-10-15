@@ -20,7 +20,7 @@ export default async function EditTechnologyPage(
     <section className="flex flex-col gap-4">
       <h1>Edit Client</h1>
 
-      <TechnologyForm preloadedTechnology={preloadedTechnology} />
+      <TechnologyForm />
     </section>
   )
 }
