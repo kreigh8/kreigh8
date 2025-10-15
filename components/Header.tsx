@@ -26,7 +26,7 @@ export default function Header() {
             <div className="container flex justify-start mx-auto gap-4">
               <Link href="/admin">Home</Link>
               <Link href="/admin/clients">Clients</Link>
-              <Link href="/admin/technologies">Technolgies</Link>
+              <Link href="/admin/technology">Technolgies</Link>
             </div>
           </nav>
         </Authenticated>
