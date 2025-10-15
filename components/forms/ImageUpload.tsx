@@ -1,6 +1,4 @@
-import { api } from '@/convex/_generated/api'
-import { useMutation } from 'convex/react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FormField, FormItem, FormLabel, FormControl } from '../ui/form'
 
 import { useFormContext } from 'react-hook-form'
@@ -9,21 +7,14 @@ import Image from 'next/image'
 import { Skeleton } from '../ui/skeleton'
 
 export default function ImageUpload() {
-  const generateUploadUrl = useMutation(api.image.generateUploadUrl)
-
-  const imageInput = useRef<HTMLInputElement>(null)
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
-
-  const [name] = useState(() => 'User ' + Math.floor(Math.random() * 10000))
 
   // Get control from react-hook-form context
   const { control } = useFormContext()
 
   // Dummy fileRejections array for demonstration; replace with your actual logic
-
-  console.log('selectedImage', selectedImage)
 
   useEffect(() => {
     if (selectedImage) {
