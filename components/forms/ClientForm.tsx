@@ -99,7 +99,7 @@ export default function ClientForm() {
             <FormItem>
               <FormLabel>Client Name</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="Kroger" {...field} />
               </FormControl>
               {/* <FormDescription>
                 This is your public display name.
@@ -115,7 +115,7 @@ export default function ClientForm() {
             <FormItem>
               <FormLabel>Client URL</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="https://kroger.com" {...field} />
               </FormControl>
               {/* <FormDescription>
                 This is your public display name.
@@ -133,7 +133,9 @@ export default function ClientForm() {
           render={({ field }) => {
             return (
               <FormItem>
-                <FormLabel className="text-sm font-normal">Active</FormLabel>
+                <FormLabel className="text-sm font-normal">
+                  Active Client
+                </FormLabel>
                 <FormControl>
                   <Checkbox
                     checked={field.value === true}
