@@ -5,6 +5,7 @@ import { useFormContext } from 'react-hook-form'
 import { Input } from '../ui/input'
 import Image from 'next/image'
 import { Skeleton } from '../ui/skeleton'
+import { set } from 'zod'
 
 export default function ImageUpload() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
@@ -12,7 +13,7 @@ export default function ImageUpload() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
   // Get control from react-hook-form context
-  const { control } = useFormContext()
+  const { control, setValue } = useFormContext()
 
   // Dummy fileRejections array for demonstration; replace with your actual logic
 
@@ -20,6 +21,7 @@ export default function ImageUpload() {
     if (selectedImage) {
       const url = URL.createObjectURL(selectedImage)
       setPreviewUrl(url)
+      setValue('image', selectedImage)
       return () => URL.revokeObjectURL(url)
     } else {
       setPreviewUrl(null)
@@ -32,7 +34,7 @@ export default function ImageUpload() {
         control={control}
         name="image"
         render={() => (
-          <FormItem className="">
+          <FormItem>
             <FormLabel>Image</FormLabel>
             <FormControl>
               <Input
@@ -45,18 +47,16 @@ export default function ImageUpload() {
         )}
       />
 
-      <div className="flex w-full">
-        {!previewUrl && <Skeleton className="h-10 w-10" />}
-        {previewUrl && (
-          <Image
-            src={previewUrl}
-            alt="Selected Image"
-            height={100}
-            width={100}
-            // style={{ maxWidth: '200px', maxHeight: '200px' }}
-          />
-        )}
-      </div>
+      {!previewUrl && <Skeleton className="h-10 w-10 mt-4" />}
+      {previewUrl && (
+        <Image
+          src={previewUrl}
+          alt="Selected Image"
+          height={100}
+          width={100}
+          // style={{ maxWidth: '200px', maxHeight: '200px' }}
+        />
+      )}
     </div>
   )
 }
