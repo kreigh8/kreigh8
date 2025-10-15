@@ -7,7 +7,7 @@ export default async function HomeBlurb() {
   const preloadedHomeBlurb = await preloadQuery(api.home.getHomeBlurb)
 
   return (
-    <article className="flex gap-4 w-full">
+    <article className="grid grid-cols-2 gap-4 w-full">
       <HomeBlurbForm preloadedHomeBlurb={preloadedHomeBlurb} />
 
       <HomeImageUpload />
