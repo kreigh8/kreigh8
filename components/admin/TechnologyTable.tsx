@@ -4,6 +4,8 @@ import { Preloaded, usePreloadedQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { DataTable } from '@/components/DataTable'
 import { ColumnDef } from '@tanstack/react-table'
+import { Button } from '../ui/button'
+import { Pencil, Trash } from 'lucide-react'
 
 type Technology = {
   name: string
@@ -31,6 +33,23 @@ export const columns: ColumnDef<Technology>[] = [
           alt="Client Image"
           className="h-10 w-10 rounded-full object-cover"
         />
+      )
+    }
+  },
+  {
+    accessorKey: 'actions',
+    header: undefined,
+    maxSize: 80,
+    cell: () => {
+      return (
+        <div className="flex justify-end gap-2">
+          <Button>
+            <Pencil />
+          </Button>
+          <Button>
+            <Trash />
+          </Button>
+        </div>
       )
     }
   }
