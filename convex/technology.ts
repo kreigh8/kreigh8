@@ -31,6 +31,24 @@ export const listTechnologies = query({
   }
 })
 
+export const getTechnology = query({
+  args: {
+    id: v.id('technologies')
+  },
+
+  handler: async (ctx, { id }) => {
+    const technology = await ctx.db.get(id)
+    if (!technology) {
+      throw new Error('Technology not found')
+    }
+    const imageUrl = await getImageFromImageId(ctx, technology.imageId)
+    return {
+      ...technology,
+      imageUrl
+    }
+  }
+})
+
 export const createTechnology = mutation({
   args: {
     name: v.string(),
