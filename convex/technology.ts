@@ -1,6 +1,7 @@
 import { v } from 'convex/values'
 import { mutation, query } from './_generated/server'
 import { getImageFromImageId, uploadImage } from './image'
+import { Id } from './_generated/dataModel'
 
 export const listTechnologies = query({
   // Validators for arguments.
@@ -46,6 +47,58 @@ export const getTechnology = query({
       ...technology,
       imageUrl
     }
+  }
+})
+
+export const updateTechnology = mutation({
+  args: {
+    id: v.id('technologies'),
+    body: v.object({
+      name: v.string(),
+      url: v.string(),
+      image: v.optional(
+        v.object({
+          storageId: v.id('_storage'),
+          author: v.string(),
+          format: v.string()
+        })
+      )
+    })
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity()
+    if (identity === null) {
+      throw new Error('Not authenticated')
+    }
+
+    // Insert image into images table
+    let imageId: Id<'images'> | undefined
+    if (args.body.image) {
+      imageId = await uploadImage(ctx, {
+        storageId: args.body.image.storageId,
+        author: args.body.image.author,
+        format: args.body.image.format
+      })
+    }
+
+    // Insert client into clients table
+    const technologyData: {
+      name: string
+      url: string
+      imageId?: Id<'images'>
+    } = {
+      name: args.body.name,
+      url: args.body.url
+    }
+
+    if (imageId) {
+      technologyData.imageId = imageId
+    }
+
+    await ctx.db.patch(args.id, technologyData)
+
+    console.log('Updated technology id:', args.id)
+    return args.id
   }
 })
 
