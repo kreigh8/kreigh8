@@ -102,7 +102,7 @@ export default function TechnologyForm() {
             <FormItem>
               <FormLabel>Technology Name</FormLabel>
               <FormControl>
-                <Input placeholder="Kroger" {...field} />
+                <Input placeholder="React" {...field} />
               </FormControl>
               {/* <FormDescription>
                 This is your public display name.
@@ -116,9 +116,9 @@ export default function TechnologyForm() {
           name="url"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Client URL</FormLabel>
+              <FormLabel>Technology URL</FormLabel>
               <FormControl>
-                <Input placeholder="https://kroger.com" {...field} />
+                <Input placeholder="https://react.dev" {...field} />
               </FormControl>
               {/* <FormDescription>
                 This is your public display name.
