@@ -12,11 +12,6 @@ export default async function EditTechnologyPage(
     id
   })
 
-  const response = await fetch(technology?.imageUrl as string)
-  const blob = await response.blob()
-  // You can use a better name or type if available
-  const file = new File([blob], 'image.jpg', { type: blob.type })
-
   return (
     <section className="flex flex-col gap-4">
       <h1>Edit Technology</h1>
@@ -24,8 +19,7 @@ export default async function EditTechnologyPage(
       <TechnologyForm
         technology={{
           name: technology?.name as string,
-          url: technology?.url as string,
-          file
+          url: technology?.url as string
         }}
       />
     </section>

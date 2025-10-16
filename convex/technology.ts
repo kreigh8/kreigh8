@@ -102,6 +102,20 @@ export const updateTechnology = mutation({
   }
 })
 
+export const deleteTechnology = mutation({
+  args: {
+    id: v.id('technologies')
+  },
+  handler: async (ctx, { id }) => {
+    const identity = await ctx.auth.getUserIdentity()
+    if (identity === null) {
+      throw new Error('Not authenticated')
+    }
+
+    await ctx.db.delete(id)
+  }
+})
+
 export const createTechnology = mutation({
   args: {
     name: v.string(),

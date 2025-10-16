@@ -17,7 +17,6 @@ import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { useUser } from '@clerk/clerk-react'
 import ImageUpload from './ImageUpload'
-import { useParams } from 'next/navigation'
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -40,17 +39,10 @@ const formSchema = z.object({
 })
 
 export default function TechnologyForm(props: {
-  technology?: { name: string; url: string; file: File }
+  technology?: { name: string; url: string }
 }) {
   const generateUploadUrl = useMutation(api.image.generateUploadUrl)
   const createTechnology = useMutation(api.technology.createTechnology)
-
-  const params = useParams()
-
-  const { id } = params
-
-  console.log('id', id)
-  console.log('props.technology', props.technology)
 
   const { user } = useUser()
 
@@ -59,7 +51,7 @@ export default function TechnologyForm(props: {
     defaultValues: {
       name: props.technology?.name || '',
       url: props.technology?.url || '',
-      image: props.technology?.file ?? (undefined as unknown as File)
+      image: undefined as unknown as File
     }
   })
 
