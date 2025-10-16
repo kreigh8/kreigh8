@@ -12,16 +12,13 @@ export default async function EditTechnologyPage(
     id
   })
 
+  console.log('Editing technology:', technology)
+
   return (
     <section className="flex flex-col gap-4">
       <h1>Edit Technology</h1>
 
-      <TechnologyForm
-        technology={{
-          name: technology?.name as string,
-          url: technology?.url as string
-        }}
-      />
+      <TechnologyForm />
     </section>
   )
 }
