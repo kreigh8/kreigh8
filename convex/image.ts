@@ -1,6 +1,7 @@
-import { mutation, QueryCtx } from './_generated/server'
+import { mutation, query, QueryCtx } from './_generated/server'
 import { MutationCtx } from './_generated/server'
 import { Id } from './_generated/dataModel'
+import { v } from 'convex/values'
 
 export const generateUploadUrl = mutation({
   handler: async (ctx) => {
@@ -23,6 +24,16 @@ export async function uploadImage(
   })
 
   return imageId
+}
+
+export async function getImageFromId(ctx: QueryCtx, id: Id<'images'>) {
+  const image = await ctx.db.get(id)
+
+  return image
+}
+
+export async function deleteImageFromId(ctx: MutationCtx, id: Id<'images'>) {
+  ctx.db.delete(id)
 }
 
 export async function getImageFromImageId(

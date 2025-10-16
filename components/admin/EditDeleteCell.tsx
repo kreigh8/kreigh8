@@ -10,27 +10,26 @@ import {
   AlertDialogCancel,
   AlertDialogDescription,
   AlertDialogFooter,
-  AlertDialogTitle
+  AlertDialogTitle,
+  AlertDialogContent
 } from '@/components/ui/alert-dialog'
-import { Trash } from 'lucide-react'
+import { Pencil, Trash } from 'lucide-react'
+import { useMutation } from 'convex/react'
+import { api } from '@/convex/_generated/api'
+import { Id } from '@/convex/_generated/dataModel'
 
-export function EditDeleteCell<TData extends { _id: string }>({
-  row,
-  getValue,
-  path
-}: {
-  row: Row<TData>
-  getValue: Getter<TData>
-  path: string
-}) {
-  const [value, setValue] = useState(getValue())
+export function EditDeleteCellTechnology<
+  TData extends { _id: Id<'technologies'> }
+>({ row }: { row: Row<TData> }) {
+  const deleteTechnology = useMutation(api.technology.deleteTechnology)
+  // const deleteClient = useMutation(api.clients.deleteClient)
 
-  console.log('Row:', row)
-  console.log('Value:', value)
   return (
     <div className="flex gap-2">
       <Button asChild>
-        <Link href={`/admin/${path}/${row.original._id}`}>Edit</Link>
+        <Link href={`/admin/technology/${row.original._id}`}>
+          <Pencil />
+        </Link>
       </Button>
 
       <AlertDialog>
@@ -39,17 +38,23 @@ export function EditDeleteCell<TData extends { _id: string }>({
             <Trash />
           </Button>
         </AlertDialogTrigger>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          {/* <AlertDialogCancel>Cancel</AlertDialogCancel> */}
-          <AlertDialogAction>Continue</AlertDialogAction>
-        </AlertDialogFooter>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete this
+              technology from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => deleteTechnology({ id: row.original._id })}
+            >
+              Continue
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
       </AlertDialog>
     </div>
   )

@@ -18,10 +18,11 @@ import { ColumnDef } from '@tanstack/react-table'
 //   AlertDialogTitle,
 //   AlertDialogTrigger
 // } from '@/components/ui/alert-dialog'
-import { EditDeleteCell } from './EditDeleteCell'
+import { EditDeleteCellTechnology } from './EditDeleteCell'
+import { Id } from '@/convex/_generated/dataModel'
 
 type Technology = {
-  _id: string
+  _id: Id<'technologies'>
   name: string
   url: string
   imageId: string
@@ -55,13 +56,7 @@ export const columns: ColumnDef<Technology>[] = [
     accessorKey: 'actions',
     header: undefined,
     maxSize: 80,
-    cell: ({ row, getValue }) => (
-      <EditDeleteCell<Technology>
-        row={row}
-        getValue={getValue}
-        path="technology"
-      />
-    )
+    cell: ({ row }) => <EditDeleteCellTechnology<Technology> row={row} />
   }
 ]
 

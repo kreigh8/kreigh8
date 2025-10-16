@@ -1,6 +1,11 @@
 import { v } from 'convex/values'
 import { mutation, query } from './_generated/server'
-import { getImageFromImageId, uploadImage } from './image'
+import {
+  deleteImageFromId,
+  getImageFromId,
+  getImageFromImageId,
+  uploadImage
+} from './image'
 import { Id } from './_generated/dataModel'
 
 export const listTechnologies = query({
@@ -111,6 +116,18 @@ export const deleteTechnology = mutation({
     if (identity === null) {
       throw new Error('Not authenticated')
     }
+
+    const technology = await ctx.db.get(id)
+
+    console.log('Deleting technology:', technology)
+
+    const image = await getImageFromId(ctx, technology!.imageId)
+
+    deleteImageFromId(ctx, technology!.imageId)
+
+    console.log('image', image)
+
+    await ctx.storage.delete(image?.body as Id<'_storage'>)
 
     await ctx.db.delete(id)
   }
