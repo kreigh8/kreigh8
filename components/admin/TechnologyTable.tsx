@@ -55,7 +55,9 @@ export const columns: ColumnDef<Technology>[] = [
     accessorKey: 'actions',
     header: undefined,
     maxSize: 80,
-    cell: EditDeleteCell
+    cell: ({ row, getValue }) => (
+      <EditDeleteCell<Technology> row={row} getValue={getValue} />
+    )
   }
 ]
 
