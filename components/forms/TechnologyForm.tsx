@@ -13,18 +13,11 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import {
-  Preloaded,
-  useMutation,
-  usePreloadedQuery,
-  useQuery
-} from 'convex/react'
+import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { useUser } from '@clerk/clerk-react'
 import ImageUpload from './ImageUpload'
 import { useParams } from 'next/navigation'
-import { Id } from '@/convex/_generated/dataModel'
-import { useEffect } from 'react'
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -46,7 +39,9 @@ const formSchema = z.object({
     )
 })
 
-export default function TechnologyForm() {
+export default function TechnologyForm(props: {
+  technology?: { name: string; url: string; file: File }
+}) {
   const generateUploadUrl = useMutation(api.image.generateUploadUrl)
   const createTechnology = useMutation(api.technology.createTechnology)
 
@@ -55,43 +50,18 @@ export default function TechnologyForm() {
   const { id } = params
 
   console.log('id', id)
-
-  const technology = useQuery(
-    api.technology.getTechnology,
-    typeof id === 'string' ? { id: id as Id<'technologies'> } : 'skip'
-  )
-
-  console.log('technology', technology)
+  console.log('props.technology', props.technology)
 
   const { user } = useUser()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
-      url: '',
-      image: undefined as unknown as File
+      name: props.technology?.name || '',
+      url: props.technology?.url || '',
+      image: props.technology?.file ?? (undefined as unknown as File)
     }
   })
-
-  useEffect(() => {
-    async function setFormValues() {
-      const blob = await fetch(technology?.imageUrl as string).then((r) =>
-        r.blob()
-      )
-
-      form.setValue('name', technology?.name as string)
-      form.setValue('url', technology?.url as string)
-      form.setValue(
-        'image',
-        new File([blob], 'image', { type: blob.type }) as unknown as File
-      )
-    }
-
-    if (technology) {
-      setFormValues()
-    }
-  }, [technology, form])
 
   const image = form.watch('image')
 
