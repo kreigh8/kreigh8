@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react'
-import { FormField, FormItem, FormLabel, FormControl } from '../ui/form'
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage
+} from '../ui/form'
 
 import { useFormContext } from 'react-hook-form'
 import { Input } from '../ui/input'
@@ -42,6 +48,7 @@ export default function ImageUpload() {
                 type="file"
               />
             </FormControl>
+            <FormMessage />
           </FormItem>
         )}
       />

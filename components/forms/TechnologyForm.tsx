@@ -17,6 +17,9 @@ import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { useUser } from '@clerk/clerk-react'
 import ImageUpload from './ImageUpload'
+import { useTransition } from 'react'
+import { Spinner } from '../ui/spinner'
+import { toast } from 'sonner'
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -39,6 +42,7 @@ const formSchema = z.object({
 })
 
 export default function TechnologyForm() {
+  const [isPending, startTransition] = useTransition()
   const generateUploadUrl = useMutation(api.image.generateUploadUrl)
   const createTechnology = useMutation(api.technology.createTechnology)
 
@@ -68,14 +72,17 @@ export default function TechnologyForm() {
       })
       const { storageId } = await result.json()
 
-      await createTechnology({
-        name: values.name,
-        url: values.url,
-        image: {
-          storageId,
-          author: user?.username || 'unknown',
-          format: 'image'
-        }
+      startTransition(async () => {
+        await createTechnology({
+          name: values.name,
+          url: values.url,
+          image: {
+            storageId,
+            author: user?.username || 'unknown',
+            format: 'image'
+          }
+        })
+        toast('Technology Created')
       })
 
       form.reset()
@@ -123,7 +130,10 @@ export default function TechnologyForm() {
 
         <ImageUpload />
 
-        <Button type="submit">Submit</Button>
+        <Button type="submit">
+          {isPending && <Spinner />}
+          Submit
+        </Button>
       </form>
     </Form>
   )

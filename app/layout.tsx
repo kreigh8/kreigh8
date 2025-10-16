@@ -5,6 +5,7 @@ import ConvexClientProvider from '@/components/ConvexClientProvider'
 import { ClerkProvider } from '@clerk/nextjs'
 import Header from '@/components/Header'
 import { ThemeProvider } from '@/components/ThemeProvider'
+import { Toaster } from '@/components/ui/sonner'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -44,6 +45,7 @@ export default function RootLayout({
             >
               <Header />
               <main className="container mx-auto py-4">{children}</main>
+              <Toaster />
             </ThemeProvider>
           </ConvexClientProvider>
         </body>

@@ -4,20 +4,6 @@ import { Preloaded, usePreloadedQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { DataTable } from '@/components/DataTable'
 import { ColumnDef } from '@tanstack/react-table'
-// import { Button } from '../ui/button'
-// import { Edit, Pencil, Trash } from 'lucide-react'
-// import Link from 'next/link'
-// import {
-//   AlertDialog,
-//   AlertDialogAction,
-//   AlertDialogCancel,
-//   AlertDialogContent,
-//   AlertDialogDescription,
-//   AlertDialogFooter,
-//   AlertDialogHeader,
-//   AlertDialogTitle,
-//   AlertDialogTrigger
-// } from '@/components/ui/alert-dialog'
 import { EditDeleteCellTechnology } from './EditDeleteCell'
 import { Id } from '@/convex/_generated/dataModel'
 

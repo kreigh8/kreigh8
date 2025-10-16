@@ -160,6 +160,7 @@ export const createTechnology = mutation({
     })
 
     console.log('Added new technology with id:', technologyId)
+
     return technologyId
   }
 })

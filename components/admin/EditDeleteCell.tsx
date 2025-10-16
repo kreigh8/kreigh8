@@ -1,6 +1,6 @@
-import { Getter, Row } from '@tanstack/react-table'
+import { Row } from '@tanstack/react-table'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useTransition } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   AlertDialogTrigger,
@@ -17,10 +17,13 @@ import { Pencil, Trash } from 'lucide-react'
 import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
+import { toast } from 'sonner'
+import { Spinner } from '../ui/spinner'
 
 export function EditDeleteCellTechnology<
   TData extends { _id: Id<'technologies'> }
 >({ row }: { row: Row<TData> }) {
+  const [isPending, startTransition] = useTransition()
   const deleteTechnology = useMutation(api.technology.deleteTechnology)
   // const deleteClient = useMutation(api.clients.deleteClient)
 
@@ -49,8 +52,14 @@ export function EditDeleteCellTechnology<
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              onClick={() => deleteTechnology({ id: row.original._id })}
+              onClick={() =>
+                startTransition(async () => {
+                  await deleteTechnology({ id: row.original._id })
+                  toast('Technology Deleted')
+                })
+              }
             >
+              {isPending && <Spinner />}
               Continue
             </AlertDialogAction>
           </AlertDialogFooter>
