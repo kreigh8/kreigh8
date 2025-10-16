@@ -38,9 +38,7 @@ const formSchema = z.object({
     )
 })
 
-export default function TechnologyForm(props: {
-  technology?: { name: string; url: string }
-}) {
+export default function TechnologyForm() {
   const generateUploadUrl = useMutation(api.image.generateUploadUrl)
   const createTechnology = useMutation(api.technology.createTechnology)
 
@@ -49,8 +47,8 @@ export default function TechnologyForm(props: {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: props.technology?.name || '',
-      url: props.technology?.url || '',
+      name: '',
+      url: '',
       image: undefined as unknown as File
     }
   })
