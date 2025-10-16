@@ -56,7 +56,11 @@ export const columns: ColumnDef<Technology>[] = [
     header: undefined,
     maxSize: 80,
     cell: ({ row, getValue }) => (
-      <EditDeleteCell<Technology> row={row} getValue={getValue} />
+      <EditDeleteCell<Technology>
+        row={row}
+        getValue={getValue}
+        path="technology"
+      />
     )
   }
 ]

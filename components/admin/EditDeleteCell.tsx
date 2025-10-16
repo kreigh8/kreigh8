@@ -47,7 +47,7 @@ export function EditDeleteCell<TData extends { _id: string }>({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          {/* <AlertDialogCancel>Cancel</AlertDialogCancel> */}
           <AlertDialogAction>Continue</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialog>
