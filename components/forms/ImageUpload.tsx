@@ -13,25 +13,29 @@ import Image from 'next/image'
 import { Skeleton } from '../ui/skeleton'
 
 export default function ImageUpload() {
-  const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  const { control, setValue, watch } = useFormContext()
+  const formImage = watch('image')
+  console.log('image', formImage)
+  const [selectedImage, setSelectedImage] = useState<File | null>(formImage)
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
   // Get control from react-hook-form context
-  const { control, setValue } = useFormContext()
 
   // Dummy fileRejections array for demonstration; replace with your actual logic
 
   useEffect(() => {
-    if (selectedImage) {
-      const url = URL.createObjectURL(selectedImage)
+    if (selectedImage || formImage) {
+      const url = selectedImage
+        ? URL.createObjectURL(selectedImage)
+        : URL.createObjectURL(formImage)
       setPreviewUrl(url)
-      setValue('image', selectedImage)
+      setValue('image', selectedImage ?? formImage)
       return () => URL.revokeObjectURL(url)
     } else {
       setPreviewUrl(null)
     }
-  }, [selectedImage, setValue])
+  }, [selectedImage, setValue, formImage])
 
   return (
     <div className="flex grid-cols-2 w-full items-center gap-4">
