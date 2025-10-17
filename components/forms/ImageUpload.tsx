@@ -17,13 +17,11 @@ export default function ImageUpload() {
   const { control, setValue, watch, handleSubmit, resetField } =
     useFormContext()
   const formImage = watch('image')
-  console.log('image', formImage)
+
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
-  console.log('selectedImage', selectedImage)
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
-  console.log('previewUrl', previewUrl)
   // Get control from react-hook-form context
 
   useEffect(() => {
