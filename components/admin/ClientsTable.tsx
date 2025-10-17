@@ -4,8 +4,12 @@ import { Preloaded, usePreloadedQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { DataTable } from '@/components/DataTable'
 import { ColumnDef } from '@tanstack/react-table'
+import { Check, X } from 'lucide-react'
+import { EditDeleteClientCell } from './EditDeleteClientCell'
+import { Id } from '@/convex/_generated/dataModel'
 
 type Client = {
+  _id: Id<'clients'>
   name: string
   url: string
   imageUrl: string | null
@@ -37,7 +41,20 @@ const columns: ColumnDef<Client>[] = [
   },
   {
     accessorKey: 'active',
-    header: 'Active'
+    header: 'Active',
+    cell: ({ row }) => {
+      if (row.original.active) {
+        return <Check />
+      } else {
+        return <X />
+      }
+    }
+  },
+  {
+    accessorKey: 'actions',
+    header: undefined,
+    maxSize: 80,
+    cell: ({ row }) => <EditDeleteClientCell<Client> row={row} />
   }
 ]
 

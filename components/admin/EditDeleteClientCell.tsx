@@ -20,17 +20,18 @@ import { Id } from '@/convex/_generated/dataModel'
 import { toast } from 'sonner'
 import { Spinner } from '../ui/spinner'
 
-export function EditDeleteCellTechnology<
-  TData extends { _id: Id<'technologies'> }
->({ row }: { row: Row<TData> }) {
+export function EditDeleteClientCell<TData extends { _id: Id<'clients'> }>({
+  row
+}: {
+  row: Row<TData>
+}) {
   const [isPending, startTransition] = useTransition()
-  const deleteTechnology = useMutation(api.technology.deleteTechnology)
-  // const deleteClient = useMutation(api.clients.deleteClient)
+  const deleteClient = useMutation(api.clients.deleteClient)
 
   return (
     <div className="flex gap-2">
       <Button asChild>
-        <Link href={`/admin/technology/${row.original._id}`}>
+        <Link href={`/admin/clients/${row.original._id}`}>
           <Pencil />
         </Link>
       </Button>
@@ -46,7 +47,7 @@ export function EditDeleteCellTechnology<
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone. This will permanently delete this
-              technology from our servers.
+              client from our servers.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -54,8 +55,8 @@ export function EditDeleteCellTechnology<
             <AlertDialogAction
               onClick={() =>
                 startTransition(async () => {
-                  await deleteTechnology({ id: row.original._id })
-                  toast('Technology Deleted')
+                  await deleteClient({ id: row.original._id })
+                  toast('Client Deleted')
                 })
               }
             >

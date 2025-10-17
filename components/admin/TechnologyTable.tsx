@@ -4,7 +4,7 @@ import { Preloaded, usePreloadedQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { DataTable } from '@/components/DataTable'
 import { ColumnDef } from '@tanstack/react-table'
-import { EditDeleteCellTechnology } from './EditDeleteCell'
+import { EditDeleteTechnologyCell } from './EditDeleteTechnologyCell'
 import { Id } from '@/convex/_generated/dataModel'
 
 type Technology = {
@@ -42,7 +42,7 @@ export const columns: ColumnDef<Technology>[] = [
     accessorKey: 'actions',
     header: undefined,
     maxSize: 80,
-    cell: ({ row }) => <EditDeleteCellTechnology<Technology> row={row} />
+    cell: ({ row }) => <EditDeleteTechnologyCell<Technology> row={row} />
   }
 ]
 
