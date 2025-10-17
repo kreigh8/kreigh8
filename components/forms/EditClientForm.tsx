@@ -18,7 +18,8 @@ import { Preloaded, useMutation, usePreloadedQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { useUser } from '@clerk/clerk-react'
 import ImageUpload from './ImageUpload'
-import { startTransition } from 'react'
+import { useEffect, useTransition } from 'react'
+import { Spinner } from '../ui/spinner'
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -44,6 +45,7 @@ const formSchema = z.object({
 export default function EditClientForm(props: {
   preloadedClient: Preloaded<typeof api.clients.getClient>
 }) {
+  const [isPending, startTransition] = useTransition()
   const generateUploadUrl = useMutation(api.image.generateUploadUrl)
   const updateClient = useMutation(api.clients.updateClient)
   const client = usePreloadedQuery(props.preloadedClient)
@@ -53,14 +55,17 @@ export default function EditClientForm(props: {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
-      url: '',
+      name: client.name,
+      url: client.url,
       image: undefined as unknown as File,
-      active: false
+      active: client.active
     }
   })
 
   const image = form.watch('image')
+
+  console.log('client', client)
+  console.log('image', image)
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
@@ -97,6 +102,21 @@ export default function EditClientForm(props: {
       console.error('Error creating client:', error)
     }
   }
+
+  useEffect(() => {
+    async function setDefaultImage() {
+      if (client.imageUrl) {
+        const response = await fetch(client.imageUrl)
+        const blob = await response.blob()
+        const file = new File([blob], 'client.png', {
+          type: blob.type,
+          lastModified: new Date().getTime()
+        })
+        form.setValue('image', file)
+      }
+    }
+    setDefaultImage()
+  }, [client.imageUrl, form])
 
   return (
     <Form {...form}>
@@ -155,7 +175,10 @@ export default function EditClientForm(props: {
             )
           }}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit">
+          {isPending && <Spinner />}
+          Submit
+        </Button>
       </form>
     </Form>
   )

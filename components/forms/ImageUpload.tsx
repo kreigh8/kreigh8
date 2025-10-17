@@ -22,8 +22,6 @@ export default function ImageUpload() {
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
-  // Get control from react-hook-form context
-
   useEffect(() => {
     if (!formImage) {
       setSelectedImage(null)
@@ -34,8 +32,6 @@ export default function ImageUpload() {
     }
     resetField('image')
   }, [formImage, handleSubmit, resetField])
-
-  // Dummy fileRejections array for demonstration; replace with your actual logic
 
   useEffect(() => {
     if (selectedImage || formImage) {
