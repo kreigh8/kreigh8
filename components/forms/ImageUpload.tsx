@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   FormField,
   FormItem,
@@ -13,24 +13,37 @@ import Image from 'next/image'
 import { Skeleton } from '../ui/skeleton'
 
 export default function ImageUpload() {
-  const { control, setValue, watch } = useFormContext()
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const { control, setValue, watch, handleSubmit, resetField } =
+    useFormContext()
   const formImage = watch('image')
   console.log('image', formImage)
-  const [selectedImage, setSelectedImage] = useState<File | null>(formImage)
+  const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  console.log('selectedImage', selectedImage)
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
+  console.log('previewUrl', previewUrl)
   // Get control from react-hook-form context
+
+  useEffect(() => {
+    if (!formImage) {
+      setSelectedImage(null)
+      setPreviewUrl(null)
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+    }
+    resetField('image')
+  }, [formImage, handleSubmit, resetField])
 
   // Dummy fileRejections array for demonstration; replace with your actual logic
 
   useEffect(() => {
     if (selectedImage || formImage) {
-      const url = selectedImage
-        ? URL.createObjectURL(selectedImage)
-        : URL.createObjectURL(formImage)
+      const url = URL.createObjectURL(selectedImage ?? formImage)
       setPreviewUrl(url)
-      setValue('image', selectedImage ?? formImage)
+      setValue('image', selectedImage)
       return () => URL.revokeObjectURL(url)
     } else {
       setPreviewUrl(null)
@@ -47,6 +60,7 @@ export default function ImageUpload() {
             <FormLabel>Image</FormLabel>
             <FormControl>
               <Input
+                ref={fileInputRef}
                 onChange={(event) => setSelectedImage(event.target.files![0])}
                 id="picture"
                 type="file"
