@@ -1,4 +1,6 @@
 import Blurb from '@/components/Blurb'
+import Clients from '@/components/Clients'
+import Technology from '@/components/Technology'
 
 export default function Home() {
   return (
@@ -12,6 +14,10 @@ export default function Home() {
 
           <article className="flex flex-col w-full"></article>
         </section>
+
+        <Clients />
+
+        <Technology />
       </main>
     </>
   )
