@@ -1,3 +1,4 @@
+import ActionButtons from '@/components/ActionButtons'
 import Blurb from '@/components/Blurb'
 import Clients from '@/components/Clients'
 import Technology from '@/components/Technology'
@@ -10,6 +11,8 @@ export default function Home() {
           <article className="flex flex-col w-full gap-4">
             <h1 className="text-4xl font-bold">Welcome to kreigh8</h1>
             <Blurb />
+
+            <ActionButtons />
           </article>
 
           <article className="flex flex-col w-full"></article>
