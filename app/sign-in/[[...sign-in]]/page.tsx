@@ -17,7 +17,7 @@ import { Icons } from '@/components/ui/icons'
 
 export default function SignInPage() {
   return (
-    <div className="grid w-full h-screen grow items-center px-4 justify-center">
+    <div className="grid h-[calc(100vh-7rem)] w-full grow items-center px-4 justify-center">
       <SignIn.Root>
         <Clerk.Loading>
           {(isGlobalLoading) => (
