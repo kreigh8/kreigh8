@@ -45,7 +45,7 @@ export default function RootLayout({
             >
               <Header />
               <main className="container mx-auto py-4">{children}</main>
-              <Toaster />
+              {/* <Toaster /> */}
             </ThemeProvider>
           </ConvexClientProvider>
         </body>

@@ -13,11 +13,15 @@ export default function Login() {
     <>
       <Authenticated>
         <div className="flex items-center gap-2">
-          <Button onClick={() => router.push('/admin')} size="icon">
+          <Button
+            onClick={() => router.push('/admin')}
+            variant="outline"
+            size="icon"
+          >
             <Settings />
           </Button>
           <SignOutButton>
-            <Button size="icon">
+            <Button variant="outline" size="icon">
               <LogOutIcon />
             </Button>
           </SignOutButton>
@@ -25,7 +29,11 @@ export default function Login() {
       </Authenticated>
 
       <Unauthenticated>
-        <Button onClick={() => router.push('/sign-in')} size="icon">
+        <Button
+          variant="outline"
+          onClick={() => router.push('/sign-in')}
+          size="icon"
+        >
           <LogIn />
         </Button>
       </Unauthenticated>

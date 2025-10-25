@@ -8,15 +8,16 @@
  * @module
  */
 
+import type * as clients from "../clients.js";
+import type * as home from "../home.js";
+import type * as image from "../image.js";
+import type * as technology from "../technology.js";
+
 import type {
   ApiFromModules,
   FilterApi,
   FunctionReference,
 } from "convex/server";
-import type * as clients from "../clients.js";
-import type * as home from "../home.js";
-import type * as image from "../image.js";
-import type * as technology from "../technology.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -32,11 +33,15 @@ declare const fullApi: ApiFromModules<{
   image: typeof image;
   technology: typeof technology;
 }>;
+declare const fullApiWithMounts: typeof fullApi;
+
 export declare const api: FilterApi<
-  typeof fullApi,
+  typeof fullApiWithMounts,
   FunctionReference<any, "public">
 >;
 export declare const internal: FilterApi<
-  typeof fullApi,
+  typeof fullApiWithMounts,
   FunctionReference<any, "internal">
 >;
+
+export declare const components: {};
