@@ -1,10 +1,9 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
-  Form,
   FormControl,
   FormField,
   FormItem,
@@ -94,7 +93,7 @@ export default function TechnologyForm() {
   }
 
   return (
-    <Form {...form}>
+    <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
@@ -136,6 +135,6 @@ export default function TechnologyForm() {
           Submit
         </Button>
       </form>
-    </Form>
+    </FormProvider>
   )
 }

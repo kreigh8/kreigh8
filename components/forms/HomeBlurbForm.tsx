@@ -2,11 +2,10 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Preloaded, useMutation, usePreloadedQuery } from 'convex/react'
-import { useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { api } from '@/convex/_generated/api'
 import {
-  Form,
   FormControl,
   FormField,
   FormItem,
@@ -49,7 +48,7 @@ export default function HomeBlurbForm(props: {
   }
 
   return (
-    <Form {...form}>
+    <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
@@ -74,6 +73,6 @@ export default function HomeBlurbForm(props: {
 
         <Button type="submit">Submit</Button>
       </form>
-    </Form>
+    </FormProvider>
   )
 }

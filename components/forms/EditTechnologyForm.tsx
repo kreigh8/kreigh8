@@ -1,6 +1,6 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -150,7 +150,7 @@ export default function EditTechnologyForm(props: {
   }, [technology.imageUrl, form])
 
   return (
-    <Form {...form}>
+    <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
@@ -192,6 +192,6 @@ export default function EditTechnologyForm(props: {
           Submit
         </Button>
       </form>
-    </Form>
+    </FormProvider>
   )
 }
