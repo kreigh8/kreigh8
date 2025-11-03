@@ -18,6 +18,7 @@ import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { useUser } from '@clerk/clerk-react'
 import ImageUpload from './ImageUpload'
+import { toast } from 'sonner'
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -87,6 +88,8 @@ export default function ClientForm() {
           format: 'image'
         },
         active: values.active
+      }).then(() => {
+        toast.success('Client created successfully!')
       })
 
       form.reset()

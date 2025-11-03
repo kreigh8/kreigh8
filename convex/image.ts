@@ -9,6 +9,17 @@ export const generateUploadUrl = mutation({
   }
 })
 
+export const getImage = query({
+  args: {
+    id: v.id('images')
+  },
+  handler: async (ctx, { id }) => {
+    const image = await ctx.db.get(id)
+    console.log('Fetched image:', image)
+    return image
+  }
+})
+
 export async function uploadImage(
   ctx: MutationCtx,
   {

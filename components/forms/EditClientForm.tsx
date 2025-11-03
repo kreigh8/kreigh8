@@ -14,12 +14,18 @@ import {
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Preloaded, useMutation, usePreloadedQuery } from 'convex/react'
+import {
+  Preloaded,
+  useMutation,
+  usePreloadedQuery,
+  useQuery
+} from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { useUser } from '@clerk/clerk-react'
 import ImageUpload from './ImageUpload'
-import { useEffect, useTransition } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import { Spinner } from '../ui/spinner'
+import { Id } from '@/convex/_generated/dataModel'
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -49,8 +55,17 @@ export default function EditClientForm(props: {
   const generateUploadUrl = useMutation(api.image.generateUploadUrl)
   const updateClient = useMutation(api.clients.updateClient)
   const client = usePreloadedQuery(props.preloadedClient)
+  const [previewImage, setPreviewImage] = useState<{
+    name: string
+    url: string
+    _id: Id<'images'>
+  } | null>(null)
 
-  const { user } = useUser()
+  const imageData = useQuery(api.image.getImage, {
+    id: client?.imageId ?? 'skip'
+  })
+
+  console.log('imageData', imageData)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -62,10 +77,26 @@ export default function EditClientForm(props: {
     }
   })
 
-  const image = form.watch('image')
+  useEffect(() => {
+    async function setImageFromData() {
+      if (imageData && client.imageUrl && imageData.name) {
+        const response = await fetch(client.imageUrl)
+        const blob = await response.blob()
+        const file = new File([blob], imageData.name, { type: blob.type })
+        form.setValue('image', file)
+        setPreviewImage({
+          name: imageData.name,
+          url: client.imageUrl,
+          _id: imageData._id
+        })
+      }
+    }
+    setImageFromData()
+  }, [imageData, form])
 
-  console.log('client', client)
-  console.log('image', image)
+  const { user } = useUser()
+
+  const image = form.watch('image')
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
@@ -87,6 +118,7 @@ export default function EditClientForm(props: {
             name: values.name,
             url: values.url,
             image: {
+              name: image?.name,
               storageId,
               author: user?.username || 'unknown',
               format: 'image'
@@ -154,7 +186,7 @@ export default function EditClientForm(props: {
           )}
         />
 
-        <ImageUpload />
+        <ImageUpload imageUrl={previewImage?.url ?? undefined} />
 
         <FormField
           control={form.control}

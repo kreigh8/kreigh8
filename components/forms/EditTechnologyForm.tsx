@@ -13,13 +13,19 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Preloaded, useMutation, usePreloadedQuery } from 'convex/react'
+import {
+  Preloaded,
+  useMutation,
+  usePreloadedQuery,
+  useQuery
+} from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { useUser } from '@clerk/clerk-react'
 import ImageUpload from './ImageUpload'
-import { useEffect, useTransition } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import { Spinner } from '../ui/spinner'
 import { toast } from 'sonner'
+import { Id } from '@/convex/_generated/dataModel'
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -49,6 +55,16 @@ export default function EditTechnologyForm(props: {
   const generateUploadUrl = useMutation(api.image.generateUploadUrl)
   const updateTechnology = useMutation(api.technology.updateTechnology)
 
+  const imageData = useQuery(api.image.getImage, {
+    id: technology?.imageId ?? 'skip'
+  })
+
+  const [previewImage, setPreviewImage] = useState<{
+    name: string
+    url: string
+    _id: Id<'images'>
+  } | null>(null)
+
   const { user } = useUser()
 
   console.log('technology', technology)
@@ -61,6 +77,23 @@ export default function EditTechnologyForm(props: {
       image: undefined as unknown as File
     }
   })
+
+  useEffect(() => {
+    async function setImageFromData() {
+      if (imageData && technology.imageUrl && imageData.name) {
+        const response = await fetch(technology.imageUrl)
+        const blob = await response.blob()
+        const file = new File([blob], imageData.name, { type: blob.type })
+        form.setValue('image', file)
+        setPreviewImage({
+          name: imageData.name,
+          url: technology.imageUrl,
+          _id: imageData._id
+        })
+      }
+    }
+    setImageFromData()
+  }, [imageData, form])
 
   const image = form.watch('image')
 
@@ -152,8 +185,7 @@ export default function EditTechnologyForm(props: {
           )}
         />
 
-        {/* <ImageUpload file={image} imageUrl={technology.imageUrl ?? ''} /> */}
-        <ImageUpload />
+        <ImageUpload imageUrl={technology.imageUrl ?? undefined} />
 
         <Button type="submit">
           {isPending && <Spinner />}
