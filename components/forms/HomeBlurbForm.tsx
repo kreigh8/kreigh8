@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
+import { toast } from 'sonner'
 
 const formSchema = z.object({
   homeBlurb: z.string().min(2, {
@@ -39,6 +40,12 @@ export default function HomeBlurbForm(props: {
     createHomeBlurb({
       homeBlurb: values.homeBlurb
     })
+      .then(() => {
+        toast.success('Home page blurb updated successfully!')
+      })
+      .catch(() => {
+        toast.error('Failed to update home page blurb.')
+      })
   }
 
   return (

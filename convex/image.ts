@@ -12,15 +12,17 @@ export const generateUploadUrl = mutation({
 export async function uploadImage(
   ctx: MutationCtx,
   {
+    name,
     storageId,
     author,
     format
-  }: { storageId: Id<'_storage'>; author: string; format: string }
+  }: { name: string; storageId: Id<'_storage'>; author: string; format: string }
 ): Promise<Id<'images'>> {
   const imageId = await ctx.db.insert('images', {
     body: storageId,
     author,
-    format
+    format,
+    name
   })
 
   return imageId

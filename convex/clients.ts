@@ -38,6 +38,7 @@ export const updateClient = mutation({
       active: v.boolean(),
       image: v.optional(
         v.object({
+          name: v.string(),
           storageId: v.id('_storage'),
           author: v.string(),
           format: v.string()
@@ -55,6 +56,7 @@ export const updateClient = mutation({
     let imageId: Id<'images'> | undefined
     if (args.body.image) {
       imageId = await uploadImage(ctx, {
+        name: args.body.image.name,
         storageId: args.body.image.storageId,
         author: args.body.image.author,
         format: args.body.image.format
@@ -129,6 +131,7 @@ export const createClient = mutation({
     name: v.string(),
     url: v.string(),
     image: v.object({
+      name: v.string(),
       storageId: v.id('_storage'),
       author: v.string(),
       format: v.string()
@@ -142,6 +145,7 @@ export const createClient = mutation({
     }
     // Insert image into images table
     const imageId = await uploadImage(ctx, {
+      name: args.image.name,
       storageId: args.image.storageId,
       author: args.image.author,
       format: args.image.format

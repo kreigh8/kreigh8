@@ -1473,10 +1473,10 @@ concat-map@0.0.1:
   resolved "https://registry.npmjs.org/concat-map/-/concat-map-0.0.1.tgz"
   integrity sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==
 
-convex@^1.27.0:
-  version "1.27.5"
-  resolved "https://registry.npmjs.org/convex/-/convex-1.27.5.tgz"
-  integrity sha512-6YU/AVPnoNdAaJABKBI9c5IqRSKsow/c4yo/ntaOWtd8Dff2P2zaImA/ougICfPgTuTvjKRbgkxk6lJhODzb4g==
+convex@^1.28.2:
+  version "1.28.2"
+  resolved "https://registry.yarnpkg.com/convex/-/convex-1.28.2.tgz#4dc29813a6ab7b6811271f13d16efce80e4f9eb4"
+  integrity sha512-KzNsLbcVXb1OhpVQ+vHMgu+hjrsQ1ks5BZwJ2lR8O+nfbeJXE6tHbvsg1H17+ooUDvIDBSMT3vXS+AlodDhTnQ==
   dependencies:
     esbuild "0.25.4"
     prettier "^3.0.0"

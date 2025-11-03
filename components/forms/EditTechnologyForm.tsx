@@ -84,6 +84,7 @@ export default function EditTechnologyForm(props: {
             name: values.name,
             url: values.url,
             image: {
+              name: image?.name,
               storageId,
               author: user?.username || 'unknown',
               format: 'image'

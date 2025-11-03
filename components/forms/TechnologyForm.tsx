@@ -77,6 +77,7 @@ export default function TechnologyForm() {
           name: values.name,
           url: values.url,
           image: {
+            name: image?.name,
             storageId,
             author: user?.username || 'unknown',
             format: 'image'

@@ -71,10 +71,17 @@ export default function ClientForm() {
       })
       const { storageId } = await result.json()
 
+      console.log('image', image)
+
+      console.log('result', result)
+
+      console.log('storageId', storageId)
+
       await createClient({
         name: values.name,
         url: values.url,
         image: {
+          name: image?.name || 'unknown',
           storageId,
           author: user?.username || 'unknown',
           format: 'image'

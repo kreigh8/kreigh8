@@ -25,6 +25,7 @@ export default defineSchema({
     storageId: v.id('_storage')
   }),
   images: defineTable({
+    name: v.string(),
     body: v.id('_storage'),
     author: v.string(),
     format: v.string()
