@@ -18,7 +18,13 @@ import ImageUpload from './ImageUpload'
 import { useEffect, useState, useTransition } from 'react'
 import { Spinner } from '../ui/spinner'
 import { Id } from '@/convex/_generated/dataModel'
-import { Field, FieldSet, FieldLabel, FieldError } from '../ui/field'
+import {
+  Field,
+  FieldSet,
+  FieldLabel,
+  FieldError,
+  FieldDescription
+} from '../ui/field'
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -63,8 +69,8 @@ export default function EditClientForm(props: {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: client.name,
-      url: client.url,
+      name: client.name ?? '',
+      url: client.url ?? '',
       image: undefined as unknown as File,
       active: client.active
     }
@@ -151,14 +157,17 @@ export default function EditClientForm(props: {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Client Name</FieldLabel>
+              <FieldLabel htmlFor={'client-name'}>Client Name</FieldLabel>
               <Input
                 {...field}
-                id={field.name}
+                id={'client-name'}
                 aria-invalid={fieldState.invalid}
                 placeholder="Kroger"
-                autoComplete="off"
               />
+              {/* <FieldDescription>
+                This is your public display name. Must be between 3 and 10
+                characters. Must only contain letters, numbers, and underscores.
+              </FieldDescription> */}
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
@@ -169,10 +178,10 @@ export default function EditClientForm(props: {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Client URL</FieldLabel>
+              <FieldLabel htmlFor={'client-url'}>Client URL</FieldLabel>
               <Input
                 {...field}
-                id={field.name}
+                id={'client-url'}
                 aria-invalid={fieldState.invalid}
                 placeholder="https://kroger.com"
                 autoComplete="off"
@@ -182,7 +191,7 @@ export default function EditClientForm(props: {
           )}
         />
 
-        <ImageUpload imageUrl={previewImage?.url ?? undefined} />
+        <ImageUpload imageUrl={previewImage?.url} />
 
         <Controller
           name="active"
@@ -191,13 +200,13 @@ export default function EditClientForm(props: {
             <FieldSet>
               <Field orientation="horizontal" data-invalid={fieldState.invalid}>
                 <Checkbox
-                  id={field.name}
+                  id={'active-checkbox'}
                   name={field.name}
                   aria-invalid={fieldState.invalid}
                   checked={field.value}
                   onCheckedChange={(checked) => field.onChange(!!checked)}
                 />
-                <FieldLabel htmlFor={field.name} className="font-normal">
+                <FieldLabel htmlFor={'active-checkbox'} className="font-normal">
                   Active
                 </FieldLabel>
               </Field>

@@ -63,6 +63,11 @@ export default function ImageUpload({ imageUrl }: Props) {
               aria-invalid={fieldState.invalid}
               type="file"
               autoComplete="off"
+              value={undefined} // Always undefined for file input to avoid controlled/uncontrolled warning
+              onChange={(e) => {
+                field.onChange(e)
+                setSelectedImage(e.target.files?.[0] ?? null)
+              }}
             />
             {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
           </Field>
