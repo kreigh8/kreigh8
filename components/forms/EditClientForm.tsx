@@ -18,13 +18,7 @@ import ImageUpload from './ImageUpload'
 import { useEffect, useState, useTransition } from 'react'
 import { Spinner } from '../ui/spinner'
 import { Id } from '@/convex/_generated/dataModel'
-import {
-  Field,
-  FieldSet,
-  FieldLabel,
-  FieldError,
-  FieldDescription
-} from '../ui/field'
+import { Field, FieldSet, FieldLabel, FieldError } from '../ui/field'
 
 const formSchema = z.object({
   name: z.string().min(2, {
