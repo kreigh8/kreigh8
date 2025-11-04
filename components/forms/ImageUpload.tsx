@@ -1,16 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage
-} from '../ui/form'
-
-import { useFormContext } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 import { Input } from '../ui/input'
 import Image from 'next/image'
 import { Skeleton } from '../ui/skeleton'
+import { Field, FieldError, FieldLabel } from '../ui/field'
 
 type Props = {
   imageUrl?: string
@@ -57,22 +50,22 @@ export default function ImageUpload({ imageUrl }: Props) {
 
   return (
     <div className="flex grid-cols-2 w-full items-center gap-4">
-      <FormField
-        control={control}
+      <Controller
         name="image"
-        render={() => (
-          <FormItem>
-            <FormLabel>Image</FormLabel>
-            <FormControl>
-              <Input
-                ref={fileInputRef}
-                onChange={(event) => setSelectedImage(event.target.files![0])}
-                id="picture"
-                type="file"
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
+        control={control}
+        render={({ field, fieldState }) => (
+          <Field data-invalid={fieldState.invalid}>
+            <FieldLabel htmlFor={field.name}>Image</FieldLabel>
+            <Input
+              {...field}
+              ref={fileInputRef}
+              id={field.name}
+              aria-invalid={fieldState.invalid}
+              type="file"
+              autoComplete="off"
+            />
+            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          </Field>
         )}
       />
 

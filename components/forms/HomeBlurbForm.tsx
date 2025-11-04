@@ -2,19 +2,13 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Preloaded, useMutation, usePreloadedQuery } from 'convex/react'
-import { FormProvider, useForm } from 'react-hook-form'
+import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { api } from '@/convex/_generated/api'
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from 'sonner'
+import { Field, FieldError, FieldLabel, FieldDescription } from '../ui/field'
 
 const formSchema = z.object({
   homeBlurb: z.string().min(2, {
@@ -50,24 +44,27 @@ export default function HomeBlurbForm(props: {
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
+        <Controller
           name="homeBlurb"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Home Page Blurb</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Enter home page blurb..."
-                  className="resize-none"
-                  {...field}
-                />
-              </FormControl>
-              {/* <FormDescription>
-                This is your public display name.
-              </FormDescription> */}
-              <FormMessage />
-            </FormItem>
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="form-rhf-textarea-about">
+                Home Page Blurb
+              </FieldLabel>
+              <Textarea
+                {...field}
+                id="form-rhf-textarea-about"
+                aria-invalid={fieldState.invalid}
+                placeholder="I'm a software engineer..."
+                className="min-h-[120px]"
+              />
+              <FieldDescription>
+                Tell us more about yourself. This will be used to help us
+                personalize your experience.
+              </FieldDescription>
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
           )}
         />
 

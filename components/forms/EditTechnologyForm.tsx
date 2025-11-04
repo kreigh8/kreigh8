@@ -1,16 +1,8 @@
 'use client'
 
-import { FormProvider, useForm } from 'react-hook-form'
+import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import {
@@ -26,6 +18,7 @@ import { useEffect, useState, useTransition } from 'react'
 import { Spinner } from '../ui/spinner'
 import { toast } from 'sonner'
 import { Id } from '@/convex/_generated/dataModel'
+import { FieldLabel, Field, FieldError } from '../ui/field'
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -152,36 +145,39 @@ export default function EditTechnologyForm(props: {
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
+        <Controller
           name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Technology Name</FormLabel>
-              <FormControl>
-                <Input placeholder="React" {...field} />
-              </FormControl>
-              {/* <FormDescription>
-                This is your public display name.
-              </FormDescription> */}
-              <FormMessage />
-            </FormItem>
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor={field.name}>Technology Name</FieldLabel>
+              <Input
+                {...field}
+                id={field.name}
+                aria-invalid={fieldState.invalid}
+                placeholder="React"
+                autoComplete="off"
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
           )}
         />
-        <FormField
-          control={form.control}
+
+        <Controller
           name="url"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Technology URL</FormLabel>
-              <FormControl>
-                <Input placeholder="https://react.dev" {...field} />
-              </FormControl>
-              {/* <FormDescription>
-                This is your public display name.
-              </FormDescription> */}
-              <FormMessage />
-            </FormItem>
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor={field.name}>Technology URL</FieldLabel>
+              <Input
+                {...field}
+                id={field.name}
+                aria-invalid={fieldState.invalid}
+                placeholder="https://react.dev"
+                autoComplete="off"
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
           )}
         />
 

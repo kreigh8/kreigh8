@@ -1,15 +1,8 @@
 'use client'
 
-import { FormProvider, useForm } from 'react-hook-form'
+import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -18,6 +11,7 @@ import { api } from '@/convex/_generated/api'
 import { useUser } from '@clerk/clerk-react'
 import ImageUpload from './ImageUpload'
 import { toast } from 'sonner'
+import { Field, FieldError, FieldLabel, FieldSet } from '../ui/field'
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -71,12 +65,6 @@ export default function ClientForm() {
       })
       const { storageId } = await result.json()
 
-      console.log('image', image)
-
-      console.log('result', result)
-
-      console.log('storageId', storageId)
-
       await createClient({
         name: values.name,
         url: values.url,
@@ -101,60 +89,65 @@ export default function ClientForm() {
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
+        <Controller
           name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Client Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Kroger" {...field} />
-              </FormControl>
-              {/* <FormDescription>
-                This is your public display name.
-              </FormDescription> */}
-              <FormMessage />
-            </FormItem>
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor={field.name}>Client Name</FieldLabel>
+              <Input
+                {...field}
+                id={field.name}
+                aria-invalid={fieldState.invalid}
+                placeholder="Kroger"
+                autoComplete="off"
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
           )}
         />
-        <FormField
-          control={form.control}
+
+        <Controller
           name="url"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Client URL</FormLabel>
-              <FormControl>
-                <Input placeholder="https://kroger.com" {...field} />
-              </FormControl>
-              {/* <FormDescription>
-                This is your public display name.
-              </FormDescription> */}
-              <FormMessage />
-            </FormItem>
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor={field.name}>Client URL</FieldLabel>
+              <Input
+                {...field}
+                id={field.name}
+                aria-invalid={fieldState.invalid}
+                placeholder="https://kroger.com"
+                autoComplete="off"
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
           )}
         />
 
         <ImageUpload />
 
-        <FormField
-          control={form.control}
+        <Controller
           name="active"
-          render={({ field }) => {
-            return (
-              <FormItem>
-                <FormLabel className="text-sm font-normal">
-                  Active Client
-                </FormLabel>
-                <FormControl>
-                  <Checkbox
-                    checked={field.value === true}
-                    onCheckedChange={(checked) => field.onChange(!!checked)}
-                  />
-                </FormControl>
-              </FormItem>
-            )
-          }}
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <FieldSet>
+              <Field orientation="horizontal" data-invalid={fieldState.invalid}>
+                <Checkbox
+                  id={field.name}
+                  name={field.name}
+                  aria-invalid={fieldState.invalid}
+                  checked={field.value}
+                  onCheckedChange={(checked) => field.onChange(!!checked)}
+                />
+                <FieldLabel htmlFor={field.name} className="font-normal">
+                  Active
+                </FieldLabel>
+              </Field>
+            </FieldSet>
+          )}
         />
+
         <Button type="submit">Submit</Button>
       </form>
     </FormProvider>
