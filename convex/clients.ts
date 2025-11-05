@@ -54,13 +54,20 @@ export const updateClient = mutation({
 
     // Insert image into images table
     let imageId: Id<'images'> | undefined
-    if (args.body.image) {
+
+    const client = await ctx.db.get(args.id)
+
+    const existingImage = await getImageFromId(ctx, client!.imageId)
+
+    if (args.body.image && args.body.image.name !== existingImage?.name) {
       imageId = await uploadImage(ctx, {
         name: args.body.image.name,
         storageId: args.body.image.storageId,
         author: args.body.image.author,
         format: args.body.image.format
       })
+
+      await deleteImageFromId(ctx, client!.imageId)
     }
 
     // Insert client into clients table
@@ -114,11 +121,11 @@ export const deleteClient = mutation({
       throw new Error('Not authenticated')
     }
 
-    const technology = await ctx.db.get(id)
+    const client = await ctx.db.get(id)
 
-    const image = await getImageFromId(ctx, technology!.imageId)
+    const image = await getImageFromId(ctx, client!.imageId)
 
-    deleteImageFromId(ctx, technology!.imageId)
+    await deleteImageFromId(ctx, client!.imageId)
 
     await ctx.storage.delete(image?.body as Id<'_storage'>)
 

@@ -94,10 +94,12 @@ export default function TechnologyForm() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Technology Name</FieldLabel>
+              <FieldLabel htmlFor={'technology-name'}>
+                Technology Name
+              </FieldLabel>
               <Input
                 {...field}
-                id={field.name}
+                id={'technology-name'}
                 aria-invalid={fieldState.invalid}
                 placeholder="React"
                 autoComplete="off"
@@ -112,10 +114,10 @@ export default function TechnologyForm() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Technology URL</FieldLabel>
+              <FieldLabel htmlFor={'technology-url'}>Technology URL</FieldLabel>
               <Input
                 {...field}
-                id={field.name}
+                id={'technology-url'}
                 aria-invalid={fieldState.invalid}
                 placeholder="https://react.dev"
                 autoComplete="off"

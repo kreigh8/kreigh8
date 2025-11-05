@@ -94,10 +94,10 @@ export default function ClientForm() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Client Name</FieldLabel>
+              <FieldLabel htmlFor={'client-name'}>Client Name</FieldLabel>
               <Input
                 {...field}
-                id={field.name}
+                id={'client-name'}
                 aria-invalid={fieldState.invalid}
                 placeholder="Kroger"
                 autoComplete="off"
@@ -112,10 +112,10 @@ export default function ClientForm() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Client URL</FieldLabel>
+              <FieldLabel htmlFor={'client-url'}>Client URL</FieldLabel>
               <Input
                 {...field}
-                id={field.name}
+                id={'client-url'}
                 aria-invalid={fieldState.invalid}
                 placeholder="https://kroger.com"
                 autoComplete="off"
@@ -134,13 +134,13 @@ export default function ClientForm() {
             <FieldSet>
               <Field orientation="horizontal" data-invalid={fieldState.invalid}>
                 <Checkbox
-                  id={field.name}
+                  id={'client-active'}
                   name={field.name}
                   aria-invalid={fieldState.invalid}
                   checked={field.value}
                   onCheckedChange={(checked) => field.onChange(!!checked)}
                 />
-                <FieldLabel htmlFor={field.name} className="font-normal">
+                <FieldLabel htmlFor={'client-active'} className="font-normal">
                   Active
                 </FieldLabel>
               </Field>

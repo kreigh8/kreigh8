@@ -79,13 +79,20 @@ export const updateTechnology = mutation({
 
     // Insert image into images table
     let imageId: Id<'images'> | undefined
-    if (args.body.image) {
+
+    const technology = await ctx.db.get(args.id)
+
+    const existingImage = await getImageFromId(ctx, technology!.imageId)
+
+    if (args.body.image && args.body.image.name !== existingImage?.name) {
       imageId = await uploadImage(ctx, {
         name: args.body.image.name,
         storageId: args.body.image.storageId,
         author: args.body.image.author,
         format: args.body.image.format
       })
+
+      await deleteImageFromId(ctx, technology!.imageId)
     }
 
     // Insert client into clients table
@@ -123,7 +130,7 @@ export const deleteTechnology = mutation({
 
     const image = await getImageFromId(ctx, technology!.imageId)
 
-    deleteImageFromId(ctx, technology!.imageId)
+    await deleteImageFromId(ctx, technology!.imageId)
 
     await ctx.storage.delete(image?.body as Id<'_storage'>)
 

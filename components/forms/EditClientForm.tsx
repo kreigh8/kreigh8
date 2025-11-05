@@ -19,6 +19,7 @@ import { useEffect, useState, useTransition } from 'react'
 import { Spinner } from '../ui/spinner'
 import { Id } from '@/convex/_generated/dataModel'
 import { Field, FieldSet, FieldLabel, FieldError } from '../ui/field'
+import { toast } from 'sonner'
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -37,7 +38,8 @@ const formSchema = z.object({
           'image/gif'
         ].includes(file.type),
       { message: 'Invalid image file type' }
-    ),
+    )
+    .optional(),
   active: z.boolean()
 })
 
@@ -57,8 +59,6 @@ export default function EditClientForm(props: {
   const imageData = useQuery(api.image.getImage, {
     id: client?.imageId ?? 'skip'
   })
-
-  console.log('imageData', imageData)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -95,14 +95,22 @@ export default function EditClientForm(props: {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     try {
-      const postUrl = await generateUploadUrl()
-      // Step 2: POST the file to the URL
-      const result = await fetch(postUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': image!.type },
-        body: image
-      })
-      const { storageId } = await result.json()
+      let imagePayload = undefined
+      if (values.image) {
+        const postUrl = await generateUploadUrl()
+        const result = await fetch(postUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': values.image.type },
+          body: values.image
+        })
+        const { storageId } = await result.json()
+        imagePayload = {
+          name: values.image.name,
+          storageId,
+          author: user?.username || 'unknown',
+          format: 'image'
+        }
+      }
 
       startTransition(async () => {
         await updateClient({
@@ -110,18 +118,14 @@ export default function EditClientForm(props: {
           body: {
             name: values.name,
             url: values.url,
-            image: {
-              name: image?.name,
-              storageId,
-              author: user?.username || 'unknown',
-              format: 'image'
-            },
+            image: imagePayload,
             active: values.active
           }
+        }).then(() => {
+          toast.success('Client updated successfully!')
         })
       })
 
-      form.reset()
       form.setValue('image', undefined as unknown as File)
     } catch (error) {
       console.error('Error creating client:', error)

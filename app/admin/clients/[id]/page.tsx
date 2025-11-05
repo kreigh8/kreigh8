@@ -13,8 +13,6 @@ export default async function EditClientPage(
     id
   })
 
-  console.log('Editing client:', preloadedClient)
-
   return (
     <section className="flex flex-col gap-4">
       <h1>Edit Client</h1>

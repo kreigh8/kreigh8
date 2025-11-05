@@ -49,12 +49,10 @@ export default function HomeBlurbForm(props: {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-rhf-textarea-about">
-                Home Page Blurb
-              </FieldLabel>
+              <FieldLabel htmlFor="home-blurb">Home Page Blurb</FieldLabel>
               <Textarea
                 {...field}
-                id="form-rhf-textarea-about"
+                id="home-blurb"
                 aria-invalid={fieldState.invalid}
                 placeholder="I'm a software engineer..."
                 className="min-h-[120px]"

@@ -55,11 +55,11 @@ export default function ImageUpload({ imageUrl }: Props) {
         control={control}
         render={({ field, fieldState }) => (
           <Field data-invalid={fieldState.invalid}>
-            <FieldLabel htmlFor={field.name}>Image</FieldLabel>
+            <FieldLabel htmlFor={'image-upload'}>Image</FieldLabel>
             <Input
               {...field}
               ref={fileInputRef}
-              id={field.name}
+              id={'image-upload'}
               aria-invalid={fieldState.invalid}
               type="file"
               autoComplete="off"

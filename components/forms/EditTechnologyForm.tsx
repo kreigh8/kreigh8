@@ -116,11 +116,11 @@ export default function EditTechnologyForm(props: {
               format: 'image'
             }
           }
+        }).then(() => {
+          toast.success('Technology updated successfully!')
         })
-        toast('Technology Created')
       })
 
-      form.reset()
       form.setValue('image', undefined as unknown as File)
     } catch (error) {
       console.error('Error creating client:', error)
@@ -150,10 +150,12 @@ export default function EditTechnologyForm(props: {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Technology Name</FieldLabel>
+              <FieldLabel htmlFor={'technology-name'}>
+                Technology Name
+              </FieldLabel>
               <Input
                 {...field}
-                id={field.name}
+                id={'technology-name'}
                 aria-invalid={fieldState.invalid}
                 placeholder="React"
                 autoComplete="off"
@@ -168,10 +170,10 @@ export default function EditTechnologyForm(props: {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Technology URL</FieldLabel>
+              <FieldLabel htmlFor={'technology-url'}>Technology URL</FieldLabel>
               <Input
                 {...field}
-                id={field.name}
+                id={'technology-url'}
                 aria-invalid={fieldState.invalid}
                 placeholder="https://react.dev"
                 autoComplete="off"
