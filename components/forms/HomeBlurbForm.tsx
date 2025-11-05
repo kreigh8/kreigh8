@@ -12,7 +12,7 @@ import { Field, FieldError, FieldLabel, FieldDescription } from '../ui/field'
 
 const formSchema = z.object({
   homeBlurb: z.string().min(2, {
-    message: 'Technology name must be at least 2 characters.'
+    message: 'Home blurb must be at least 2 characters.'
   })
 })
 
