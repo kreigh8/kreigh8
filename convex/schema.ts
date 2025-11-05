@@ -25,6 +25,7 @@ export default defineSchema({
     storageId: v.id('_storage')
   }),
   images: defineTable({
+    refIds: v.optional(v.array(v.union(v.id('clients'), v.id('technologies')))),
     name: v.string(),
     body: v.id('_storage'),
     author: v.string(),

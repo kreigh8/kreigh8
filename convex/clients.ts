@@ -2,8 +2,10 @@ import { v } from 'convex/values'
 import { query, mutation } from './_generated/server'
 import {
   deleteImageFromId,
+  getImageByName,
   getImageFromId,
   getImageFromImageId,
+  updateImageRef,
   uploadImage
 } from './image'
 import { Id } from './_generated/dataModel'
@@ -88,6 +90,11 @@ export const updateClient = mutation({
 
     await ctx.db.patch(args.id, clientData)
 
+    await updateImageRef(ctx, {
+      id: args.id,
+      imageId: imageId ? imageId : client!.imageId
+    })
+
     console.log('Updated client id:', args.id)
     return args.id
   }
@@ -150,20 +157,34 @@ export const createClient = mutation({
     if (identity === null) {
       throw new Error('Not authenticated')
     }
+
+    const existingImage = await getImageByName(ctx, args.image.name)
+
     // Insert image into images table
-    const imageId = await uploadImage(ctx, {
-      name: args.image.name,
-      storageId: args.image.storageId,
-      author: args.image.author,
-      format: args.image.format
-    })
+    let imageId: Id<'images'>
+
+    if (existingImage) {
+      imageId = existingImage._id
+    } else {
+      imageId = await uploadImage(ctx, {
+        name: args.image.name,
+        storageId: args.image.storageId,
+        author: args.image.author,
+        format: args.image.format
+      })
+    }
 
     // Insert client into clients table
     const clientId = await ctx.db.insert('clients', {
       name: args.name,
       url: args.url,
-      imageId,
+      imageId: existingImage ? existingImage._id : imageId,
       active: args.active
+    })
+
+    await updateImageRef(ctx, {
+      id: clientId,
+      imageId: existingImage ? existingImage._id : imageId
     })
 
     console.log('Added new client with id:', clientId)

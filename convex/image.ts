@@ -20,6 +20,33 @@ export const getImage = query({
   }
 })
 
+export async function updateImageRef(
+  ctx: MutationCtx,
+  {
+    imageId,
+    id
+  }: {
+    imageId: Id<'images'>
+    id: Id<'clients'> | Id<'technologies'>
+  }
+) {
+  const identity = await ctx.auth.getUserIdentity()
+  if (identity === null) {
+    throw new Error('Not authenticated')
+  }
+
+  const image = await ctx.db.get(imageId)
+  if (!image) {
+    throw new Error('Image not found')
+  }
+
+  await ctx.db.patch(image._id, {
+    refIds: image.refIds ? [...image.refIds, id] : [id]
+  })
+
+  return image
+}
+
 export async function uploadImage(
   ctx: MutationCtx,
   {
@@ -47,6 +74,19 @@ export async function getImageFromId(ctx: QueryCtx, id: Id<'images'>) {
 
 export async function deleteImageFromId(ctx: MutationCtx, id: Id<'images'>) {
   ctx.db.delete(id)
+}
+
+export async function getImageByName(ctx: MutationCtx, name: string) {
+  const images = await ctx.db
+    .query('images')
+    .filter((q) => q.eq(q.field('name'), name))
+    .collect()
+
+  if (images.length > 0) {
+    return images[0]
+  } else {
+    return null
+  }
 }
 
 export async function getImageFromImageId(
