@@ -9,6 +9,7 @@ import {
   uploadImage
 } from './image'
 import { Id } from './_generated/dataModel'
+import { checkForAuthenticatedUser } from './auth'
 
 export const listClients = query({
   args: {
@@ -49,10 +50,7 @@ export const updateClient = mutation({
     })
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity()
-    if (identity === null) {
-      throw new Error('Not authenticated')
-    }
+    checkForAuthenticatedUser(ctx)
 
     // Insert image into images table
     let imageId: Id<'images'> | undefined
@@ -129,10 +127,7 @@ export const deleteClient = mutation({
     id: v.id('clients')
   },
   handler: async (ctx, { id }) => {
-    const identity = await ctx.auth.getUserIdentity()
-    if (identity === null) {
-      throw new Error('Not authenticated')
-    }
+    checkForAuthenticatedUser(ctx)
 
     const client = await ctx.db.get(id)
 
@@ -155,10 +150,7 @@ export const createClient = mutation({
     active: v.boolean()
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity()
-    if (identity === null) {
-      throw new Error('Not authenticated')
-    }
+    checkForAuthenticatedUser(ctx)
 
     const existingImage = await getImageByName(ctx, args.image.name)
 

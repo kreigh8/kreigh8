@@ -2,6 +2,7 @@ import { mutation, query, QueryCtx } from './_generated/server'
 import { MutationCtx } from './_generated/server'
 import { Id } from './_generated/dataModel'
 import { v } from 'convex/values'
+import { checkForAuthenticatedUser } from './auth'
 
 export const generateUploadUrl = mutation({
   handler: async (ctx) => {
@@ -30,10 +31,7 @@ export async function updateImageRef(
     id: Id<'clients'> | Id<'technologies'>
   }
 ) {
-  const identity = await ctx.auth.getUserIdentity()
-  if (identity === null) {
-    throw new Error('Not authenticated')
-  }
+  checkForAuthenticatedUser(ctx)
 
   const image = await ctx.db.get(imageId)
   if (!image) {
@@ -77,6 +75,8 @@ export async function deleteImageFromId(
   id: Id<'technologies'> | Id<'clients'>,
   imageId: Id<'images'>
 ) {
+  checkForAuthenticatedUser(ctx)
+
   const image = await getImageFromId(ctx, imageId)
 
   if (image?.refIds?.includes(id)) {

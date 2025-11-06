@@ -1,15 +1,13 @@
 import { v } from 'convex/values'
 import { mutation, query } from './_generated/server'
+import { checkForAuthenticatedUser } from './auth'
 
 export const createHomeBlurb = mutation({
   args: {
     homeBlurb: v.string()
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity()
-    if (identity === null) {
-      throw new Error('Not authenticated')
-    }
+    checkForAuthenticatedUser(ctx)
     // Insert image into images table
 
     const existingBlurb = await ctx.db.query('home').first()

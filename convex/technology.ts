@@ -9,6 +9,7 @@ import {
   uploadImage
 } from './image'
 import { Id } from './_generated/dataModel'
+import { checkForAuthenticatedUser } from './auth'
 
 export const listTechnologies = query({
   // Validators for arguments.
@@ -74,17 +75,12 @@ export const updateTechnology = mutation({
     })
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity()
-    if (identity === null) {
-      throw new Error('Not authenticated')
-    }
+    checkForAuthenticatedUser(ctx)
 
     // Insert image into images table
     let imageId: Id<'images'> | undefined
 
     const technology = await ctx.db.get(args.id)
-
-    const existingImage = await getImageFromId(ctx, technology!.imageId)
 
     const client = await ctx.db.get(args.id)
 
@@ -138,10 +134,7 @@ export const deleteTechnology = mutation({
     id: v.id('technologies')
   },
   handler: async (ctx, { id }) => {
-    const identity = await ctx.auth.getUserIdentity()
-    if (identity === null) {
-      throw new Error('Not authenticated')
-    }
+    checkForAuthenticatedUser(ctx)
 
     const technology = await ctx.db.get(id)
 
@@ -163,10 +156,7 @@ export const createTechnology = mutation({
     })
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity()
-    if (identity === null) {
-      throw new Error('Not authenticated')
-    }
+    checkForAuthenticatedUser(ctx)
 
     // Insert image into images table
     const existingImage = await getImageByName(ctx, args.image.name)
