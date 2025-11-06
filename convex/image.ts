@@ -40,9 +40,9 @@ export async function updateImageRef(
     throw new Error('Image not found')
   }
 
-  await ctx.db.patch(image._id, {
-    refIds: image.refIds ? [...image.refIds, id] : [id]
-  })
+  // Only add id if not already present
+  if (!(image.refIds ?? []).includes(id))
+    await ctx.db.patch(image._id, { refIds: [...(image.refIds ?? []), id] })
 
   return image
 }
@@ -72,11 +72,18 @@ export async function getImageFromId(ctx: QueryCtx, id: Id<'images'>) {
   return image
 }
 
-export async function deleteImageFromId(ctx: MutationCtx, id: Id<'images'>) {
-  const image = await getImageFromId(ctx, id)
+export async function deleteImageFromId(
+  ctx: MutationCtx,
+  id: Id<'technologies'> | Id<'clients'>,
+  imageId: Id<'images'>
+) {
+  const image = await getImageFromId(ctx, imageId)
 
-  ctx.storage.delete(image!.body)
-  ctx.db.delete(id)
+  if (image?.refIds?.includes(id)) {
+    ctx.storage.delete(image!.body)
+  }
+
+  ctx.db.delete(imageId)
 }
 
 export async function getImageByName(ctx: MutationCtx, name: string) {

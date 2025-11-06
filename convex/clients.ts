@@ -59,17 +59,23 @@ export const updateClient = mutation({
 
     const client = await ctx.db.get(args.id)
 
-    const existingImage = await getImageFromId(ctx, client!.imageId)
+    const currentImage = await getImageFromId(ctx, client!.imageId)
 
-    if (args.body.image && args.body.image.name !== existingImage?.name) {
-      imageId = await uploadImage(ctx, {
-        name: args.body.image.name,
-        storageId: args.body.image.storageId,
-        author: args.body.image.author,
-        format: args.body.image.format
-      })
+    if (args.body.image && args.body.image.name !== currentImage?.name) {
+      const existingImage = await getImageByName(ctx, args.body.image.name)
 
-      await deleteImageFromId(ctx, client!.imageId)
+      if (existingImage) {
+        imageId = existingImage._id
+        await ctx.storage.delete(args.body.image.storageId)
+        await deleteImageFromId(ctx, args.id, currentImage!._id)
+      } else {
+        imageId = await uploadImage(ctx, {
+          name: args.body.image.name,
+          storageId: args.body.image.storageId,
+          author: args.body.image.author,
+          format: args.body.image.format
+        })
+      }
     }
 
     // Insert client into clients table
@@ -130,7 +136,7 @@ export const deleteClient = mutation({
 
     const client = await ctx.db.get(id)
 
-    await deleteImageFromId(ctx, client!.imageId)
+    await deleteImageFromId(ctx, id, client!.imageId)
 
     await ctx.db.delete(id)
   }
@@ -161,6 +167,7 @@ export const createClient = mutation({
 
     if (existingImage) {
       imageId = existingImage._id
+      await ctx.storage.delete(args.image.storageId)
     } else {
       imageId = await uploadImage(ctx, {
         name: args.image.name,
@@ -189,7 +196,7 @@ export const createClient = mutation({
       image.refIds.length > 1 &&
       !image.refIds?.includes(clientId)
     ) {
-      await deleteImageFromId(ctx, existingImage._id)
+      await deleteImageFromId(ctx, clientId, existingImage._id)
     }
 
     console.log('Added new client with id:', clientId)

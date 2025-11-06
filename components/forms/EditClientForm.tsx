@@ -89,8 +89,6 @@ export default function EditClientForm(props: {
 
   const { user } = useUser()
 
-  const image = form.watch('image')
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
@@ -125,8 +123,6 @@ export default function EditClientForm(props: {
           toast.success('Client updated successfully!')
         })
       })
-
-      form.setValue('image', undefined as unknown as File)
     } catch (error) {
       console.error('Error creating client:', error)
     }

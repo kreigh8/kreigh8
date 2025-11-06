@@ -86,15 +86,25 @@ export const updateTechnology = mutation({
 
     const existingImage = await getImageFromId(ctx, technology!.imageId)
 
-    if (args.body.image && args.body.image.name !== existingImage?.name) {
-      imageId = await uploadImage(ctx, {
-        name: args.body.image.name,
-        storageId: args.body.image.storageId,
-        author: args.body.image.author,
-        format: args.body.image.format
-      })
+    const client = await ctx.db.get(args.id)
 
-      await deleteImageFromId(ctx, technology!.imageId)
+    const currentImage = await getImageFromId(ctx, client!.imageId)
+
+    if (args.body.image && args.body.image.name !== currentImage?.name) {
+      const existingImage = await getImageByName(ctx, args.body.image.name)
+
+      if (existingImage) {
+        imageId = existingImage._id
+        await ctx.storage.delete(args.body.image.storageId)
+        await deleteImageFromId(ctx, args.id, currentImage!._id)
+      } else {
+        imageId = await uploadImage(ctx, {
+          name: args.body.image.name,
+          storageId: args.body.image.storageId,
+          author: args.body.image.author,
+          format: args.body.image.format
+        })
+      }
     }
 
     // Insert client into clients table
@@ -113,6 +123,11 @@ export const updateTechnology = mutation({
 
     await ctx.db.patch(args.id, technologyData)
 
+    await updateImageRef(ctx, {
+      id: args.id,
+      imageId: imageId ? imageId : technology!.imageId
+    })
+
     console.log('Updated technology id:', args.id)
     return args.id
   }
@@ -130,7 +145,7 @@ export const deleteTechnology = mutation({
 
     const technology = await ctx.db.get(id)
 
-    await deleteImageFromId(ctx, technology!.imageId)
+    await deleteImageFromId(ctx, id, technology!.imageId)
 
     await ctx.db.delete(id)
   }
@@ -161,6 +176,7 @@ export const createTechnology = mutation({
 
     if (existingImage) {
       imageId = existingImage._id
+      await ctx.storage.delete(args.image.storageId)
     } else {
       imageId = await uploadImage(ctx, {
         name: args.image.name,
@@ -188,7 +204,7 @@ export const createTechnology = mutation({
       image.refIds.length > 1 &&
       !image.refIds?.includes(technologyId)
     ) {
-      await deleteImageFromId(ctx, existingImage._id)
+      await deleteImageFromId(ctx, technologyId, existingImage._id)
     }
 
     console.log('Added new technology with id:', technologyId)
