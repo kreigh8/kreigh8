@@ -182,10 +182,19 @@ export const createClient = mutation({
       active: args.active
     })
 
-    await updateImageRef(ctx, {
+    const image = await updateImageRef(ctx, {
       id: clientId,
       imageId: existingImage ? existingImage._id : imageId
     })
+
+    if (
+      existingImage &&
+      image.refIds &&
+      image.refIds.length > 1 &&
+      !image.refIds?.includes(clientId)
+    ) {
+      await deleteImageFromId(ctx, existingImage._id)
+    }
 
     console.log('Added new client with id:', clientId)
     return clientId

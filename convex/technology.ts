@@ -2,8 +2,10 @@ import { v } from 'convex/values'
 import { mutation, query } from './_generated/server'
 import {
   deleteImageFromId,
+  getImageByName,
   getImageFromId,
   getImageFromImageId,
+  updateImageRef,
   uploadImage
 } from './image'
 import { Id } from './_generated/dataModel'
@@ -156,19 +158,42 @@ export const createTechnology = mutation({
     }
 
     // Insert image into images table
-    const imageId = await uploadImage(ctx, {
-      name: args.image.name,
-      storageId: args.image.storageId,
-      author: args.image.author,
-      format: args.image.format
-    })
+    const existingImage = await getImageByName(ctx, args.image.name)
+
+    // Insert image into images table
+    let imageId: Id<'images'>
+
+    if (existingImage) {
+      imageId = existingImage._id
+    } else {
+      imageId = await uploadImage(ctx, {
+        name: args.image.name,
+        storageId: args.image.storageId,
+        author: args.image.author,
+        format: args.image.format
+      })
+    }
 
     // Insert client into clients table
     const technologyId = await ctx.db.insert('technologies', {
       name: args.name,
       url: args.url,
-      imageId
+      imageId: existingImage ? existingImage._id : imageId
     })
+
+    const image = await updateImageRef(ctx, {
+      id: technologyId,
+      imageId: existingImage ? existingImage._id : imageId
+    })
+
+    if (
+      existingImage &&
+      image.refIds &&
+      image.refIds.length > 1 &&
+      !image.refIds?.includes(technologyId)
+    ) {
+      await deleteImageFromId(ctx, existingImage._id)
+    }
 
     console.log('Added new technology with id:', technologyId)
 

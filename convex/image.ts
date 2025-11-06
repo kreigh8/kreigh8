@@ -73,6 +73,9 @@ export async function getImageFromId(ctx: QueryCtx, id: Id<'images'>) {
 }
 
 export async function deleteImageFromId(ctx: MutationCtx, id: Id<'images'>) {
+  const image = await getImageFromId(ctx, id)
+
+  ctx.storage.delete(image!.body)
   ctx.db.delete(id)
 }
 
