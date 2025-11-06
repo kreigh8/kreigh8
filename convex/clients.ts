@@ -130,11 +130,7 @@ export const deleteClient = mutation({
 
     const client = await ctx.db.get(id)
 
-    const image = await getImageFromId(ctx, client!.imageId)
-
     await deleteImageFromId(ctx, client!.imageId)
-
-    await ctx.storage.delete(image?.body as Id<'_storage'>)
 
     await ctx.db.delete(id)
   }

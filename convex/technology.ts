@@ -130,11 +130,7 @@ export const deleteTechnology = mutation({
 
     const technology = await ctx.db.get(id)
 
-    const image = await getImageFromId(ctx, technology!.imageId)
-
     await deleteImageFromId(ctx, technology!.imageId)
-
-    await ctx.storage.delete(image?.body as Id<'_storage'>)
 
     await ctx.db.delete(id)
   }
