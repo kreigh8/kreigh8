@@ -39,8 +39,9 @@ export async function updateImageRef(
   }
 
   // Only add id if not already present
-  if (!(image.refIds ?? []).includes(id))
+  if (!(image.refIds ?? []).includes(id)) {
     await ctx.db.patch(image._id, { refIds: [...(image.refIds ?? []), id] })
+  }
 
   return image
 }
@@ -79,7 +80,7 @@ export async function deleteImageFromId(
 
   const image = await getImageFromId(ctx, imageId)
 
-  if (image?.refIds?.includes(id)) {
+  if (image?.refIds?.includes(id) && image.refIds.length <= 1) {
     ctx.storage.delete(image!.body)
   }
 
@@ -109,4 +110,31 @@ export async function getImageFromImageId(
     return imageUrl
   }
   return null
+}
+
+// Remove id from refIds if present
+export async function removeImageRef(
+  ctx: MutationCtx,
+  {
+    imageId,
+    id
+  }: {
+    imageId: Id<'images'>
+    id: Id<'clients'> | Id<'technologies'>
+  }
+) {
+  checkForAuthenticatedUser(ctx)
+
+  const image = await ctx.db.get(imageId)
+  if (!image) {
+    throw new Error('Image not found')
+  }
+
+  if ((image.refIds ?? []).includes(id)) {
+    await ctx.db.patch(image._id, {
+      refIds: (image.refIds ?? []).filter((refId) => refId !== id)
+    })
+  }
+
+  return image
 }

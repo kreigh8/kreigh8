@@ -5,6 +5,7 @@ import {
   getImageByName,
   getImageFromId,
   getImageFromImageId,
+  removeImageRef,
   updateImageRef,
   uploadImage
 } from './image'
@@ -64,9 +65,19 @@ export const updateClient = mutation({
 
       if (existingImage) {
         imageId = existingImage._id
+
+        await removeImageRef(ctx, {
+          id: args.id,
+          imageId: existingImage._id
+        })
         await ctx.storage.delete(args.body.image.storageId)
         await deleteImageFromId(ctx, args.id, currentImage!._id)
       } else {
+        await removeImageRef(ctx, {
+          id: args.id,
+          imageId: currentImage!._id
+        })
+
         imageId = await uploadImage(ctx, {
           name: args.body.image.name,
           storageId: args.body.image.storageId,

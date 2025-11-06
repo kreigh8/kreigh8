@@ -5,6 +5,7 @@ import {
   getImageByName,
   getImageFromId,
   getImageFromImageId,
+  removeImageRef,
   updateImageRef,
   uploadImage
 } from './image'
@@ -91,6 +92,12 @@ export const updateTechnology = mutation({
 
       if (existingImage) {
         imageId = existingImage._id
+
+        await removeImageRef(ctx, {
+          id: args.id,
+          imageId: existingImage._id
+        })
+
         await ctx.storage.delete(args.body.image.storageId)
         await deleteImageFromId(ctx, args.id, currentImage!._id)
       } else {
