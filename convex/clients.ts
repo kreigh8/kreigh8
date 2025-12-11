@@ -5,6 +5,7 @@ import {
   getImageByName,
   getImageFromId,
   getImageFromImageId,
+  getOrphanedImageResponse,
   removeImageRef,
   updateImageRef,
   uploadImage
@@ -55,7 +56,6 @@ export const updateClient = mutation({
 
     let imageId: Id<'images'> | undefined
     const client = await ctx.db.get(args.id)
-    let removedImage: any = undefined
 
     // Get the previous image before any changes
     const previousImageId = client!.imageId
@@ -109,19 +109,9 @@ export const updateClient = mutation({
     })
 
     // After updating, check if the previous image has no more refs
-    const prevImage = await getImageFromId(ctx, previousImageId)
-    if (prevImage && (!prevImage.refIds || prevImage.refIds.length === 0)) {
-      removedImage = prevImage
-    }
-
-    if (removedImage) {
-      const removedImageUrl = await getImageFromImageId(ctx, removedImage._id)
-
-      return {
-        id: args.id,
-        removedImageUrl,
-        removedImageId: removedImage._id
-      }
+    const orphanedImage = await getOrphanedImageResponse(ctx, previousImageId)
+    if (orphanedImage) {
+      return { id: args.id, ...orphanedImage }
     }
 
     return {
@@ -165,17 +155,10 @@ export const deleteClient = mutation({
 
     await ctx.db.delete(id)
 
-    // Refetch image after client is deleted to get updated refIds
-    const updatedImage = await getImageFromId(ctx, imageId)
-    if (
-      updatedImage &&
-      (!updatedImage.refIds || updatedImage.refIds.length === 0)
-    ) {
-      const removedImageUrl = await getImageFromImageId(ctx, updatedImage._id)
-      return {
-        removedImageId: updatedImage._id,
-        removedImageUrl
-      }
+    // Use common orphaned image response helper
+    const orphanedImage = await getOrphanedImageResponse(ctx, imageId)
+    if (orphanedImage) {
+      return orphanedImage
     }
 
     return { id }
@@ -221,23 +204,10 @@ export const createClient = mutation({
       active: args.active
     })
 
-    const image = await updateImageRef(ctx, {
+    await updateImageRef(ctx, {
       id: clientId,
       imageId: existingImage ? existingImage._id : imageId
     })
-
-    if (
-      existingImage &&
-      image.refIds &&
-      image.refIds.length > 1 &&
-      !image.refIds?.includes(clientId)
-    ) {
-      return {
-        imageToDelete: existingImage,
-        clientId
-      }
-      // await deleteImageFromId(ctx, clientId, existingImage._id)
-    }
 
     console.log('Added new client with id:', clientId)
     return clientId

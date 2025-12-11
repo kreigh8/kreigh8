@@ -7,7 +7,8 @@ import {
   getImageFromImageId,
   removeImageRef,
   updateImageRef,
-  uploadImage
+  uploadImage,
+  getOrphanedImageResponse
 } from './image'
 import { Id } from './_generated/dataModel'
 import { checkForAuthenticatedUser } from './auth'
@@ -132,19 +133,9 @@ export const updateTechnology = mutation({
     })
 
     // After updating, check if the previous image has no more refs
-    const prevImage = await getImageFromId(ctx, previousImageId)
-    if (prevImage && (!prevImage.refIds || prevImage.refIds.length === 0)) {
-      removedImage = prevImage
-    }
-
-    if (removedImage) {
-      const removedImageUrl = await getImageFromImageId(ctx, removedImage._id)
-
-      return {
-        id: args.id,
-        removedImageUrl,
-        removedImageId: removedImage._id
-      }
+    const orphanedImage = await getOrphanedImageResponse(ctx, previousImageId)
+    if (orphanedImage) {
+      return { id: args.id, ...orphanedImage }
     }
 
     return {
@@ -170,19 +161,11 @@ export const deleteTechnology = mutation({
 
     await ctx.db.delete(id)
 
-    // Refetch image after client is deleted to get updated refIds
-    const updatedImage = await getImageFromId(ctx, imageId)
-    if (
-      updatedImage &&
-      (!updatedImage.refIds || updatedImage.refIds.length === 0)
-    ) {
-      const removedImageUrl = await getImageFromImageId(ctx, updatedImage._id)
-      return {
-        removedImageId: updatedImage._id,
-        removedImageUrl
-      }
+    // Use common orphaned image response helper
+    const orphanedImage = await getOrphanedImageResponse(ctx, imageId)
+    if (orphanedImage) {
+      return orphanedImage
     }
-
     return { id }
   }
 })
@@ -209,7 +192,6 @@ export const createTechnology = mutation({
 
     if (existingImage) {
       imageId = existingImage._id
-      await ctx.storage.delete(args.image.storageId)
     } else {
       imageId = await uploadImage(ctx, {
         name: args.image.name,
@@ -226,19 +208,10 @@ export const createTechnology = mutation({
       imageId: existingImage ? existingImage._id : imageId
     })
 
-    const image = await updateImageRef(ctx, {
+    await updateImageRef(ctx, {
       id: technologyId,
       imageId: existingImage ? existingImage._id : imageId
     })
-
-    // if (
-    //   existingImage &&
-    //   image.refIds &&
-    //   image.refIds.length > 1 &&
-    //   !image.refIds?.includes(technologyId)
-    // ) {
-    //   await deleteImageFromId(ctx, technologyId, existingImage._id)
-    // }
 
     console.log('Added new technology with id:', technologyId)
 

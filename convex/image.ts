@@ -38,6 +38,25 @@ export const getImage = query({
   }
 })
 
+export async function getOrphanedImageResponse(
+  ctx: QueryCtx,
+  imageId: Id<'images'>
+) {
+  if (!imageId) return null
+  const updatedImage = await getImageFromId(ctx, imageId)
+  if (
+    updatedImage &&
+    (!updatedImage.refIds || updatedImage.refIds.length === 0)
+  ) {
+    const removedImageUrl = await getImageFromImageId(ctx, updatedImage._id)
+    return {
+      removedImageId: updatedImage._id,
+      removedImageUrl
+    }
+  }
+  return null
+}
+
 export async function updateImageRef(
   ctx: MutationCtx,
   {
