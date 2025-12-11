@@ -75,17 +75,9 @@ export default function ClientForm() {
           format: 'image'
         },
         active: values.active
-      }).then((result) => {
-        if (
-          typeof result === 'object' &&
-          'imageToDelete' in result &&
-          result.imageToDelete
-        ) {
-          console.log('Deleting image:', result.imageToDelete)
-        }
-
-        toast.success('Client created successfully!')
       })
+
+      toast.success('Client created successfully!')
 
       form.reset()
       form.setValue('image', undefined as unknown as File)
