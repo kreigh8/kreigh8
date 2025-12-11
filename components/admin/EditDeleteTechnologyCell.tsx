@@ -19,12 +19,14 @@ import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 import { toast } from 'sonner'
 import { Spinner } from '../ui/spinner'
+import { useImageDeleteContext } from '../context/ImageDeleteContext'
 
 export function EditDeleteTechnologyCell<
   TData extends { _id: Id<'technologies'> }
 >({ row }: { row: Row<TData> }) {
   const [isPending, startTransition] = useTransition()
   const deleteTechnology = useMutation(api.technology.deleteTechnology)
+  const { setImageToDelete } = useImageDeleteContext()
   // const deleteClient = useMutation(api.clients.deleteClient)
 
   return (
@@ -54,7 +56,21 @@ export function EditDeleteTechnologyCell<
             <AlertDialogAction
               onClick={() =>
                 startTransition(async () => {
-                  await deleteTechnology({ id: row.original._id })
+                  await deleteTechnology({ id: row.original._id }).then(
+                    (result) => {
+                      if (
+                        result &&
+                        typeof result === 'object' &&
+                        'removedImageUrl' in result &&
+                        result.removedImageUrl
+                      ) {
+                        setImageToDelete({
+                          id: result.removedImageId,
+                          url: result.removedImageUrl
+                        })
+                      }
+                    }
+                  )
                   toast('Technology Deleted')
                 })
               }

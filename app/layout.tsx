@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import ConvexClientProvider from '@/components/ConvexClientProvider'
+import { ImageDeleteProvider } from '@/components/context/ImageDeleteContext'
+import { ImageDeleteAlert } from '@/components/admin/ImageDeleteAlert'
 import { ClerkProvider } from '@clerk/nextjs'
 import Header from '@/components/Header'
 import { ThemeProvider } from '@/components/ThemeProvider'
@@ -37,16 +39,19 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <ConvexClientProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <Header />
-              <main className="container mx-auto py-4">{children}</main>
-              <Toaster />
-            </ThemeProvider>
+            <ImageDeleteProvider>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+              >
+                <Header />
+                <main className="container mx-auto py-4">{children}</main>
+                <ImageDeleteAlert />
+                <Toaster />
+              </ThemeProvider>
+            </ImageDeleteProvider>
           </ConvexClientProvider>
         </body>
       </html>

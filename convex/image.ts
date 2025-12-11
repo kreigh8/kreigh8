@@ -10,6 +10,23 @@ export const generateUploadUrl = mutation({
   }
 })
 
+export const deleteImage = mutation({
+  args: {
+    imageId: v.id('images')
+  },
+  handler: async (ctx, { imageId }) => {
+    checkForAuthenticatedUser(ctx)
+
+    const image = await getImageFromId(ctx, imageId)
+
+    if (!image) {
+      throw new Error('Image not found')
+    }
+    ctx.storage.delete(image!.body)
+    ctx.db.delete(imageId)
+  }
+})
+
 export const getImage = query({
   args: {
     id: v.id('images')
@@ -73,17 +90,16 @@ export async function getImageFromId(ctx: QueryCtx, id: Id<'images'>) {
 
 export async function deleteImageFromId(
   ctx: MutationCtx,
-  id: Id<'technologies'> | Id<'clients'>,
   imageId: Id<'images'>
 ) {
   checkForAuthenticatedUser(ctx)
 
   const image = await getImageFromId(ctx, imageId)
 
-  if (image?.refIds?.includes(id) && image.refIds.length <= 1) {
-    ctx.storage.delete(image!.body)
+  if (!image) {
+    throw new Error('Image not found')
   }
-
+  ctx.storage.delete(image!.body)
   ctx.db.delete(imageId)
 }
 

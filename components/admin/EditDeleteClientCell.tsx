@@ -1,6 +1,7 @@
 import { Row } from '@tanstack/react-table'
 import Link from 'next/link'
-import { useTransition } from 'react'
+import { useState, useTransition } from 'react'
+import { useImageDeleteContext } from '../context/ImageDeleteContext'
 import { Button } from '@/components/ui/button'
 import {
   AlertDialogTrigger,
@@ -27,6 +28,7 @@ export function EditDeleteClientCell<TData extends { _id: Id<'clients'> }>({
 }) {
   const [isPending, startTransition] = useTransition()
   const deleteClient = useMutation(api.clients.deleteClient)
+  const { setImageToDelete } = useImageDeleteContext()
 
   return (
     <div className="flex gap-2">
@@ -55,7 +57,21 @@ export function EditDeleteClientCell<TData extends { _id: Id<'clients'> }>({
             <AlertDialogAction
               onClick={() =>
                 startTransition(async () => {
-                  await deleteClient({ id: row.original._id })
+                  await deleteClient({ id: row.original._id }).then(
+                    (result) => {
+                      if (
+                        result &&
+                        typeof result === 'object' &&
+                        'removedImageUrl' in result &&
+                        result.removedImageUrl
+                      ) {
+                        setImageToDelete({
+                          id: result.removedImageId,
+                          url: result.removedImageUrl
+                        })
+                      }
+                    }
+                  )
                   toast('Client Deleted')
                 })
               }

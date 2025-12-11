@@ -1,7 +1,7 @@
 'use client'
 
 import { Controller, FormProvider, useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { set, z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
@@ -20,6 +20,16 @@ import { Spinner } from '../ui/spinner'
 import { Id } from '@/convex/_generated/dataModel'
 import { Field, FieldSet, FieldLabel, FieldError } from '../ui/field'
 import { toast } from 'sonner'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogTitle
+} from '../ui/alert-dialog'
+import Image from 'next/image'
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -49,11 +59,16 @@ export default function EditClientForm(props: {
   const [isPending, startTransition] = useTransition()
   const generateUploadUrl = useMutation(api.image.generateUploadUrl)
   const updateClient = useMutation(api.clients.updateClient)
+  const deleteImage = useMutation(api.image.deleteImage)
   const client = usePreloadedQuery(props.preloadedClient)
   const [previewImage, setPreviewImage] = useState<{
     name: string
     url: string
     _id: Id<'images'>
+  } | null>(null)
+  const [removedImageData, setRemovedImageData] = useState<{
+    removedImageUrl: string
+    removedImageId: Id<'images'>
   } | null>(null)
 
   const imageData = useQuery(api.image.getImage, {
@@ -119,7 +134,19 @@ export default function EditClientForm(props: {
             image: imagePayload,
             active: values.active
           }
-        }).then(() => {
+        }).then((result) => {
+          if (
+            typeof result === 'object' &&
+            'removedImageUrl' in result &&
+            result.removedImageUrl
+          ) {
+            setRemovedImageData({
+              removedImageUrl: result.removedImageUrl,
+              removedImageId: result.removedImageId
+            })
+            console.log('Deleting image:', result.removedImageUrl)
+          }
+
           toast.success('Client updated successfully!')
         })
       })
@@ -212,6 +239,43 @@ export default function EditClientForm(props: {
           Submit
         </Button>
       </form>
+
+      <AlertDialog open={!!removedImageData}>
+        <AlertDialogContent>
+          <AlertDialogTitle>Delete Image</AlertDialogTitle>
+          <AlertDialogDescription>
+            {removedImageData ? (
+              <Image
+                src={removedImageData.removedImageUrl}
+                alt="Removed Image"
+                width={200}
+                height={200}
+              />
+            ) : null}
+            This image is no longer associated with any clients or technologies.
+            Would you like to delete this image?
+          </AlertDialogDescription>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Keep in Library</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() =>
+                startTransition(async () => {
+                  if (removedImageData) {
+                    deleteImage({
+                      imageId: removedImageData.removedImageId
+                    }).then(() => {
+                      setRemovedImageData(null)
+                      toast.success('Image deleted successfully!')
+                    })
+                  }
+                })
+              }
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </FormProvider>
   )
 }

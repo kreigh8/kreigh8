@@ -19,6 +19,16 @@ import { Spinner } from '../ui/spinner'
 import { toast } from 'sonner'
 import { Id } from '@/convex/_generated/dataModel'
 import { FieldLabel, Field, FieldError } from '../ui/field'
+import Image from 'next/image'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogTitle
+} from '../ui/alert-dialog'
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -46,7 +56,12 @@ export default function EditTechnologyForm(props: {
   const technology = usePreloadedQuery(props.preloadedTechnology)
   const [isPending, startTransition] = useTransition()
   const generateUploadUrl = useMutation(api.image.generateUploadUrl)
+  const deleteImage = useMutation(api.image.deleteImage)
   const updateTechnology = useMutation(api.technology.updateTechnology)
+  const [removedImageData, setRemovedImageData] = useState<{
+    removedImageUrl: string
+    removedImageId: Id<'images'>
+  } | null>(null)
 
   const imageData = useQuery(api.image.getImage, {
     id: technology?.imageId ?? 'skip'
@@ -190,6 +205,43 @@ export default function EditTechnologyForm(props: {
           Submit
         </Button>
       </form>
+
+      <AlertDialog open={!!removedImageData}>
+        <AlertDialogContent>
+          <AlertDialogTitle>Delete Image</AlertDialogTitle>
+          <AlertDialogDescription>
+            {removedImageData ? (
+              <Image
+                src={removedImageData.removedImageUrl}
+                alt="Removed Image"
+                width={200}
+                height={200}
+              />
+            ) : null}
+            This image is no longer associated with any clients or technologies.
+            Would you like to delete this image?
+          </AlertDialogDescription>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Keep in Library</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() =>
+                startTransition(async () => {
+                  if (removedImageData) {
+                    deleteImage({
+                      imageId: removedImageData.removedImageId
+                    }).then(() => {
+                      setRemovedImageData(null)
+                      toast.success('Image deleted successfully!')
+                    })
+                  }
+                })
+              }
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </FormProvider>
   )
 }

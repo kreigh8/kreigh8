@@ -78,28 +78,21 @@ export const updateTechnology = mutation({
   handler: async (ctx, args) => {
     checkForAuthenticatedUser(ctx)
 
-    // Insert image into images table
     let imageId: Id<'images'> | undefined
-
     const technology = await ctx.db.get(args.id)
+    let removedImage: any = undefined
 
-    const client = await ctx.db.get(args.id)
+    // Get the previous image before any changes
+    const previousImageId = technology!.imageId
 
-    const currentImage = await getImageFromId(ctx, client!.imageId)
-
-    if (args.body.image && args.body.image.name !== currentImage?.name) {
-      const existingImage = await getImageByName(ctx, args.body.image.name)
-
-      if (existingImage) {
-        imageId = existingImage._id
-
-        await removeImageRef(ctx, {
-          id: args.id,
-          imageId: existingImage._id
-        })
-
-        await ctx.storage.delete(args.body.image.storageId)
-        await deleteImageFromId(ctx, args.id, currentImage!._id)
+    // Track if image is changed
+    let imageChanged = false
+    if (args.body.image && args.body.image.name !== technology?.name) {
+      imageChanged = true
+      // Upload or get new image
+      let newImage = await getImageByName(ctx, args.body.image.name)
+      if (newImage) {
+        imageId = newImage._id
       } else {
         imageId = await uploadImage(ctx, {
           name: args.body.image.name,
@@ -110,7 +103,7 @@ export const updateTechnology = mutation({
       }
     }
 
-    // Insert client into clients table
+    // Insert technology into technologies table
     const technologyData: {
       name: string
       url: string
@@ -119,20 +112,44 @@ export const updateTechnology = mutation({
       name: args.body.name,
       url: args.body.url
     }
-
     if (imageId) {
       technologyData.imageId = imageId
     }
-
     await ctx.db.patch(args.id, technologyData)
 
+    // If image changed, remove ref from previous image
+    if (imageChanged) {
+      await removeImageRef(ctx, {
+        id: args.id,
+        imageId: previousImageId
+      })
+    }
+
+    // Always update ref for the new image
     await updateImageRef(ctx, {
       id: args.id,
-      imageId: imageId ? imageId : technology!.imageId
+      imageId: imageId || previousImageId
     })
 
-    console.log('Updated technology id:', args.id)
-    return args.id
+    // After updating, check if the previous image has no more refs
+    const prevImage = await getImageFromId(ctx, previousImageId)
+    if (prevImage && (!prevImage.refIds || prevImage.refIds.length === 0)) {
+      removedImage = prevImage
+    }
+
+    if (removedImage) {
+      const removedImageUrl = await getImageFromImageId(ctx, removedImage._id)
+
+      return {
+        id: args.id,
+        removedImageUrl,
+        removedImageId: removedImage._id
+      }
+    }
+
+    return {
+      id: args.id
+    }
   }
 })
 
@@ -143,11 +160,30 @@ export const deleteTechnology = mutation({
   handler: async (ctx, { id }) => {
     checkForAuthenticatedUser(ctx)
 
-    const technology = await ctx.db.get(id)
+    const client = await ctx.db.get(id)
+    const imageId = client?.imageId as Id<'images'>
 
-    await deleteImageFromId(ctx, id, technology!.imageId)
+    await removeImageRef(ctx, {
+      id,
+      imageId
+    })
 
     await ctx.db.delete(id)
+
+    // Refetch image after client is deleted to get updated refIds
+    const updatedImage = await getImageFromId(ctx, imageId)
+    if (
+      updatedImage &&
+      (!updatedImage.refIds || updatedImage.refIds.length === 0)
+    ) {
+      const removedImageUrl = await getImageFromImageId(ctx, updatedImage._id)
+      return {
+        removedImageId: updatedImage._id,
+        removedImageUrl
+      }
+    }
+
+    return { id }
   }
 })
 
@@ -195,14 +231,14 @@ export const createTechnology = mutation({
       imageId: existingImage ? existingImage._id : imageId
     })
 
-    if (
-      existingImage &&
-      image.refIds &&
-      image.refIds.length > 1 &&
-      !image.refIds?.includes(technologyId)
-    ) {
-      await deleteImageFromId(ctx, technologyId, existingImage._id)
-    }
+    // if (
+    //   existingImage &&
+    //   image.refIds &&
+    //   image.refIds.length > 1 &&
+    //   !image.refIds?.includes(technologyId)
+    // ) {
+    //   await deleteImageFromId(ctx, technologyId, existingImage._id)
+    // }
 
     console.log('Added new technology with id:', technologyId)
 

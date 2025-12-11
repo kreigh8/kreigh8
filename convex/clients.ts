@@ -53,31 +53,22 @@ export const updateClient = mutation({
   handler: async (ctx, args) => {
     checkForAuthenticatedUser(ctx)
 
-    // Insert image into images table
     let imageId: Id<'images'> | undefined
-
     const client = await ctx.db.get(args.id)
+    let removedImage: any = undefined
 
-    const currentImage = await getImageFromId(ctx, client!.imageId)
+    // Get the previous image before any changes
+    const previousImageId = client!.imageId
 
-    if (args.body.image && args.body.image.name !== currentImage?.name) {
-      const existingImage = await getImageByName(ctx, args.body.image.name)
-
-      if (existingImage) {
-        imageId = existingImage._id
-
-        await removeImageRef(ctx, {
-          id: args.id,
-          imageId: existingImage._id
-        })
-        await ctx.storage.delete(args.body.image.storageId)
-        await deleteImageFromId(ctx, args.id, currentImage!._id)
+    // Track if image is changed
+    let imageChanged = false
+    if (args.body.image && args.body.image.name !== client?.name) {
+      imageChanged = true
+      // Upload or get new image
+      let newImage = await getImageByName(ctx, args.body.image.name)
+      if (newImage) {
+        imageId = newImage._id
       } else {
-        await removeImageRef(ctx, {
-          id: args.id,
-          imageId: currentImage!._id
-        })
-
         imageId = await uploadImage(ctx, {
           name: args.body.image.name,
           storageId: args.body.image.storageId,
@@ -98,20 +89,44 @@ export const updateClient = mutation({
       url: args.body.url,
       active: args.body.active
     }
-
     if (imageId) {
       clientData.imageId = imageId
     }
-
     await ctx.db.patch(args.id, clientData)
 
+    // If image changed, remove ref from previous image
+    if (imageChanged) {
+      await removeImageRef(ctx, {
+        id: args.id,
+        imageId: previousImageId
+      })
+    }
+
+    // Always update ref for the new image
     await updateImageRef(ctx, {
       id: args.id,
-      imageId: imageId ? imageId : client!.imageId
+      imageId: imageId || previousImageId
     })
 
-    console.log('Updated client id:', args.id)
-    return args.id
+    // After updating, check if the previous image has no more refs
+    const prevImage = await getImageFromId(ctx, previousImageId)
+    if (prevImage && (!prevImage.refIds || prevImage.refIds.length === 0)) {
+      removedImage = prevImage
+    }
+
+    if (removedImage) {
+      const removedImageUrl = await getImageFromImageId(ctx, removedImage._id)
+
+      return {
+        id: args.id,
+        removedImageUrl,
+        removedImageId: removedImage._id
+      }
+    }
+
+    return {
+      id: args.id
+    }
   }
 })
 
@@ -141,10 +156,29 @@ export const deleteClient = mutation({
     checkForAuthenticatedUser(ctx)
 
     const client = await ctx.db.get(id)
+    const imageId = client?.imageId as Id<'images'>
 
-    await deleteImageFromId(ctx, id, client!.imageId)
+    await removeImageRef(ctx, {
+      id,
+      imageId
+    })
 
     await ctx.db.delete(id)
+
+    // Refetch image after client is deleted to get updated refIds
+    const updatedImage = await getImageFromId(ctx, imageId)
+    if (
+      updatedImage &&
+      (!updatedImage.refIds || updatedImage.refIds.length === 0)
+    ) {
+      const removedImageUrl = await getImageFromImageId(ctx, updatedImage._id)
+      return {
+        removedImageId: updatedImage._id,
+        removedImageUrl
+      }
+    }
+
+    return { id }
   }
 })
 
@@ -170,7 +204,6 @@ export const createClient = mutation({
 
     if (existingImage) {
       imageId = existingImage._id
-      await ctx.storage.delete(args.image.storageId)
     } else {
       imageId = await uploadImage(ctx, {
         name: args.image.name,
@@ -199,7 +232,11 @@ export const createClient = mutation({
       image.refIds.length > 1 &&
       !image.refIds?.includes(clientId)
     ) {
-      await deleteImageFromId(ctx, clientId, existingImage._id)
+      return {
+        imageToDelete: existingImage,
+        clientId
+      }
+      // await deleteImageFromId(ctx, clientId, existingImage._id)
     }
 
     console.log('Added new client with id:', clientId)
