@@ -64,7 +64,7 @@ export async function updateImageRef(
     id
   }: {
     imageId: Id<'images'>
-    id: Id<'clients'> | Id<'technologies'>
+    id: Id<'clients'> | Id<'technologies'> | Id<'skills'>
   }
 ) {
   checkForAuthenticatedUser(ctx)
@@ -155,7 +155,7 @@ export async function removeImageRef(
     id
   }: {
     imageId: Id<'images'>
-    id: Id<'clients'> | Id<'technologies'>
+    id: Id<'clients'> | Id<'technologies'> | Id<'skills'>
   }
 ) {
   checkForAuthenticatedUser(ctx)

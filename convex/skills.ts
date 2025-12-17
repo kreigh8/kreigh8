@@ -1,30 +1,30 @@
 import { v } from 'convex/values'
-import { query, mutation } from './_generated/server'
+import { Id } from './_generated/dataModel'
+import { mutation, query } from './_generated/server'
+import { checkForAuthenticatedUser } from './auth'
 import {
   getImageByName,
-  getImageFromImageId,
-  getOrphanedImageResponse,
-  removeImageRef,
+  uploadImage,
   updateImageRef,
-  uploadImage
+  getImageFromImageId,
+  removeImageRef,
+  getOrphanedImageResponse
 } from './image'
-import { Id } from './_generated/dataModel'
-import { checkForAuthenticatedUser } from './auth'
 
-export const listClients = query({
+export const listSkills = query({
   args: {
     count: v.optional(v.number())
   },
 
   handler: async (ctx) => {
-    const clients = await ctx.db.query('clients').order('desc').collect()
+    const skills = await ctx.db.query('skills').order('desc').collect()
 
     return Promise.all(
-      clients.map(async (client) => {
-        const imageUrl = await getImageFromImageId(ctx, client.imageId)
+      skills.map(async (skill) => {
+        const imageUrl = await getImageFromImageId(ctx, skill.imageId)
 
         return {
-          ...client,
+          ...skill,
           imageUrl
         }
       })
@@ -32,13 +32,12 @@ export const listClients = query({
   }
 })
 
-export const updateClient = mutation({
+export const updateSkill = mutation({
   args: {
-    id: v.id('clients'),
+    id: v.id('skills'),
     body: v.object({
       name: v.string(),
-      url: v.string(),
-      active: v.boolean(),
+      description: v.string(),
       image: v.optional(
         v.object({
           name: v.string(),
@@ -53,14 +52,14 @@ export const updateClient = mutation({
     checkForAuthenticatedUser(ctx)
 
     let imageId: Id<'images'> | undefined
-    const client = await ctx.db.get(args.id)
+    const skill = await ctx.db.get(args.id)
 
     // Get the previous image before any changes
-    const previousImageId = client!.imageId
+    const previousImageId = skill!.imageId
 
     // Track if image is changed
     let imageChanged = false
-    if (args.body.image && args.body.image.name !== client?.name) {
+    if (args.body.image && args.body.image.name !== skill?.name) {
       imageChanged = true
       // Upload or get new image
       let newImage = await getImageByName(ctx, args.body.image.name)
@@ -76,21 +75,19 @@ export const updateClient = mutation({
       }
     }
 
-    // Insert client into clients table
-    const clientData: {
+    // Insert skill into skills table
+    const skillData: {
       name: string
-      url: string
-      active: boolean
+      description: string
       imageId?: Id<'images'>
     } = {
       name: args.body.name,
-      url: args.body.url,
-      active: args.body.active
+      description: args.body.description
     }
     if (imageId) {
-      clientData.imageId = imageId
+      skillData.imageId = imageId
     }
-    await ctx.db.patch(args.id, clientData)
+    await ctx.db.patch(args.id, skillData)
 
     // If image changed, remove ref from previous image
     if (imageChanged) {
@@ -118,62 +115,16 @@ export const updateClient = mutation({
   }
 })
 
-export const getClient = query({
-  args: {
-    id: v.id('clients')
-  },
-
-  handler: async (ctx, { id }) => {
-    const client = await ctx.db.get(id)
-    if (!client) {
-      throw new Error('Client not found')
-    }
-    const imageUrl = await getImageFromImageId(ctx, client.imageId)
-    return {
-      ...client,
-      imageUrl
-    }
-  }
-})
-
-export const deleteClient = mutation({
-  args: {
-    id: v.id('clients')
-  },
-  handler: async (ctx, { id }) => {
-    checkForAuthenticatedUser(ctx)
-
-    const client = await ctx.db.get(id)
-    const imageId = client?.imageId as Id<'images'>
-
-    await removeImageRef(ctx, {
-      id,
-      imageId
-    })
-
-    await ctx.db.delete(id)
-
-    // Use common orphaned image response helper
-    const orphanedImage = await getOrphanedImageResponse(ctx, imageId)
-    if (orphanedImage) {
-      return orphanedImage
-    }
-
-    return { id }
-  }
-})
-
-export const createClient = mutation({
+export const createSkill = mutation({
   args: {
     name: v.string(),
-    url: v.string(),
+    description: v.string(),
     image: v.object({
       name: v.string(),
       storageId: v.id('_storage'),
       author: v.string(),
       format: v.string()
-    }),
-    active: v.boolean()
+    })
   },
   handler: async (ctx, args) => {
     checkForAuthenticatedUser(ctx)
@@ -195,19 +146,63 @@ export const createClient = mutation({
     }
 
     // Insert client into clients table
-    const clientId = await ctx.db.insert('clients', {
+    const skillId = await ctx.db.insert('skills', {
       name: args.name,
-      url: args.url,
-      imageId: existingImage ? existingImage._id : imageId,
-      active: args.active
-    })
-
-    await updateImageRef(ctx, {
-      id: clientId,
+      description: args.description,
       imageId: existingImage ? existingImage._id : imageId
     })
 
-    console.log('Added new client with id:', clientId)
-    return clientId
+    await updateImageRef(ctx, {
+      id: skillId,
+      imageId: existingImage ? existingImage._id : imageId
+    })
+
+    console.log('Added new skill with id:', skillId)
+    return skillId
+  }
+})
+
+export const getSkill = query({
+  args: {
+    id: v.id('skills')
+  },
+
+  handler: async (ctx, { id }) => {
+    const skill = await ctx.db.get(id)
+    if (!skill) {
+      throw new Error('Skill not found')
+    }
+    const imageUrl = await getImageFromImageId(ctx, skill.imageId)
+    return {
+      ...skill,
+      imageUrl
+    }
+  }
+})
+
+export const deleteSkill = mutation({
+  args: {
+    id: v.id('skills')
+  },
+  handler: async (ctx, { id }) => {
+    checkForAuthenticatedUser(ctx)
+
+    const client = await ctx.db.get(id)
+    const imageId = client?.imageId as Id<'images'>
+
+    await removeImageRef(ctx, {
+      id,
+      imageId
+    })
+
+    await ctx.db.delete(id)
+
+    // Use common orphaned image response helper
+    const orphanedImage = await getOrphanedImageResponse(ctx, imageId)
+    if (orphanedImage) {
+      return orphanedImage
+    }
+
+    return { id }
   }
 })

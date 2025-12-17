@@ -1201,10 +1201,10 @@ convert-source-map@^2.0.0:
   resolved "https://registry.npmjs.org/convert-source-map/-/convert-source-map-2.0.0.tgz"
   integrity sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==
 
-convex@^1.31.0:
-  version "1.31.0"
-  resolved "https://registry.npmjs.org/convex/-/convex-1.31.0.tgz"
-  integrity sha512-ht3dtpWQmxX62T8PT3p/5PDlRzSW5p2IDTP4exKjQ5dqmvhtn1wLFakJAX4CCeu1s0Ch0dKY5g2dk/wETTRAOw==
+convex@^1.31.1:
+  version "1.31.1"
+  resolved "https://registry.npmjs.org/convex/-/convex-1.31.1.tgz"
+  integrity sha512-VcElFD0q+BxxhYmoxoiOIsInmMrPMsGHpFSD1UYybRDJYvbNd69977ra6e3EXywUOF4qE0P4In9qCphr78QYCw==
   dependencies:
     esbuild "0.25.4"
     prettier "^3.0.0"

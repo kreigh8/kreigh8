@@ -1,5 +1,6 @@
 import { defineSchema, defineTable } from 'convex/server'
 import { v } from 'convex/values'
+import { describe } from 'node:test'
 
 // The schema is entirely optional.
 // You can delete this file (schema.ts) and the
@@ -25,10 +26,17 @@ export default defineSchema({
     storageId: v.id('_storage')
   }),
   images: defineTable({
-    refIds: v.optional(v.array(v.union(v.id('clients'), v.id('technologies')))),
+    refIds: v.optional(
+      v.array(v.union(v.id('clients'), v.id('technologies'), v.id('skills')))
+    ),
     name: v.string(),
     body: v.id('_storage'),
     author: v.string(),
     format: v.string()
+  }),
+  skills: defineTable({
+    name: v.string(),
+    description: v.string(),
+    imageId: v.id('images')
   })
 })

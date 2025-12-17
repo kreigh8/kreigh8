@@ -12,6 +12,7 @@ import type * as auth from "../auth.js";
 import type * as clients from "../clients.js";
 import type * as home from "../home.js";
 import type * as image from "../image.js";
+import type * as skills from "../skills.js";
 import type * as technology from "../technology.js";
 
 import type {
@@ -25,6 +26,7 @@ declare const fullApi: ApiFromModules<{
   clients: typeof clients;
   home: typeof home;
   image: typeof image;
+  skills: typeof skills;
   technology: typeof technology;
 }>;
 

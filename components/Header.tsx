@@ -29,6 +29,7 @@ export default function Header() {
               <Link href="/admin">Home</Link>
               <Link href="/admin/clients">Clients</Link>
               <Link href="/admin/technology">Technolgies</Link>
+              <Link href="/admin/skills">Skills</Link>
             </div>
           </nav>
         </Authenticated>
