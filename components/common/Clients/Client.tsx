@@ -18,14 +18,16 @@ export default function Client({
   }
 }) {
   return (
-    <Card className="py-2 gap-2">
-      <CardContent className="flex justify-center">
-        <Image
-          src={client.imageUrl as string}
-          alt={client.name}
-          width={100}
-          height={100}
-        />
+    <Card className="p-2 gap-2">
+      <CardContent className="flex px-0 justify-center">
+        <a href={client.url} target="_blank" rel="noopener noreferrer">
+          <Image
+            src={client.imageUrl as string}
+            alt={client.name}
+            width={100}
+            height={100}
+          />
+        </a>
       </CardContent>
     </Card>
   )
