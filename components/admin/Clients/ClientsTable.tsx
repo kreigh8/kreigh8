@@ -7,6 +7,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Check, X } from 'lucide-react'
 import { EditDeleteClientCell } from './EditDeleteClientCell'
 import { Id } from '@/convex/_generated/dataModel'
+import Image from 'next/image'
 
 type Client = {
   _id: Id<'clients'>
@@ -31,10 +32,11 @@ const columns: ColumnDef<Client>[] = [
     cell: ({ row }) => {
       const imageUrl = row.original.imageUrl
       return (
-        <img
-          src={imageUrl!}
-          alt="Client Image"
-          className="h-10 w-10 rounded-full object-cover"
+        <Image
+          src={imageUrl as string}
+          alt={row.original.name}
+          width={100}
+          height={100}
         />
       )
     }

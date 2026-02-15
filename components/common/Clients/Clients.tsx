@@ -7,7 +7,7 @@ export default async function Clients() {
 
   return (
     <section className="flex flex-col gap-4">
-      <h1>Clients</h1>
+      <h1 className="text-xl font-bold text-primary">Clients</h1>
       <ClientList preloadedClients={preloadedClients} />
     </section>
   )
