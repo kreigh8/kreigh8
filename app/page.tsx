@@ -20,13 +20,13 @@ export default function Home() {
           <article className="flex flex-col w-full"></article>
         </section>
 
-        <ContactMe />
-
         <Clients />
 
         <Skills />
 
         <Technology />
+
+        <ContactMe />
       </main>
     </>
   )
