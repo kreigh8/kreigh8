@@ -1,9 +1,10 @@
 import { Button } from './ui/button'
+import ResumeDownloadButton from './ResumeButton'
 
-export default async function ActionButtons() {
+export default function ActionButtons() {
   return (
     <div className="flex gap-4">
-      <Button>Download Resume</Button>
+      <ResumeDownloadButton />
       <Button>Hire Me!</Button>
     </div>
   )

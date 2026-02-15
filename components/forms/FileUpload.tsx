@@ -5,6 +5,7 @@ import { Input } from '../ui/input'
 import { Skeleton } from '../ui/skeleton'
 
 type Props = {
+  label: string
   fileUrl?: string
   formElementName: string
 }
@@ -54,7 +55,7 @@ export default function FileUpload({ fileUrl, formElementName }: Props) {
         control={control}
         render={({ field, fieldState }) => (
           <Field data-invalid={fieldState.invalid}>
-            <FieldLabel htmlFor={formElementName + 'input'}>Image</FieldLabel>
+            <FieldLabel htmlFor={formElementName + 'input'}>File</FieldLabel>
             <Input
               {...field}
               ref={fileInputRef}

@@ -1,15 +1,12 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Preloaded, useMutation, usePreloadedQuery } from 'convex/react'
-import { Controller, FormProvider, useForm } from 'react-hook-form'
+import { useMutation } from 'convex/react'
+import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { api } from '@/convex/_generated/api'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
-import { Field, FieldError, FieldLabel, FieldDescription } from '../ui/field'
-import { useState } from 'react'
-import { generateUploadUrl } from '@/convex/resume'
 import { useUser } from '@clerk/clerk-react'
 import FileUpload from './FileUpload'
 
@@ -30,17 +27,11 @@ const formSchema = z.object({
     )
 })
 
-export default function ResumeForm(props: {
-  preloadedResume: Preloaded<typeof api.resume.getResume>
-}) {
+export default function ResumeForm() {
   const generateUploadUrl = useMutation(api.resume.generateUploadUrl)
   const createResume = useMutation(api.resume.createResume)
-  const getResume = usePreloadedQuery(props.preloadedResume)
 
   const { user } = useUser()
-
-  const [selectedResume, setSelectedResume] = useState<File | null>(null)
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -67,26 +58,26 @@ export default function ResumeForm(props: {
           name: resume?.name || 'unknown',
           body: storageId,
           author: user?.username || 'unknown',
-          format: 'image'
+          format: values.resume.type
         }
       })
         .then(() => {
-          toast.success('Home page blurb updated successfully!')
+          toast.success('Resume uploaded successfully!')
           form.reset()
           form.setValue('resume', undefined as unknown as File)
         })
         .catch(() => {
-          toast.error('Failed to update home page blurb.')
+          toast.error('Failed to upload resume.')
         })
     } catch (error) {
-      console.error('Error creating skill:', error)
+      console.error('Error creating resume:', error)
     }
   }
 
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FileUpload formElementName={'resume'} />
+        <FileUpload label="Resume" formElementName={'resume'} />
 
         <Button type="submit">Submit</Button>
       </form>
