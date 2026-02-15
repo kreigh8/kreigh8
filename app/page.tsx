@@ -3,6 +3,7 @@ import Blurb from '@/components/Blurb'
 import Clients from '@/components/common/Clients/Clients'
 import Skills from '@/components/common/Skills/Skills'
 import Technology from '@/components/common/Technology/Technology'
+import ContactMe from '@/components/ContactMe'
 
 export default function Home() {
   return (
@@ -18,6 +19,8 @@ export default function Home() {
 
           <article className="flex flex-col w-full"></article>
         </section>
+
+        <ContactMe />
 
         <Clients />
 
