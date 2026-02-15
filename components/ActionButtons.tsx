@@ -5,7 +5,7 @@ export default function ActionButtons() {
   return (
     <div className="flex gap-4">
       <ResumeDownloadButton />
-      <Button>Hire Me!</Button>
+      <Button>Contact Me!</Button>
     </div>
   )
 }

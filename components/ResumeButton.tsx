@@ -3,6 +3,7 @@
 import { useQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { Button } from './ui/button'
+import { Download } from 'lucide-react'
 
 export default function ResumeDownloadButton() {
   const resume = useQuery(api.resume.getResume)
@@ -25,7 +26,7 @@ export default function ResumeDownloadButton() {
 
   return (
     <Button onClick={handleDownload} disabled={!resume?.resumeUrl}>
-      Download Resume
+      <Download /> Resume
     </Button>
   )
 }
