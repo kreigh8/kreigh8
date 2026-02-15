@@ -7,6 +7,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import Header from '@/components/Header'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { Toaster } from '@/components/ui/sonner'
+import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
 const geistSans = Geist({
@@ -48,6 +49,7 @@ export default function RootLayout({
               >
                 <Header />
                 <main className="container mx-auto py-4">{children}</main>
+                <Analytics />
                 <ImageDeleteAlert />
                 <Toaster />
               </ThemeProvider>

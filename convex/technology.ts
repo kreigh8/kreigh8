@@ -81,7 +81,6 @@ export const updateTechnology = mutation({
 
     let imageId: Id<'images'> | undefined
     const technology = await ctx.db.get(args.id)
-    let removedImage: any = undefined
 
     // Get the previous image before any changes
     const previousImageId = technology!.imageId

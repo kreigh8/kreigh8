@@ -1,7 +1,7 @@
 'use client'
 
 import { Id } from '@/convex/_generated/dataModel'
-import React, { createContext, useContext, useState, ReactNode } from 'react'
+import { createContext, useContext, useState, ReactNode } from 'react'
 
 interface ImageDeleteContextType {
   imageToDelete: { id: Id<'images'>; url: string } | null

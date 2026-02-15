@@ -1,7 +1,7 @@
 import { Row } from '@tanstack/react-table'
 import Link from 'next/link'
 import { useTransition } from 'react'
-import { useImageDeleteContext } from '../context/ImageDeleteContext'
+import { useImageDeleteContext } from '../../context/ImageDeleteContext'
 import { Button } from '@/components/ui/button'
 import {
   AlertDialogTrigger,
@@ -19,21 +19,21 @@ import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 import { toast } from 'sonner'
-import { Spinner } from '../ui/spinner'
+import { Spinner } from '../../ui/spinner'
 
-export function EditDeleteClientCell<TData extends { _id: Id<'clients'> }>({
+export function EditDeleteSkillCell<TData extends { _id: Id<'skills'> }>({
   row
 }: {
   row: Row<TData>
 }) {
   const [isPending, startTransition] = useTransition()
-  const deleteClient = useMutation(api.clients.deleteClient)
+  const deleteSkill = useMutation(api.skills.deleteSkill)
   const { setImageToDelete } = useImageDeleteContext()
 
   return (
     <div className="flex gap-2">
       <Button asChild>
-        <Link href={`/admin/clients/${row.original._id}`}>
+        <Link href={`/admin/skills/${row.original._id}`}>
           <Pencil />
         </Link>
       </Button>
@@ -49,7 +49,7 @@ export function EditDeleteClientCell<TData extends { _id: Id<'clients'> }>({
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone. This will permanently delete this
-              client from our servers.
+              skill from our servers.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -57,22 +57,20 @@ export function EditDeleteClientCell<TData extends { _id: Id<'clients'> }>({
             <AlertDialogAction
               onClick={() =>
                 startTransition(async () => {
-                  await deleteClient({ id: row.original._id }).then(
-                    (result) => {
-                      if (
-                        result &&
-                        typeof result === 'object' &&
-                        'removedImageUrl' in result &&
-                        result.removedImageUrl
-                      ) {
-                        setImageToDelete({
-                          id: result.removedImageId,
-                          url: result.removedImageUrl
-                        })
-                      }
+                  await deleteSkill({ id: row.original._id }).then((result) => {
+                    if (
+                      result &&
+                      typeof result === 'object' &&
+                      'removedImageUrl' in result &&
+                      result.removedImageUrl
+                    ) {
+                      setImageToDelete({
+                        id: result.removedImageId,
+                        url: result.removedImageUrl
+                      })
                     }
-                  )
-                  toast('Client Deleted')
+                  })
+                  toast('Skill Deleted')
                 })
               }
             >

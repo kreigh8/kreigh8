@@ -1,4 +1,4 @@
-import Skills from '@/components/admin/Skills'
+import Skills from '@/components/admin/Skills/Skills'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import Link from 'next/link'

@@ -1,7 +1,8 @@
 import ActionButtons from '@/components/ActionButtons'
 import Blurb from '@/components/Blurb'
-import Clients from '@/components/Clients'
-import Technology from '@/components/Technology'
+import Clients from '@/components/common/Clients/Clients'
+import Skills from '@/components/common/Skills/Skills'
+import Technology from '@/components/common/Technology/Technology'
 
 export default function Home() {
   return (
@@ -19,6 +20,8 @@ export default function Home() {
         </section>
 
         <Clients />
+
+        <Skills />
 
         <Technology />
       </main>

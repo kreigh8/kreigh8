@@ -1,4 +1,4 @@
-import Clients from '@/components/admin/Clients'
+import Clients from '@/components/admin/Clients/Clients'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import Link from 'next/link'

@@ -1,4 +1,4 @@
-import Technology from '@/components/admin/Technology'
+import Technology from '@/components/admin/Technology/Technology'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import Link from 'next/link'

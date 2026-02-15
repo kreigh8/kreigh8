@@ -7,11 +7,29 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import ImageUpload from './ImageUpload'
 import { toast } from 'sonner'
-import { Field, FieldError, FieldLabel, FieldSet } from '../ui/field'
-import { useMutation } from 'convex/react'
+import { Field, FieldError, FieldLabel } from '../ui/field'
+import {
+  Preloaded,
+  useMutation,
+  usePreloadedQuery,
+  useQuery
+} from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { useUser } from '@clerk/clerk-react'
 import { Textarea } from '../ui/textarea'
+import { useEffect, useState, useTransition } from 'react'
+import { Spinner } from '../ui/spinner'
+import { Id } from '@/convex/_generated/dataModel'
+import Image from 'next/image'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogTitle
+} from '../ui/alert-dialog'
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -33,53 +51,143 @@ const formSchema = z.object({
     )
 })
 
-export default function SkillForm() {
+export default function SkillForm(props?: {
+  preloadedSkill?: Preloaded<typeof api.skills.getSkill>
+}) {
+  const isEdit = !!props?.preloadedSkill
+
+  const [isPending, startTransition] = useTransition()
   const generateUploadUrl = useMutation(api.image.generateUploadUrl)
   const createSkill = useMutation(api.skills.createSkill)
+  const updateSkill = useMutation(api.skills.updateSkill)
+  const deleteImage = useMutation(api.image.deleteImage)
+
+  const skill = props?.preloadedSkill
+    ? usePreloadedQuery(props.preloadedSkill)
+    : null
+
+  const [previewImage, setPreviewImage] = useState<{
+    name: string
+    url: string
+    _id: Id<'images'>
+  } | null>(null)
+  const [removedImageData, setRemovedImageData] = useState<{
+    removedImageUrl: string
+    removedImageId: Id<'images'>
+  } | null>(null)
+
+  const imageData = skill?.imageId
+    ? useQuery(api.image.getImage, { id: skill.imageId })
+    : null
 
   const { user } = useUser()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
-      description: '',
+      name: skill?.name ?? '',
+      description: skill?.description ?? '',
       image: undefined as unknown as File
     }
   })
 
-  const image = form.watch('image')
+  // If editing, load image into file input and preview
+  useEffect(() => {
+    async function setImageFromData() {
+      if (imageData && skill?.imageUrl && imageData.name) {
+        const response = await fetch(skill.imageUrl)
+        const blob = await response.blob()
+        const file = new File([blob], imageData.name, { type: blob.type })
+        form.setValue('image', file)
+        setPreviewImage({
+          name: imageData.name,
+          url: skill.imageUrl,
+          _id: imageData._id
+        })
+      }
+    }
+    setImageFromData()
+  }, [imageData, form, skill?.imageUrl])
+
+  useEffect(() => {
+    async function setDefaultImage() {
+      if (skill?.imageUrl && !previewImage) {
+        const response = await fetch(skill.imageUrl)
+        const blob = await response.blob()
+        const file = new File([blob], 'skill.png', {
+          type: blob.type,
+          lastModified: new Date().getTime()
+        })
+        form.setValue('image', file)
+      }
+    }
+    setDefaultImage()
+  }, [skill?.imageUrl, form, previewImage])
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     try {
-      const postUrl = await generateUploadUrl()
-      // Step 2: POST the file to the URL
-      const result = await fetch(postUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': image!.type },
-        body: image
-      })
-      const { storageId } = await result.json()
-
-      await createSkill({
-        name: values.name,
-        description: values.description,
-        image: {
-          name: image?.name || 'unknown',
+      let imagePayload = undefined
+      if (values.image) {
+        const postUrl = await generateUploadUrl()
+        const result = await fetch(postUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': values.image.type },
+          body: values.image
+        })
+        const { storageId } = await result.json()
+        imagePayload = {
+          name: values.image.name,
           storageId,
           author: user?.username || 'unknown',
           format: 'image'
         }
-      })
+      }
 
-      toast.success('Skill created successfully!')
+      if (isEdit && skill) {
+        startTransition(async () => {
+          const body: any = {
+            name: values.name,
+            description: values.description
+          }
+          if (imagePayload) body.image = imagePayload as any
 
-      form.reset()
-      form.setValue('image', undefined as unknown as File)
+          const result = await updateSkill({ id: skill._id, body })
+
+          if (
+            typeof result === 'object' &&
+            'removedImageUrl' in result &&
+            result.removedImageUrl
+          ) {
+            setRemovedImageData({
+              removedImageUrl: result.removedImageUrl,
+              removedImageId: result.removedImageId
+            })
+          }
+
+          toast.success('Skill updated successfully!')
+        })
+      } else {
+        // create
+        const postUrl = imagePayload ? undefined : undefined
+        startTransition(async () => {
+          const createBody: any = {
+            name: values.name,
+            description: values.description,
+            image: {
+              ...imagePayload
+            }
+          }
+
+          await createSkill(createBody)
+
+          toast.success('Skill created successfully!')
+
+          form.reset()
+          form.setValue('image', undefined as unknown as File)
+        })
+      }
     } catch (error) {
-      console.error('Error creating skill:', error)
+      console.error('Error submitting skill:', error)
     }
   }
 
@@ -116,7 +224,7 @@ export default function SkillForm() {
                 {...field}
                 id={'skill-description'}
                 aria-invalid={fieldState.invalid}
-                placeholder="https://kroger.com"
+                placeholder="Description of the skill"
                 autoComplete="off"
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
@@ -124,10 +232,50 @@ export default function SkillForm() {
           )}
         />
 
-        <ImageUpload />
+        <ImageUpload imageUrl={previewImage?.url} />
 
-        <Button type="submit">Submit</Button>
+        <Button type="submit">
+          {isPending && <Spinner />}
+          Submit
+        </Button>
       </form>
+
+      <AlertDialog open={!!removedImageData}>
+        <AlertDialogContent>
+          <AlertDialogTitle>Delete Image</AlertDialogTitle>
+          <AlertDialogDescription>
+            {removedImageData ? (
+              <Image
+                src={removedImageData.removedImageUrl}
+                alt="Removed Image"
+                width={200}
+                height={200}
+              />
+            ) : null}
+            This image is no longer associated with any clients or technologies.
+            Would you like to delete this image?
+          </AlertDialogDescription>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Keep in Library</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() =>
+                startTransition(async () => {
+                  if (removedImageData) {
+                    deleteImage({
+                      imageId: removedImageData.removedImageId
+                    }).then(() => {
+                      setRemovedImageData(null)
+                      toast.success('Image deleted successfully!')
+                    })
+                  }
+                })
+              }
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </FormProvider>
   )
 }

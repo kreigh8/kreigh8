@@ -1,4 +1,4 @@
-import EditSkillForm from '@/components/forms/EditSkillForm'
+import SkillForm from '@/components/forms/SkillForm'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 import { preloadQuery } from 'convex/nextjs'
@@ -12,13 +12,11 @@ export default async function EditSkillPage(
     id
   })
 
-  console.log('Editing skill:', preloadedSkill)
-
   return (
     <section className="flex flex-col gap-4">
       <h1>Edit Skill</h1>
 
-      <EditSkillForm preloadedSkill={preloadedSkill} />
+      <SkillForm preloadedSkill={preloadedSkill} />
     </section>
   )
 }
