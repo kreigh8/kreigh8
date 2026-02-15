@@ -2,6 +2,7 @@
 
 import { api } from '@/convex/_generated/api'
 import { Preloaded, usePreloadedQuery } from 'convex/react'
+import Client from './Client'
 
 export default function ClientList(props: {
   preloadedClients: Preloaded<typeof api.clients.listClients>
@@ -13,12 +14,10 @@ export default function ClientList(props: {
   }
 
   return (
-    <section>
+    <article className="grid grid-cols-3 gap-4">
       {clients.map((client) => (
-        <div key={client._id.toString()} className="mb-4 p-4 border rounded">
-          <h2 className="text-xl font-bold">{client.name}</h2>
-        </div>
+        <Client key={client._id} client={client} />
       ))}
-    </section>
+    </article>
   )
 }

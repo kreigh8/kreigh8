@@ -6,7 +6,7 @@ export default async function Clients() {
   const preloadedClients = await preloadQuery(api.clients.listClients, {})
 
   return (
-    <section>
+    <section className="flex flex-col gap-4">
       <h1>Clients</h1>
       <ClientList preloadedClients={preloadedClients} />
     </section>
