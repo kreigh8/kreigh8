@@ -47,7 +47,7 @@ export default function ContactForm() {
                 {...field}
                 id={'contact-email'}
                 aria-invalid={fieldState.invalid}
-                placeholder="example@emmail.com"
+                placeholder="example@email.com"
                 autoComplete="off"
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
