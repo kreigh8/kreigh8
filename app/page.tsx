@@ -5,8 +5,17 @@ import Skills from '@/components/common/Skills/Skills'
 import Technology from '@/components/common/Technology/Technology'
 import ContactMe from '@/components/ContactMe'
 import HomeImage from '@/components/HomeImage'
+import { flag } from 'flags/next'
+import { vercelAdapter } from '@flags-sdk/vercel'
 
-export default function Home() {
+export const contactMe = flag({
+  key: 'contact-me',
+  adapter: vercelAdapter()
+})
+
+export default async function Home() {
+  const showContactMe = (await contactMe()) as boolean
+
   return (
     <>
       <main className="container mx-auto grid grid-cols-1 gap-4">
@@ -29,7 +38,7 @@ export default function Home() {
 
         <Technology />
 
-        <ContactMe />
+        {showContactMe && <ContactMe />}
       </main>
     </>
   )

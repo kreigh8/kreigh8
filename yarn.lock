@@ -238,6 +238,11 @@
   resolved "https://registry.yarnpkg.com/@convex-dev/workpool/-/workpool-0.3.1.tgz#14a5c2ae09172286772867181dd48c44fd7a2577"
   integrity sha512-uw4Mi+irhhoYA/KwaMo5wXyYJ7BbxqeaLcCZbst3t1SxPN5488rpnR0OwBcPDCmwcdQjBVHOx+q8S4GUjq0Csg==
 
+"@edge-runtime/cookies@^5.0.2":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@edge-runtime/cookies/-/cookies-5.0.2.tgz#c1ddd8cc740bdd5fcd9b482eddb33f4c096d4d2a"
+  integrity sha512-Sd8LcWpZk/SWEeKGE8LT6gMm5MGfX/wm+GPnh1eBEtCpya3vYqn37wYknwAHw92ONoyyREl1hJwxV/Qx2DWNOg==
+
 "@edge-runtime/primitives@6.0.0":
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/@edge-runtime/primitives/-/primitives-6.0.0.tgz#7ca59111605d72b6789b55e6d9c264afb656a5b1"
@@ -599,6 +604,11 @@
   dependencies:
     "@eslint/core" "^0.17.0"
     levn "^0.4.1"
+
+"@flags-sdk/vercel@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@flags-sdk/vercel/-/vercel-1.0.1.tgz#771b3323c13582ab9b607ed6ff763c9f1a7d8aca"
+  integrity sha512-RKdoetYr0Qp6ecbiary4QRmwkl0FYvRlA0hE0u/chz1Ao4NOV05x+moisUvAt4oNMSpgNjCcwtrg9ct1iF1mAw==
 
 "@hookform/resolvers@^5.2.2":
   version "5.2.2"
@@ -1645,6 +1655,27 @@
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/@vercel/analytics/-/analytics-1.6.1.tgz#b4e16daf445cf6cd365a91e43d86e9e5b3428ddc"
   integrity sha512-oH9He/bEM+6oKlv3chWuOOcp8Y6fo6/PSro8hEkgCW3pu9/OiCXiUpRUogDh3Fs3LH2sosDrx8CxeOLBEE+afg==
+
+"@vercel/flags-core@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@vercel/flags-core/-/flags-core-1.0.1.tgz#9b9bd6474ff45e41c6fa4c048a1a538146ef383b"
+  integrity sha512-jlj7J/bctERGbFYVCGK2DNXQ2dz2ol7Km2kduhJ0QMrqCsIlloq4HY6jgyJPToe9VpPleJyqT6TaYJACUqdCYg==
+  dependencies:
+    "@vercel/functions" "^3.3.6"
+    jose "5.2.1"
+    js-xxhash "4.0.0"
+
+"@vercel/functions@^3.3.6":
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/@vercel/functions/-/functions-3.4.2.tgz#e3958f78530f07b5aef63a99e827a3137660904a"
+  integrity sha512-WDsNNuGOOUhRYxfcSgk8nlXaYW/6u1Lw2eaKm0y4+gDPGK/hwmYIeP2hESfccuCiPXd5ZGO8Jz/V5Ud3ZByoUQ==
+  dependencies:
+    "@vercel/oidc" "3.2.0"
+
+"@vercel/oidc@3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@vercel/oidc/-/oidc-3.2.0.tgz#5782a4d4904443f015808705b5537cf9c3b68528"
+  integrity sha512-UycprH3T6n3jH0k44NHMa7pnFHGu/N05MjojYr+Mc6I7obkoLIJujSWwin1pCvdy/eOxrI/l3uDLQsmcrOb4ug==
 
 "@vitest/coverage-v8@4.0.16":
   version "4.0.16"
@@ -2759,6 +2790,14 @@ find-up@^5.0.0:
     locate-path "^6.0.0"
     path-exists "^4.0.0"
 
+flags@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/flags/-/flags-4.0.3.tgz#9a3922b0011a9109034ac92668ee6ba70b03231e"
+  integrity sha512-rLkO+Hn6dSEsDZm6lHuXr3GjfHf8N67lhXCFUeSRBjDdb/43ez5Je8DC/K0HzMtl3LcWc7zgF79V/3WzJXVm/w==
+  dependencies:
+    "@edge-runtime/cookies" "^5.0.2"
+    jose "^5.2.1"
+
 flat-cache@^4.0.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/flat-cache/-/flat-cache-4.0.1.tgz#0ece39fcb14ee012f4b0410bd33dd9c1f011127c"
@@ -3263,6 +3302,16 @@ jiti@^2.6.1:
   resolved "https://registry.yarnpkg.com/jiti/-/jiti-2.6.1.tgz#178ef2fc9a1a594248c20627cd820187a4d78d92"
   integrity sha512-ekilCSN1jwRvIbgeg/57YFh8qQDNbwDb9xT/qu2DAHbFFZUicIl4ygVaAvzveMhMVr3LnpSKTNnwt8PoOfmKhQ==
 
+jose@5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-5.2.1.tgz#ec3befe173896e592e2d9ef5f267d061ffb203c5"
+  integrity sha512-qiaQhtQRw6YrOaOj0v59h3R6hUY9NvxBmmnMfKemkqYmBB0tEc97NbLP7ix44VP5p9/0YHG8Vyhzuo5YBNwviA==
+
+jose@^5.2.1:
+  version "5.10.0"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-5.10.0.tgz#c37346a099d6467c401351a9a0c2161e0f52c4be"
+  integrity sha512-s+3Al/p9g32Iq+oqXxkW//7jk2Vig6FF1CFqzVXoTUXt2qz89YWbL+OwS17NFYEvxC35n0FKeGO2LGYSxeM2Gg==
+
 js-cookie@3.0.5:
   version "3.0.5"
   resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-3.0.5.tgz#0b7e2fd0c01552c58ba86e0841f94dc2557dcdbc"
@@ -3277,6 +3326,11 @@ js-tokens@^10.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
   integrity sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==
+
+js-xxhash@4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/js-xxhash/-/js-xxhash-4.0.0.tgz#866b003c06ba39bebc9e4a47d2756abfef06606c"
+  integrity sha512-3Q2eIqG6s1KEBBmkj9tGM9lef8LJbuRyTVBdI3GpTnrvtytunjLPO0wqABp5qhtMzfA32jYn1FlnIV7GH1RAHQ==
 
 js-yaml@^4.1.1:
   version "4.1.1"
