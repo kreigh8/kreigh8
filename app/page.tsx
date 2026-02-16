@@ -4,6 +4,7 @@ import Clients from '@/components/common/Clients/Clients'
 import Skills from '@/components/common/Skills/Skills'
 import Technology from '@/components/common/Technology/Technology'
 import ContactMe from '@/components/ContactMe'
+import HomeImage from '@/components/HomeImage'
 
 export default function Home() {
   return (
@@ -17,7 +18,9 @@ export default function Home() {
             <ActionButtons />
           </article>
 
-          <article className="flex flex-col w-full"></article>
+          <article className="flex flex-col w-full">
+            <HomeImage />
+          </article>
         </section>
 
         <Clients />

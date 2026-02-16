@@ -9,6 +9,9 @@ export default defineSchema({
   home: defineTable({
     homeBlurb: v.string()
   }),
+  homeImage: defineTable({
+    imageId: v.id('images')
+  }),
   clients: defineTable({
     name: v.string(),
     url: v.string(),
@@ -26,7 +29,7 @@ export default defineSchema({
   }),
   images: defineTable({
     refIds: v.optional(
-      v.array(v.union(v.id('clients'), v.id('technologies'), v.id('skills')))
+      v.array(v.union(v.id('homeImage'), v.id('clients'), v.id('technologies'), v.id('skills')))
     ),
     name: v.string(),
     body: v.id('_storage'),
