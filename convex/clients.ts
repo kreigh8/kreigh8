@@ -17,7 +17,7 @@ export const listClients = query({
   },
 
   handler: async (ctx) => {
-    const clients = await ctx.db.query('clients').order('desc').collect()
+    const clients = await ctx.db.query('clients').withIndex('by_active').order('desc').collect()
 
     return Promise.all(
       clients.map(async (client) => {

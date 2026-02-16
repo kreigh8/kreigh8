@@ -17,7 +17,7 @@ export default defineSchema({
     url: v.string(),
     imageId: v.id('images'),
     active: v.boolean()
-  }),
+  }).index('by_active', ['active']),
   technologies: defineTable({
     name: v.string(),
     url: v.string(),
