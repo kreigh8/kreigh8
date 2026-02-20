@@ -13,8 +13,28 @@ export const contactMe = flag({
   adapter: vercelAdapter()
 })
 
+export const underConstruction = flag({
+  key: 'under-construction',
+  adapter: vercelAdapter()
+})
+
 export default async function Home() {
   const showContactMe = (await contactMe()) as boolean
+  const showUnderConstruction = (await underConstruction()) as boolean
+
+  if (showUnderConstruction) {
+    return (
+      <section className="container mx-auto grid grid-cols-1 items-center gap-4">
+        <article className="flex flex-col items-center gap-4">
+          <HomeImage />
+
+          <h1 className="text-4xl font-bold text-center">
+            Site Under Construction
+          </h1>
+        </article>
+      </section>
+    )
+  }
 
   return (
     <>

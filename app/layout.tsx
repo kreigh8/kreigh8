@@ -9,6 +9,7 @@ import { ThemeProvider } from '@/components/ThemeProvider'
 import { Toaster } from '@/components/ui/sonner'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
+import Footer from '@/components/Footer'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -37,7 +38,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-dvh`}
         >
           <ConvexClientProvider>
             <ImageDeleteProvider>
@@ -52,6 +53,7 @@ export default function RootLayout({
                 <Analytics />
                 <ImageDeleteAlert />
                 <Toaster />
+                <Footer />
               </ThemeProvider>
             </ImageDeleteProvider>
           </ConvexClientProvider>
