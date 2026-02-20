@@ -29,7 +29,14 @@ export default defineSchema({
   }),
   images: defineTable({
     refIds: v.optional(
-      v.array(v.union(v.id('homeImage'), v.id('clients'), v.id('technologies'), v.id('skills')))
+      v.array(
+        v.union(
+          v.id('homeImage'),
+          v.id('clients'),
+          v.id('technologies'),
+          v.id('skills')
+        )
+      )
     ),
     name: v.string(),
     body: v.id('_storage'),

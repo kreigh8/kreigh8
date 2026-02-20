@@ -43,20 +43,19 @@ export const getResume = query({
       // Ordered by _creationTime, return most recent
       .first()
 
-    const resumeUrl = resume && resume.body && await ctx.storage.getUrl(resume.body)
+    const resumeUrl =
+      resume && resume.body && (await ctx.storage.getUrl(resume.body))
 
     return {
       ...resume,
-      resumeUrl,
+      resumeUrl
     }
   }
 })
 
 export const getResumeDownloadUrl = query({
   handler: async (ctx) => {
-    const resume = await ctx.db
-      .query('resume')
-      .first()
+    const resume = await ctx.db.query('resume').first()
 
     if (!resume) {
       return null

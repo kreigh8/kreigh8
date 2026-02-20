@@ -64,7 +64,7 @@ export async function updateImageRef(
     id
   }: {
     imageId: Id<'images'>
-    id: Id<'clients'> | Id<'technologies'> | Id<'skills'>
+    id: Id<'clients'> | Id<'technologies'> | Id<'skills'> | Id<'homeImage'>
   }
 ) {
   checkForAuthenticatedUser(ctx)
@@ -91,6 +91,7 @@ export async function uploadImage(
     format
   }: { name: string; storageId: Id<'_storage'>; author: string; format: string }
 ): Promise<Id<'images'>> {
+  console.log('Uploading image with name:', name, 'storageId:', storageId)
   const imageId = await ctx.db.insert('images', {
     body: storageId,
     author,
@@ -155,7 +156,7 @@ export async function removeImageRef(
     id
   }: {
     imageId: Id<'images'>
-    id: Id<'clients'> | Id<'technologies'> | Id<'skills'>
+    id: Id<'clients'> | Id<'technologies'> | Id<'skills'> | Id<'homeImage'>
   }
 ) {
   checkForAuthenticatedUser(ctx)
