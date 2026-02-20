@@ -14,11 +14,14 @@ export default function HomeImageComponent(props: {
   }
 
   return (
-    <Image
-      src={image.imageUrl as string}
-      alt={'Home Image'}
-      width={600}
-      height={400}
-    />
+    <div className="relative flex items-center justify-center size-96 rounded-full border-2 border-primary overflow-hidden">
+      <Image
+        src={image.imageUrl as string}
+        alt={'Home Image'}
+        width={600}
+        height={400}
+        className="object-contain"
+      />
+    </div>
   )
 }
