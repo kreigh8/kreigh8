@@ -1,11 +1,9 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
+  /* config options here */
   images: {
-    domains: ['localhost', 'res.cloudinary.com']
-  },
-  env: {
-    NEXT_GOOGLE_CAPTHA_KEY: process.env.NEXT_GOOGLE_CAPTHA_KEY
+    remotePatterns: [new URL('https://quick-sockeye-353.convex.cloud/**')]
   }
 }
 
