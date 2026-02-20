@@ -2120,13 +2120,14 @@ convex-test@^0.0.41:
   resolved "https://registry.yarnpkg.com/convex-test/-/convex-test-0.0.41.tgz#616f6c8b031c3d1859fac2bbf6030ea6835d6b0e"
   integrity sha512-GPHeYFOi70n7UtW0eCEQFVhzl/+m8PvbWkDCbKpHLybI1MrScf4sVpGeM0cC2qmtxiduxa2nLPbehPalhh9oyQ==
 
-convex@^1.31.7:
-  version "1.31.7"
-  resolved "https://registry.yarnpkg.com/convex/-/convex-1.31.7.tgz#5cd16bfcc20d9cdfe212e435beab82e5b5b45794"
-  integrity sha512-PtNMe1mAIOvA8Yz100QTOaIdgt2rIuWqencVXrb4McdhxBHZ8IJ1eXTnrgCC9HydyilGT1pOn+KNqT14mqn9fQ==
+convex@^1.32.0:
+  version "1.32.0"
+  resolved "https://registry.yarnpkg.com/convex/-/convex-1.32.0.tgz#fcba673730844f8fbb4f908a750855fe08c2a07e"
+  integrity sha512-5FlajdLpW75pdLS+/CgGH5H6yeRuA+ru50AKJEYbJpmyILUS+7fdTvsdTaQ7ZFXMv0gE8mX4S+S3AtJ94k0mfw==
   dependencies:
     esbuild "0.27.0"
     prettier "^3.0.0"
+    ws "8.18.0"
 
 cross-spawn@^6.0.5:
   version "6.0.6"
@@ -4834,6 +4835,11 @@ word-wrap@^1.2.5:
   version "1.2.5"
   resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.5.tgz#d2c45c6dd4fbce621a66f136cbe328afd0410b34"
   integrity sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==
+
+ws@8.18.0:
+  version "8.18.0"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.18.0.tgz#0d7505a6eafe2b0e712d232b42279f53bc289bbc"
+  integrity sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==
 
 xstate@^5.20.2:
   version "5.28.0"
