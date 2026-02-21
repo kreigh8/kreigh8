@@ -17,6 +17,7 @@ export default function Header() {
           <Link href="/">
             <Image
               src="/kreigh8-logo.svg"
+              className="dark:invert"
               alt="kreigh8"
               width={125}
               height={40}

@@ -9,8 +9,7 @@
     </filter>
   </defs>
 
-  <!-- White background -->
-  <rect x="0" y="0" width="480" height="180" rx="16" fill="#ffffff"/>
+
 
 
 
