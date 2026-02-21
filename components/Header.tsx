@@ -5,6 +5,7 @@ import Login from './Login'
 import ThemeToggle from './ThemeToggle'
 import { Authenticated } from 'convex/react'
 import { usePathname } from 'next/navigation'
+import Image from 'next/image'
 
 export default function Header() {
   const currentPathname = usePathname()
@@ -12,8 +13,15 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-10">
       <nav className="bg-background p-4 border-b-2 border-slate-200 dark:border-slate-800">
-        <div className="container flex justify-between mx-auto">
-          <Link href="/">kreigh8</Link>
+        <div className="container flex justify-between items-center mx-auto">
+          <Link href="/">
+            <Image
+              src="/kreigh8-logo.svg"
+              alt="kreigh8"
+              width={125}
+              height={40}
+            />
+          </Link>
 
           <div className="flex gap-2">
             <ThemeToggle />
