@@ -9,7 +9,7 @@ export default async function Clients() {
   )
 
   return (
-    <section>
+    <section className="flex flex-col w-full gap-2">
       <h1>Technologies</h1>
       <TechnologyList preloadedTechnology={preloadedTechnology} />
     </section>

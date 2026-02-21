@@ -1,7 +1,9 @@
 'use client'
 
+import { Card, CardContent } from '@/components/ui/card'
 import { api } from '@/convex/_generated/api'
 import { Preloaded, usePreloadedQuery } from 'convex/react'
+import Image from 'next/image'
 
 export default function TechnologyList(props: {
   preloadedTechnology: Preloaded<typeof api.technology.listTechnologies>
@@ -13,15 +15,22 @@ export default function TechnologyList(props: {
   }
 
   return (
-    <section>
+    <article className="flex gap-4">
       {technologies.map((technology) => (
-        <div
-          key={technology._id.toString()}
-          className="mb-4 p-4 border rounded"
-        >
-          <h2 className="text-xl font-bold">{technology.name}</h2>
-        </div>
+        <Card key={technology._id.toString()} className="h-full">
+          <CardContent className="flex items-center justify-center min-h-10">
+            <a href={technology.url} target="_blank" rel="noopener noreferrer">
+              <Image
+                src={technology.imageUrl as string}
+                alt={`${technology.name} logo`}
+                className="grayscale"
+                width={40}
+                height={40}
+              />
+            </a>
+          </CardContent>
+        </Card>
       ))}
-    </section>
+    </article>
   )
 }

@@ -46,7 +46,7 @@ export default async function Home() {
             <ActionButtons />
           </article>
 
-          <article className="flex flex-col items-center w-full">
+          <article className="flex flex-col items-center justify-center w-full">
             <HomeImage />
           </article>
         </section>
