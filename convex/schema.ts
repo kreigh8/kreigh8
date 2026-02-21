@@ -7,6 +7,7 @@ import { v } from 'convex/values'
 // The schema provides more precise TypeScript types.
 export default defineSchema({
   home: defineTable({
+    title: v.string(),
     homeBlurb: v.string()
   }),
   homeImage: defineTable({

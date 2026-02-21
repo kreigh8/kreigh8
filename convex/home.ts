@@ -4,6 +4,7 @@ import { checkForAuthenticatedUser } from './auth'
 
 export const createHomeBlurb = mutation({
   args: {
+    title: v.string(),
     homeBlurb: v.string()
   },
   handler: async (ctx, args) => {
@@ -14,15 +15,19 @@ export const createHomeBlurb = mutation({
 
     if (existingBlurb) {
       // If a blurb already exists, update it instead of creating a new one
-      await ctx.db.patch(existingBlurb._id, { homeBlurb: args.homeBlurb })
+      await ctx.db.patch(existingBlurb._id, {
+        title: args.title,
+        homeBlurb: args.homeBlurb
+      })
       return existingBlurb._id
     }
 
     const homeBlurbId = await ctx.db.insert('home', {
+      title: args.title,
       homeBlurb: args.homeBlurb
     })
 
-    console.log('Added new client with id:', homeBlurbId)
+    console.log('Added new home blurb with id:', homeBlurbId)
     return homeBlurbId
   }
 })

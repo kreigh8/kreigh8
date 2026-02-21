@@ -11,6 +11,7 @@ import { toast } from 'sonner'
 import { Field, FieldError, FieldLabel, FieldDescription } from '../ui/field'
 
 const formSchema = z.object({
+  title: z.string().min(2, { message: 'Title must be at least 2 characters.' }),
   homeBlurb: z.string().min(2, {
     message: 'Home blurb must be at least 2 characters.'
   })
@@ -25,12 +26,14 @@ export default function HomeBlurbForm(props: {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      title: getHomeBlurb?.title ?? '',
       homeBlurb: getHomeBlurb?.homeBlurb ?? ''
     }
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     createHomeBlurb({
+      title: values.title,
       homeBlurb: values.homeBlurb
     })
       .then(() => {
@@ -44,6 +47,27 @@ export default function HomeBlurbForm(props: {
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <Controller
+          name="title"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="home-title">Home Page Title</FieldLabel>
+              <Textarea
+                {...field}
+                id="home-title"
+                aria-invalid={fieldState.invalid}
+                placeholder="Welcome to my portfolio!"
+                className="min-h-[120px]"
+              />
+              <FieldDescription>
+                Tell us more about yourself. This text will be used as the home
+                page title.
+              </FieldDescription>
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
         <Controller
           name="homeBlurb"
           control={form.control}

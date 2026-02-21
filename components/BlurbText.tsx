@@ -8,5 +8,10 @@ export default function BlurbText(props: {
 }) {
   const homeBlurb = usePreloadedQuery(props.preloadedHomeBlurb)
 
-  return <h3>{homeBlurb?.homeBlurb}</h3>
+  return (
+    <div className="flex flex-col gap-4">
+      <h1 className="text-4xl font-bold text-primary">{homeBlurb?.title}</h1>
+      <h3 className="text-lg text-primary">{homeBlurb?.homeBlurb}</h3>
+    </div>
+  )
 }
