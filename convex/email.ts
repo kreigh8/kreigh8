@@ -9,7 +9,7 @@ export const resend = new Resend(components.resend, {
 export const sendEmail = internalMutation({
   handler: async (ctx) => {
     await resend.sendEmail(ctx, {
-      from: 'khirschy@contact.kreigh8.com',
+      from: 'khirschy@send.kreigh8.com',
       to: 'khirschy@kreigh8.com',
       subject: 'Hello',
       text: 'This is a test email'
