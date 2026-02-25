@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 180" width="480" height="180">
+  <defs>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- White background -->
+  <rect x="0" y="0" width="480" height="180" rx="16" fill="#ffffff"/>
+
+
+
+  <!-- Main wordmark: "kreigh" -->
+  <text
+    x="34"
+    y="128"
+    font-family="'Georgia', 'Times New Roman', serif"
+    font-size="88"
+    font-weight="900"
+    font-style="italic"
+    letter-spacing="-3"
+    fill="#0A0A0A"
+  >kreigh</text>
+
+  <!-- "8" — outlined/stroke only for contrast -->
+  <text
+    x="318"
+    y="128"
+    font-family="'Courier New', Courier, monospace"
+    font-size="88"
+    font-weight="700"
+    fill="none"
+    stroke="#0A0A0A"
+    stroke-width="3"
+  >8</text>
+
+
+
+
+</svg>

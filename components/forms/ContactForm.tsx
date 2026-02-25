@@ -8,6 +8,10 @@ import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
 import { Send } from 'lucide-react'
 import { Button } from '../ui/button'
+import { useMutation } from 'convex/react'
+import { api } from '@/convex/_generated/api'
+import { startTransition } from 'react'
+import { toast } from 'sonner'
 
 const formSchema = z.object({
   from: z.email({ message: 'Please enter a valid email address.' }),
@@ -20,6 +24,8 @@ const formSchema = z.object({
 })
 
 export default function ContactForm() {
+  const sendEmail = useMutation(api.email.sendEmail)
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -29,9 +35,18 @@ export default function ContactForm() {
     }
   })
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     // Handle form submission, e.g., send data to an API route
-    console.log('Form submitted:', values)
+    try {
+      startTransition(async () => {
+        await sendEmail(values)
+        form.reset()
+        toast.success('Email sent successfully!')
+      })
+    } catch (error) {
+      console.error('Error sending email:', error)
+      toast.error('Failed to send email. Please try again.')
+    }
   }
 
   return (
@@ -84,7 +99,7 @@ export default function ContactForm() {
                 id={'contact-message'}
                 aria-invalid={fieldState.invalid}
                 placeholder="Enter the message"
-                className='resize-none'
+                className="resize-none"
                 autoComplete="off"
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
@@ -92,7 +107,9 @@ export default function ContactForm() {
           )}
         />
 
-        <Button type="submit"><Send /> Contact Me</Button>
+        <Button type="submit">
+          <Send /> Contact Me
+        </Button>
       </form>
     </FormProvider>
   )
