@@ -17,18 +17,17 @@ export default function TechnologyList(props: {
   return (
     <article className="flex gap-4">
       {technologies.map((technology) => (
-        <Card key={technology._id.toString()} className="h-full">
-          <CardContent className="flex items-center justify-center min-h-10">
-            <a href={technology.url} target="_blank" rel="noopener noreferrer">
+        <Card className="p-2 gap-2" key={technology._id.toString()}>
+          <a href={technology.url} target="_blank" rel="noopener noreferrer">
+            <CardContent className="flex flex-col px-0 justify-center items-center">
               <Image
                 src={technology.imageUrl as string}
-                alt={`${technology.name} logo`}
-                className="grayscale"
+                alt={technology.name}
                 width={40}
                 height={40}
               />
-            </a>
-          </CardContent>
+            </CardContent>
+          </a>
         </Card>
       ))}
     </article>
