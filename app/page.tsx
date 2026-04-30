@@ -51,9 +51,9 @@ export default async function Home() {
           </article>
         </section>
 
-        <Clients />
-
         <Skills />
+
+        <Clients />
 
         <Technology />
 
