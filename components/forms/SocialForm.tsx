@@ -31,11 +31,17 @@ export default function SocialForm(props: {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    mode: 'onChange',
     defaultValues: {
       linkedIn: '',
       gitHub: ''
     }
   })
+
+  const isSubmitDisabled =
+    !form.formState.isValid ||
+    !form.formState.isDirty ||
+    form.formState.isSubmitting
 
   useEffect(() => {
     if (!socialLinks) return
@@ -110,7 +116,7 @@ export default function SocialForm(props: {
             </Field>
           )}
         />
-        <Button type="submit">
+        <Button type="submit" disabled={isSubmitDisabled}>
           {hasExistingSocialLinks
             ? 'Update Social Links'
             : 'Create Social Links'}
