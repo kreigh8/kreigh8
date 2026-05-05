@@ -11,7 +11,10 @@ export default function BlurbText(props: {
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-4xl font-bold text-primary">{homeBlurb?.title}</h1>
-      <h3 className="text-lg text-primary">{homeBlurb?.homeBlurb}</h3>
+      <div
+        className="text-lg text-primary [&_a]:font-medium [&_a]:underline [&_a]:underline-offset-4"
+        dangerouslySetInnerHTML={{ __html: homeBlurb?.homeBlurb ?? '' }}
+      />
     </div>
   )
 }

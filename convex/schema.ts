@@ -6,6 +6,10 @@ import { v } from 'convex/values'
 // app will continue to work.
 // The schema provides more precise TypeScript types.
 export default defineSchema({
+  social: defineTable({
+    linkedIn: v.string(),
+    gitHub: v.string()
+  }),
   home: defineTable({
     title: v.string(),
     homeBlurb: v.string()

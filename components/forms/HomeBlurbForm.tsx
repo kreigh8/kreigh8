@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from 'sonner'
 import { Field, FieldError, FieldLabel, FieldDescription } from '../ui/field'
+import { FormMinimalTiptapField } from './FormMinimalTiptapField'
 
 const formSchema = z.object({
   title: z.string().min(2, { message: 'Title must be at least 2 characters.' }),
@@ -58,7 +59,7 @@ export default function HomeBlurbForm(props: {
                 id="home-title"
                 aria-invalid={fieldState.invalid}
                 placeholder="Welcome to my portfolio!"
-                className="min-h-[120px]"
+                className="min-h-30"
               />
               <FieldDescription>
                 Tell us more about yourself. This text will be used as the home
@@ -68,26 +69,14 @@ export default function HomeBlurbForm(props: {
             </Field>
           )}
         />
-        <Controller
-          name="homeBlurb"
+        <FormMinimalTiptapField
           control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="home-blurb">Home Page Blurb</FieldLabel>
-              <Textarea
-                {...field}
-                id="home-blurb"
-                aria-invalid={fieldState.invalid}
-                placeholder="I'm a software engineer..."
-                className="min-h-[120px]"
-              />
-              <FieldDescription>
-                Tell us more about yourself. This will be used to help us
-                personalize your experience.
-              </FieldDescription>
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </Field>
-          )}
+          name="homeBlurb"
+          id="home-blurb"
+          label="Home Page Blurb"
+          placeholder="I'm a software engineer..."
+          description="Tell us more about yourself. This will be used to help us personalize your experience."
+          editorContentClassName="min-h-30"
         />
 
         <Button type="submit">Submit</Button>

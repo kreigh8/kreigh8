@@ -8,8 +8,9 @@ import Header from '@/components/Header'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { Toaster } from '@/components/ui/sonner'
 import { Analytics } from '@vercel/analytics/next'
-import './globals.css'
 import Footer from '@/components/Footer'
+import { TooltipProvider } from '@/components/ui/tooltip'
+import './globals.css'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -48,12 +49,14 @@ export default function RootLayout({
                 enableSystem
                 disableTransitionOnChange
               >
-                <Header />
-                <main className="container mx-auto py-4">{children}</main>
-                <Analytics />
-                <ImageDeleteAlert />
-                <Toaster />
-                <Footer />
+                <TooltipProvider>
+                  <Header />
+                  <main className="container mx-auto py-4">{children}</main>
+                  <Analytics />
+                  <ImageDeleteAlert />
+                  <Toaster />
+                  <Footer />
+                </TooltipProvider>
               </ThemeProvider>
             </ImageDeleteProvider>
           </ConvexClientProvider>
