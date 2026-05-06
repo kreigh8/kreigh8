@@ -12,6 +12,7 @@ import type * as about from "../about.js";
 import type * as auth from "../auth.js";
 import type * as clients from "../clients.js";
 import type * as email from "../email.js";
+import type * as experience from "../experience.js";
 import type * as home from "../home.js";
 import type * as homeImage from "../homeImage.js";
 import type * as image from "../image.js";
@@ -31,6 +32,7 @@ declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   clients: typeof clients;
   email: typeof email;
+  experience: typeof experience;
   home: typeof home;
   homeImage: typeof homeImage;
   image: typeof image;

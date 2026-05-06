@@ -8,7 +8,10 @@ export default function NavigationButtons() {
           <Link href="#about">About</Link>
         </li>
         <li>
-          <Link href="#clients">Projects</Link>
+          <Link href="#experience">Experience</Link>
+        </li>
+        <li>
+          <Link href="#clients">Clients</Link>
         </li>
       </ul>
     </div>

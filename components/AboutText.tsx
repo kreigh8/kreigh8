@@ -10,7 +10,8 @@ export default function AboutText(props: {
 
   return (
     <div
-      className="flex flex-col gap-4 [&_a]:font-medium [&_a]:underline [&_a]:underline-offset-4"
+      id="about"
+      className="flex flex-col gap-4 scroll-mt-4 md:scroll-mt-8 [&_a]:font-medium [&_a]:underline [&_a]:underline-offset-4"
       dangerouslySetInnerHTML={{ __html: blurb?.blurb ?? '' }}
     />
   )
