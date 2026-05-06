@@ -4,11 +4,9 @@ import ConvexClientProvider from '@/components/ConvexClientProvider'
 import { ImageDeleteProvider } from '@/components/context/ImageDeleteContext'
 import { ImageDeleteAlert } from '@/components/admin/ImageDeleteAlert'
 import { ClerkProvider } from '@clerk/nextjs'
-import Header from '@/components/Header'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { Toaster } from '@/components/ui/sonner'
 import { Analytics } from '@vercel/analytics/next'
-import Footer from '@/components/Footer'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import './globals.css'
 
@@ -50,12 +48,10 @@ export default function RootLayout({
                 disableTransitionOnChange
               >
                 <TooltipProvider>
-                  <Header />
                   <main className="container mx-auto py-4">{children}</main>
                   <Analytics />
                   <ImageDeleteAlert />
                   <Toaster />
-                  <Footer />
                 </TooltipProvider>
               </ThemeProvider>
             </ImageDeleteProvider>

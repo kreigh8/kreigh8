@@ -13,7 +13,8 @@ export default defineSchema({
   }),
   home: defineTable({
     title: v.string(),
-    homeBlurb: v.string()
+    subTitle: v.string(),
+    slogan: v.string()
   }),
   homeImage: defineTable({
     imageId: v.id('images')

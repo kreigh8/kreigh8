@@ -1,12 +1,8 @@
 import ActionButtons from '@/components/ActionButtons'
-// import Blurb from '@/components/Blurb'
-// import Clients from '@/components/common/Clients/Clients'
-// import Skills from '@/components/common/Skills/Skills'
-// import Technology from '@/components/common/Technology/Technology'
-// import ContactMe from '@/components/ContactMe'
 import HomeImage from '@/components/HomeImage'
 import { flag } from 'flags/next'
 import { vercelAdapter } from '@flags-sdk/vercel'
+import TitleBlurb from '@/components/TitleBlurb'
 
 export const contactMe = flag({
   key: 'contact-me',
@@ -40,23 +36,10 @@ export default async function Home() {
       <main className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
         <section className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
           <article className="flex flex-col w-full gap-4">
-            {/* <Blurb /> */}
-
+            <TitleBlurb />
             <ActionButtons />
           </article>
-
-          {/* <article className="flex flex-col items-center justify-center w-full">
-            <HomeImage />
-          </article> */}
         </section>
-
-        {/* <Skills />
-
-        <Clients />
-
-        <Technology />
-
-        {showContactMe && <ContactMe />} */}
       </main>
     </>
   )

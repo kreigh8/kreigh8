@@ -1,8 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import Login from './Login'
-import ThemeToggle from './ThemeToggle'
 import { Authenticated } from 'convex/react'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
