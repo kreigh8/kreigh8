@@ -35,7 +35,7 @@ export default async function Home() {
     <>
       <main className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
         <section className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-          <article className="flex flex-col w-full gap-4">
+          <article className="flex flex-col fixed top-1/2 transform -translate-y-1/2 w-full gap-4">
             <TitleBlurb />
             <ActionButtons />
           </article>
