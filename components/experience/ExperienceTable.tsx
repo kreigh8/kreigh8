@@ -12,7 +12,7 @@ type Experience = {
   _id: Id<'experience'>
   title: string
   subTitle?: string
-  company: string
+  clientName: string
   description: string
   start: number | string
   end?: number | string
@@ -30,7 +30,7 @@ const columns: ColumnDef<Experience>[] = [
     header: 'SubTitle'
   },
   {
-    accessorKey: 'company',
+    accessorKey: 'clientName',
     header: 'Company'
   },
   {
@@ -69,7 +69,7 @@ const columns: ColumnDef<Experience>[] = [
 ]
 
 export default function ExperienceTable(props: {
-  preloadedExperience: Preloaded<typeof api.experience.getExperience>
+  preloadedExperience: Preloaded<typeof api.experience.listExperience>
 }) {
   const experience = usePreloadedQuery(props.preloadedExperience)
 

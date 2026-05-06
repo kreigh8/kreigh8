@@ -8,13 +8,23 @@ export const listExperience = query({
     count: v.optional(v.number())
   },
   handler: async (ctx) => {
-    const experience = await ctx.db
+    const experiences = await ctx.db
       .query('experience')
       .withIndex('by_start')
       .order('desc')
       .collect()
 
-    return experience
+    return Promise.all(
+      experiences.map(async (experience) => {
+        const client = await ctx.db.get(experience.clientId)
+
+        return {
+          ...experience,
+          clientName: client?.name ?? 'Unknown Client',
+          clientUrl: client?.url
+        }
+      })
+    )
   }
 })
 
@@ -29,8 +39,12 @@ export const getExperience = query({
       throw new Error('Experience not found')
     }
 
+    const client = await ctx.db.get(experience.clientId)
+
     return {
-      ...experience
+      ...experience,
+      clientName: client?.name ?? 'Unknown Client',
+      clientUrl: client?.url
     }
   }
 })
@@ -54,7 +68,7 @@ export const createExperience = mutation({
     end: v.optional(v.union(v.string(), v.number())),
     title: v.string(),
     subTitle: v.optional(v.string()),
-    company: v.string(),
+    clientId: v.id('clients'),
     description: v.string(),
     technologies: v.array(v.string()),
     active: v.boolean()
@@ -68,7 +82,7 @@ export const createExperience = mutation({
       end: args.end,
       title: args.title,
       subTitle: args.subTitle,
-      company: args.company,
+      clientId: args.clientId,
       description: args.description,
       technologies: args.technologies,
       active: args.active
@@ -87,7 +101,7 @@ export const updateExperience = mutation({
       end: v.optional(v.union(v.string(), v.number())),
       title: v.string(),
       subTitle: v.optional(v.string()),
-      company: v.string(),
+      clientId: v.id('clients'),
       description: v.string(),
       technologies: v.array(v.string()),
       active: v.boolean()
@@ -101,7 +115,7 @@ export const updateExperience = mutation({
       end: args.body.end,
       title: args.body.title,
       subTitle: args.body.subTitle,
-      company: args.body.company,
+      clientId: args.body.clientId,
       description: args.body.description,
       technologies: args.body.technologies,
       active: args.body.active

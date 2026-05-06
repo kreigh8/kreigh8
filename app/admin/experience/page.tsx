@@ -7,7 +7,7 @@ import Link from 'next/link'
 
 export default async function Experience() {
   const preloadedExperience = await preloadQuery(
-    api.experience.getExperience,
+    api.experience.listExperience,
     {}
   )
 

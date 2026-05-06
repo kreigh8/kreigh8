@@ -25,7 +25,7 @@ export default defineSchema({
     active: v.boolean(),
     title: v.string(),
     subTitle: v.optional(v.string()),
-    company: v.string(),
+    clientId: v.id('clients'),
     description: v.string(),
     technologies: v.array(v.string())
   })

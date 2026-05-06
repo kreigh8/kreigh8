@@ -52,7 +52,7 @@ export const experienceFormSchema = z
   .object({
     title: z.string().min(1, 'Title is required.'),
     subTitle: z.string().optional(),
-    company: z.string().min(1, 'Company is required.'),
+    clientId: z.string().min(1, 'Client is required.'),
     description: z.string().min(1, 'Description is required.'),
     technologies: z.array(z.string()).min(1, 'Choose at least one technology.'),
     active: z.boolean(),
@@ -101,7 +101,7 @@ export type ExperienceFormValues = z.infer<typeof experienceFormSchema>
 type ExperienceSubmitValue = {
   title: string
   subTitle?: string
-  company: string
+  clientId: Id<'clients'>
   description: string
   technologies: string[]
   active: boolean
@@ -207,13 +207,20 @@ function ExperienceFormContent({
   const clients = useQuery(api.clients.listClients, {})
   const technologies = useQuery(api.technology.listTechnologies, {})
 
-  const companyOptions = useMemo(
+  const clientOptions = useMemo(
     () =>
       (clients ?? [])
-        .map((client) => client.name)
-        .filter((name, index, arr) => arr.indexOf(name) === index)
-        .sort((a, b) => a.localeCompare(b)),
+        .map((client) => ({ id: client._id, name: client.name }))
+        .sort((a, b) => a.name.localeCompare(b.name)),
     [clients]
+  )
+
+  const clientNameById = useMemo(
+    () =>
+      new Map<string, string>(
+        clientOptions.map((client) => [String(client.id), client.name])
+      ),
+    [clientOptions]
   )
 
   const technologyOptions = useMemo(
@@ -230,7 +237,7 @@ function ExperienceFormContent({
     defaultValues: {
       title: initialValues?.title ?? '',
       subTitle: initialValues?.subTitle ?? '',
-      company: initialValues?.company ?? '',
+      clientId: initialValues?.clientId ?? '',
       description: initialValues?.description ?? '',
       technologies: initialValues?.technologies ?? [],
       active: initialValues?.active ?? false,
@@ -251,7 +258,7 @@ function ExperienceFormContent({
     const payload: ExperienceSubmitValue = {
       title: values.title,
       subTitle: values.subTitle?.trim() || undefined,
-      company: values.company,
+      clientId: values.clientId as Id<'clients'>,
       description: values.description,
       technologies: values.technologies,
       active: values.active,
@@ -283,7 +290,7 @@ function ExperienceFormContent({
       form.reset({
         title: '',
         subTitle: '',
-        company: '',
+        clientId: '',
         description: '',
         technologies: [],
         active: false,
@@ -334,11 +341,11 @@ function ExperienceFormContent({
         />
 
         <Controller
-          name="company"
+          name="clientId"
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel>Company</FieldLabel>
+              <FieldLabel>Client</FieldLabel>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
@@ -346,10 +353,10 @@ function ExperienceFormContent({
                     variant="outline"
                     className="w-full justify-between"
                     aria-invalid={fieldState.invalid}
-                    disabled={!companyOptions.length}
+                    disabled={!clientOptions.length}
                   >
-                    {field.value ||
-                      (companyOptions.length
+                    {clientNameById.get(field.value) ||
+                      (clientOptions.length
                         ? 'Select a client'
                         : 'No clients available')}
                     <ChevronDown className="size-4" />
@@ -362,9 +369,9 @@ function ExperienceFormContent({
                     value={field.value}
                     onValueChange={field.onChange}
                   >
-                    {companyOptions.map((name) => (
-                      <DropdownMenuRadioItem key={name} value={name}>
-                        {name}
+                    {clientOptions.map((client) => (
+                      <DropdownMenuRadioItem key={client.id} value={client.id}>
+                        {client.name}
                       </DropdownMenuRadioItem>
                     ))}
                   </DropdownMenuRadioGroup>
