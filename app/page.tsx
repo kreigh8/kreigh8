@@ -3,6 +3,7 @@ import HomeImage from '@/components/HomeImage'
 import { flag } from 'flags/next'
 import { vercelAdapter } from '@flags-sdk/vercel'
 import TitleBlurb from '@/components/TitleBlurb'
+import NavigationButtons from '@/components/NavigationButtons'
 
 export const contactMe = flag({
   key: 'contact-me',
@@ -33,12 +34,15 @@ export default async function Home() {
 
   return (
     <>
-      <main className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
+      <main className="container mx-auto gap-4">
         <section className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-          <article className="flex flex-col fixed top-1/2 transform -translate-y-1/2 w-full gap-4">
+          <article className="flex flex-col md:fixed md:top-1/2 transform md:-translate-y-1/2 w-full mt-8 ml-4 gap-4">
             <TitleBlurb />
             <ActionButtons />
+            <NavigationButtons />
           </article>
+
+          <article></article>
         </section>
       </main>
     </>
