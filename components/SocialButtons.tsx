@@ -5,6 +5,7 @@ import { Preloaded, usePreloadedQuery } from 'convex/react'
 import { Button } from '@/components/ui/button'
 import { Icons } from '@/components/ui/icons'
 import ThemeToggle from './ThemeToggle'
+import { Mail } from 'lucide-react'
 
 export default function SocialButtons(props: {
   preloadedSocialLinks: Preloaded<typeof api.social.getSocialLinks>
@@ -34,6 +35,18 @@ export default function SocialButtons(props: {
             aria-label="GitHub"
           >
             <Icons.gitHub className="size-5" />
+          </a>
+        </Button>
+      )}
+      {socialLinks?.email && (
+        <Button variant="ghost" size="icon" asChild>
+          <a
+            href={`mailto:${socialLinks.email}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Email"
+          >
+            <Mail className="size-5" />
           </a>
         </Button>
       )}

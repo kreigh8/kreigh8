@@ -8,7 +8,8 @@ import { v } from 'convex/values'
 export default defineSchema({
   social: defineTable({
     linkedIn: v.string(),
-    gitHub: v.string()
+    gitHub: v.string(),
+    email: v.string()
   }),
   home: defineTable({
     title: v.string(),

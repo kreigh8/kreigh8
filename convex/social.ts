@@ -1,6 +1,5 @@
 import { v } from 'convex/values'
 import { mutation, query } from './_generated/server'
-import { getImageFromImageId } from './image'
 import { checkForAuthenticatedUser } from './auth'
 
 export const getSocialLinks = query({
@@ -11,7 +10,8 @@ export const getSocialLinks = query({
 
     return {
       linkedIn: socialLinks[0]?.linkedIn ?? '',
-      gitHub: socialLinks[0]?.gitHub ?? ''
+      gitHub: socialLinks[0]?.gitHub ?? '',
+      email: socialLinks[0]?.email ?? ''
     }
   }
 })
@@ -19,7 +19,8 @@ export const getSocialLinks = query({
 export const createSocialLinks = mutation({
   args: {
     linkedIn: v.string(),
-    gitHub: v.string()
+    gitHub: v.string(),
+    email: v.string()
   },
   handler: async (ctx, args) => {
     checkForAuthenticatedUser(ctx)
@@ -31,14 +32,16 @@ export const createSocialLinks = mutation({
       // If social links already exist, update them instead of creating new ones
       await ctx.db.patch(existingLinks._id, {
         linkedIn: args.linkedIn,
-        gitHub: args.gitHub
+        gitHub: args.gitHub,
+        email: args.email
       })
       return existingLinks._id
     }
 
     const socialLinksId = await ctx.db.insert('social', {
       linkedIn: args.linkedIn,
-      gitHub: args.gitHub
+      gitHub: args.gitHub,
+      email: args.email
     })
 
     console.log('Added new social links with id:', socialLinksId)
@@ -49,7 +52,8 @@ export const createSocialLinks = mutation({
 export const updateSocialLinks = mutation({
   args: {
     linkedIn: v.string(),
-    gitHub: v.string()
+    gitHub: v.string(),
+    email: v.string()
   },
   handler: async (ctx, args) => {
     checkForAuthenticatedUser(ctx)
@@ -62,7 +66,8 @@ export const updateSocialLinks = mutation({
 
     await ctx.db.patch(existingLinks._id, {
       linkedIn: args.linkedIn,
-      gitHub: args.gitHub
+      gitHub: args.gitHub,
+      email: args.email
     })
 
     console.log('Updated social links with id:', existingLinks._id)

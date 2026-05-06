@@ -8,15 +8,37 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Preloaded, useMutation, useQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
-import { useUser } from '@clerk/clerk-react'
 import { toast } from 'sonner'
 import { Field, FieldError, FieldLabel, FieldSet } from '../ui/field'
 import { InputGroup, InputGroupAddon } from '@/components/ui/input-group'
 import { Icons } from '@/components/ui/icons'
+import { Mail } from 'lucide-react'
 
 const formSchema = z.object({
-  linkedIn: z.url({ message: 'LinkedIn URL must be a valid URL.' }),
-  gitHub: z.url({ message: 'GitHub URL must be a valid URL.' })
+  linkedIn: z.url({
+    error: (iss) => {
+      if (iss.code === 'invalid_type') {
+        return { message: 'LinkedIn URL must be a valid URL.' }
+      }
+      return { message: 'LinkedIn URL is required.' }
+    }
+  }),
+  gitHub: z.url({
+    error: (iss) => {
+      if (iss.code === 'invalid_type') {
+        return { message: 'GitHub URL must be a valid URL.' }
+      }
+      return { message: 'GitHub URL is required.' }
+    }
+  }),
+  email: z.email({
+    error: (iss) => {
+      if (iss.code === 'invalid_type') {
+        return { message: 'Email must be a valid email address.' }
+      }
+      return { message: 'Email is required.' }
+    }
+  })
 })
 
 export default function SocialForm(props: {
@@ -26,7 +48,7 @@ export default function SocialForm(props: {
   const createSocialLinks = useMutation(api.social.createSocialLinks)
   const updateSocialLinks = useMutation(api.social.updateSocialLinks)
   const hasExistingSocialLinks = Boolean(
-    socialLinks?.linkedIn || socialLinks?.gitHub
+    socialLinks?.linkedIn || socialLinks?.gitHub || socialLinks?.email
   )
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -34,7 +56,8 @@ export default function SocialForm(props: {
     mode: 'onChange',
     defaultValues: {
       linkedIn: '',
-      gitHub: ''
+      gitHub: '',
+      email: ''
     }
   })
 
@@ -48,7 +71,8 @@ export default function SocialForm(props: {
 
     form.reset({
       linkedIn: socialLinks.linkedIn ?? '',
-      gitHub: socialLinks.gitHub ?? ''
+      gitHub: socialLinks.gitHub ?? '',
+      email: socialLinks.email ?? ''
     })
   }, [socialLinks, form])
 
@@ -116,6 +140,33 @@ export default function SocialForm(props: {
             </Field>
           )}
         />
+
+        <Controller
+          name="email"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="email">Email Address</FieldLabel>
+              <InputGroup>
+                <Input
+                  {...field}
+                  id="email"
+                  type="email"
+                  autoComplete="email"
+                  data-slot="input-group-control"
+                  placeholder="you@example.com"
+                  aria-invalid={fieldState.invalid}
+                  className="border-0 shadow-none focus-visible:ring-0"
+                />
+                <InputGroupAddon align="inline-end">
+                  <Mail />
+                </InputGroupAddon>
+              </InputGroup>
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+
         <Button type="submit" disabled={isSubmitDisabled}>
           {hasExistingSocialLinks
             ? 'Update Social Links'
