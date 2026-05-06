@@ -6,10 +6,10 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Preloaded, useMutation, useQuery } from 'convex/react'
+import { Preloaded, useMutation, usePreloadedQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { toast } from 'sonner'
-import { Field, FieldError, FieldLabel, FieldSet } from '../ui/field'
+import { Field, FieldError, FieldLabel } from '../ui/field'
 import { InputGroup, InputGroupAddon } from '@/components/ui/input-group'
 import { Icons } from '@/components/ui/icons'
 import { Mail } from 'lucide-react'
@@ -44,7 +44,7 @@ const formSchema = z.object({
 export default function SocialForm(props: {
   preloadedSocialLinks: Preloaded<typeof api.social.getSocialLinks>
 }) {
-  const socialLinks = useQuery(api.social.getSocialLinks)
+  const socialLinks = usePreloadedQuery(props.preloadedSocialLinks)
   const createSocialLinks = useMutation(api.social.createSocialLinks)
   const updateSocialLinks = useMutation(api.social.updateSocialLinks)
   const hasExistingSocialLinks = Boolean(

@@ -16,6 +16,9 @@ export default defineSchema({
     subTitle: v.string(),
     slogan: v.string()
   }),
+  about: defineTable({
+    blurb: v.string()
+  }),
   homeImage: defineTable({
     imageId: v.id('images')
   }),

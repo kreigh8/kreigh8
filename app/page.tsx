@@ -4,6 +4,7 @@ import { flag } from 'flags/next'
 import { vercelAdapter } from '@flags-sdk/vercel'
 import TitleBlurb from '@/components/TitleBlurb'
 import NavigationButtons from '@/components/NavigationButtons'
+import About from '@/components/About'
 
 export const contactMe = flag({
   key: 'contact-me',
@@ -33,18 +34,16 @@ export default async function Home() {
   }
 
   return (
-    <>
-      <main className="container mx-auto gap-4">
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-          <article className="flex flex-col md:fixed md:top-1/2 transform md:-translate-y-1/2 w-full mt-8 ml-4 gap-4">
-            <TitleBlurb />
-            <ActionButtons />
-            <NavigationButtons />
-          </article>
+    <section className="grid grid-cols-1 md:grid-cols-2 md:h-[calc(100dvh-2rem)] gap-6 p-2">
+      <article className="flex flex-col items-center justify-center gap-4">
+        <TitleBlurb />
+        <ActionButtons />
+        <NavigationButtons />
+      </article>
 
-          <article></article>
-        </section>
-      </main>
-    </>
+      <article className="flex flex-col gap-4 md:overflow-y-auto md:h-full md:mt-8 pb-4 md:pb-0">
+        <About />
+      </article>
+    </section>
   )
 }
