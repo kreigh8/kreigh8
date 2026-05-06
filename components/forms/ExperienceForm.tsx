@@ -4,8 +4,14 @@ import { useEffect, useMemo, useTransition } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQuery } from 'convex/react'
+import {
+  Preloaded,
+  useMutation,
+  usePreloadedQuery,
+  useQuery
+} from 'convex/react'
 import { api } from '@/convex/_generated/api'
+import { Id } from '@/convex/_generated/dataModel'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -104,7 +110,9 @@ type ExperienceSubmitValue = {
 }
 
 type ExperienceFormProps = {
+  preloadedExperience?: Preloaded<typeof api.experience.getExperience>
   initialValues?: Partial<ExperienceSubmitValue>
+  experienceId?: Id<'experience'>
   onSubmit?: (values: ExperienceSubmitValue) => Promise<void> | void
   submitLabel?: string
 }
@@ -135,12 +143,67 @@ function stringifyTemporalValue(value?: string | number) {
 }
 
 export default function ExperienceForm({
+  preloadedExperience,
   initialValues,
+  experienceId,
   onSubmit,
   submitLabel = 'Submit'
 }: ExperienceFormProps) {
+  if (preloadedExperience) {
+    return (
+      <PreloadedExperienceForm
+        preloadedExperience={preloadedExperience}
+        onSubmit={onSubmit}
+        submitLabel={submitLabel}
+      />
+    )
+  }
+
+  return (
+    <ExperienceFormContent
+      initialValues={initialValues}
+      experienceId={experienceId}
+      onSubmit={onSubmit}
+      submitLabel={submitLabel}
+    />
+  )
+}
+
+function PreloadedExperienceForm({
+  preloadedExperience,
+  onSubmit,
+  submitLabel
+}: {
+  preloadedExperience: Preloaded<typeof api.experience.getExperience>
+  onSubmit?: (values: ExperienceSubmitValue) => Promise<void> | void
+  submitLabel?: string
+}) {
+  const experience = usePreloadedQuery(preloadedExperience)
+
+  return (
+    <ExperienceFormContent
+      initialValues={experience}
+      experienceId={experience._id}
+      onSubmit={onSubmit}
+      submitLabel={submitLabel ?? 'Update'}
+    />
+  )
+}
+
+function ExperienceFormContent({
+  initialValues,
+  experienceId,
+  onSubmit,
+  submitLabel = experienceId ? 'Update' : 'Submit'
+}: {
+  initialValues?: Partial<ExperienceSubmitValue>
+  experienceId?: Id<'experience'>
+  onSubmit?: (values: ExperienceSubmitValue) => Promise<void> | void
+  submitLabel?: string
+}) {
   const [isPending, startTransition] = useTransition()
   const createExperience = useMutation(api.experience.createExperience)
+  const updateExperience = useMutation(api.experience.updateExperience)
   const clients = useQuery(api.clients.listClients, {})
   const technologies = useQuery(api.technology.listTechnologies, {})
 
@@ -203,6 +266,15 @@ export default function ExperienceForm({
     startTransition(async () => {
       if (onSubmit) {
         await onSubmit(payload)
+        return
+      }
+
+      if (experienceId) {
+        await updateExperience({
+          id: experienceId,
+          body: payload
+        })
+        toast.success('Experience updated successfully!')
         return
       }
 

@@ -78,3 +78,35 @@ export const createExperience = mutation({
     return experienceId
   }
 })
+
+export const updateExperience = mutation({
+  args: {
+    id: v.id('experience'),
+    body: v.object({
+      start: v.union(v.string(), v.number()),
+      end: v.optional(v.union(v.string(), v.number())),
+      title: v.string(),
+      subTitle: v.optional(v.string()),
+      company: v.string(),
+      description: v.string(),
+      technologies: v.array(v.string()),
+      active: v.boolean()
+    })
+  },
+  handler: async (ctx, args) => {
+    checkForAuthenticatedUser(ctx)
+
+    await ctx.db.patch(args.id, {
+      start: args.body.start,
+      end: args.body.end,
+      title: args.body.title,
+      subTitle: args.body.subTitle,
+      company: args.body.company,
+      description: args.body.description,
+      technologies: args.body.technologies,
+      active: args.body.active
+    })
+
+    return args.id
+  }
+})
