@@ -1,10 +1,9 @@
-import ResumeDownloadButton from './ResumeButton'
-import ContactMe from './ContactMe'
+import { api } from '@/convex/_generated/api'
+import { preloadQuery } from 'convex/nextjs'
+import SocialButtons from './SocialButtons'
 
-export default function ActionButtons() {
-  return (
-    <div className="flex gap-4">
-      <ResumeDownloadButton />
-    </div>
-  )
+export default async function ActionButtonsPreloaded() {
+  const preloadedSocialLinks = await preloadQuery(api.social.getSocialLinks, {})
+
+  return <SocialButtons preloadedSocialLinks={preloadedSocialLinks} />
 }

@@ -23,11 +23,6 @@ export default function Header() {
               height={40}
             />
           </Link>
-
-          <div className="flex gap-2">
-            <ThemeToggle />
-            <Login />
-          </div>
         </div>
       </nav>
 
