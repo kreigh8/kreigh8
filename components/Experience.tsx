@@ -9,7 +9,7 @@ export default async function Experience() {
   )
 
   return (
-    <section id="experience" className="flex flex-col md:my-12 gap-4">
+    <section id="experience" className="flex flex-col md:my-24 gap-4">
       <ExperienceList preloadedExperiences={preloadedExperiences} />
     </section>
   )

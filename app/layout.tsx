@@ -43,7 +43,7 @@ export default function RootLayout({
                 disableTransitionOnChange
               >
                 <TooltipProvider>
-                  <main className="container mx-auto py-4">{children}</main>
+                  <main>{children}</main>
                   <Analytics />
                   <ImageDeleteAlert />
                   <Toaster />

@@ -23,47 +23,85 @@ type Experience = {
 const columns: ColumnDef<Experience>[] = [
   {
     accessorKey: 'title',
-    header: 'Title'
+    header: 'Title',
+    size: 140,
+    cell: ({ getValue }) => (
+      <span className="block truncate" title={getValue<string>()}>
+        {getValue<string>()}
+      </span>
+    )
   },
   {
     accessorKey: 'subTitle',
-    header: 'SubTitle'
+    header: 'SubTitle',
+    size: 110,
+    cell: ({ getValue }) => (
+      <span className="block truncate" title={getValue<string>()}>
+        {getValue<string>()}
+      </span>
+    )
   },
   {
     accessorKey: 'clientName',
-    header: 'Company'
+    header: 'Company',
+    size: 110,
+    cell: ({ getValue }) => (
+      <span className="block truncate" title={getValue<string>()}>
+        {getValue<string>()}
+      </span>
+    )
   },
   {
     accessorKey: 'description',
-    header: 'Description'
+    header: 'Description',
+    size: 160,
+    cell: ({ getValue }) => (
+      <span className="block truncate" title={getValue<string>()}>
+        {getValue<string>()}
+      </span>
+    )
   },
   {
-    accessorKey: 'startYear',
-    header: 'Start Year'
+    accessorKey: 'start',
+    header: 'Start',
+    size: 70
   },
   {
-    accessorKey: 'endYear',
-    header: 'End Year'
+    accessorKey: 'end',
+    header: 'End',
+    size: 70
   },
   {
     accessorKey: 'technologies',
-    header: 'Technologies'
+    header: 'Technologies',
+    size: 120,
+    cell: ({ getValue }) => {
+      const techs = getValue<string[]>()
+      const preview = techs.slice(0, 2).join(', ')
+      const title = techs.join(', ')
+      return (
+        <span className="block truncate" title={title}>
+          {preview}
+          {techs.length > 2 ? ` +${techs.length - 2}` : ''}
+        </span>
+      )
+    }
   },
   {
     accessorKey: 'active',
     header: 'Active',
-    cell: ({ row }) => {
-      if (row.original.active) {
-        return <Check />
-      } else {
-        return <X />
-      }
-    }
+    size: 60,
+    cell: ({ row }) =>
+      row.original.active ? (
+        <Check className="mx-auto" />
+      ) : (
+        <X className="mx-auto" />
+      )
   },
   {
     accessorKey: 'actions',
     header: undefined,
-    maxSize: 80,
+    size: 90,
     cell: ({ row }) => <EditDeleteExperienceCell<Experience> row={row} />
   }
 ]

@@ -33,9 +33,7 @@ const cardGrid = (experience: ExperienceListItemProps['experience']) => (
       <p className="mt-2">{experience.description}</p>
       <div className="mt-2 flex flex-wrap gap-2">
         {experience.technologies.map((tech) => (
-          <Badge variant="secondary" key={tech}>
-            {tech}
-          </Badge>
+          <Badge key={tech}>{tech}</Badge>
         ))}
       </div>
     </div>
@@ -46,7 +44,7 @@ export default function ExperienceListItem({
   experience
 }: ExperienceListItemProps) {
   return (
-    <li className="overflow-hidden rounded border">
+    <li className="overflow-hidden rounded-lg">
       {experience.clientUrl ? (
         <a
           href={experience.clientUrl}

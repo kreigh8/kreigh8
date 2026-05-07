@@ -6,6 +6,7 @@ import TitleBlurb from '@/components/TitleBlurb'
 import NavigationButtons from '@/components/NavigationButtons'
 import About from '@/components/About'
 import Experience from '@/components/Experience'
+import Footer from '@/components/Footer'
 
 export const contactMe = flag({
   key: 'contact-me',
@@ -35,7 +36,7 @@ export default async function Home() {
   }
 
   return (
-    <section className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
+    <section className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 p-2">
       <article className="flex flex-col items-start justify-center gap-4 md:sticky md:top-4 md:h-[calc(100dvh-2rem)]">
         <TitleBlurb />
         <ActionButtons />
@@ -45,6 +46,8 @@ export default async function Home() {
       <article className="flex flex-col gap-4 pb-4 md:mt-8 md:pb-0">
         <About />
         <Experience />
+
+        <Footer />
       </article>
     </section>
   )

@@ -8,7 +8,9 @@ export default function AdminLayout({
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="container mx-auto flex-1 px-4 py-8">{children}</main>
+      <section className="container mx-auto flex flex-1 p-4">
+        {children}
+      </section>
     </div>
   )
 }
