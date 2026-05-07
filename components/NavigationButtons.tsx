@@ -7,8 +7,8 @@ import { cn } from '@/lib/utils'
 
 const NAV_ITEMS = [
   { id: 'about', label: 'About' },
-  { id: 'experience', label: 'Experience' },
-  { id: 'clients', label: 'Clients' }
+  { id: 'experience', label: 'Experience' }
+  // { id: 'clients', label: 'Clients' }
 ] as const
 
 export default function NavigationButtons() {
