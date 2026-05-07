@@ -27,7 +27,7 @@ export default async function Home() {
         <article className="flex flex-col items-center gap-4">
           <HomeImage />
 
-          <h1 className="text-4xl font-bold text-center">
+          <h1 className="text-4xl font-bold text-center text-primary">
             Site Under Construction
           </h1>
         </article>
