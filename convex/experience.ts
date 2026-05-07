@@ -64,8 +64,8 @@ export const deleteExperience = mutation({
 
 export const createExperience = mutation({
   args: {
-    start: v.union(v.string(), v.number()),
-    end: v.optional(v.union(v.string(), v.number())),
+    start: v.string(),
+    end: v.optional(v.string()),
     title: v.string(),
     subTitle: v.optional(v.string()),
     clientId: v.id('clients'),
@@ -97,8 +97,8 @@ export const updateExperience = mutation({
   args: {
     id: v.id('experience'),
     body: v.object({
-      start: v.union(v.string(), v.number()),
-      end: v.optional(v.union(v.string(), v.number())),
+      start: v.string(),
+      end: v.optional(v.string()),
       title: v.string(),
       subTitle: v.optional(v.string()),
       clientId: v.id('clients'),

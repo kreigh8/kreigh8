@@ -105,8 +105,8 @@ type ExperienceSubmitValue = {
   description: string
   technologies: string[]
   active: boolean
-  start: string | number
-  end?: string | number
+  start: string
+  end?: string
 }
 
 type ExperienceFormProps = {
@@ -127,10 +127,6 @@ function toTemporalOrder(value: string) {
 }
 
 function toSubmitValue(value: string) {
-  if (YEAR_REGEX.test(value)) {
-    return Number(value)
-  }
-
   return value
 }
 

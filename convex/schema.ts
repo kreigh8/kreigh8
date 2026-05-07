@@ -20,8 +20,8 @@ export default defineSchema({
     blurb: v.string()
   }),
   experience: defineTable({
-    start: v.union(v.string(), v.number()),
-    end: v.optional(v.union(v.string(), v.number())),
+    start: v.string(),
+    end: v.optional(v.string()),
     active: v.boolean(),
     title: v.string(),
     subTitle: v.optional(v.string()),

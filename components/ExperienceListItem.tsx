@@ -5,8 +5,8 @@ import { ExternalLink } from 'lucide-react'
 type ExperienceListItemProps = {
   experience: {
     _id: Id<'experience'>
-    start: string | number
-    end?: string | number
+    start: string
+    end?: string
     title: string
     subTitle?: string
     description: string
