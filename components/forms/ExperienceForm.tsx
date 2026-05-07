@@ -126,10 +126,6 @@ function toTemporalOrder(value: string) {
   return Number(year) * 100 + Number(month)
 }
 
-function toSubmitValue(value: string) {
-  return value
-}
-
 function stringifyTemporalValue(value?: string | number) {
   if (value === undefined || value === null) {
     return ''
@@ -258,11 +254,11 @@ function ExperienceFormContent({
       description: values.description,
       technologies: values.technologies,
       active: values.active,
-      start: toSubmitValue(values.start),
+      start: values.start,
       end: values.active
         ? undefined
         : values.end?.trim()
-          ? toSubmitValue(values.end.trim())
+          ? values.end.trim()
           : undefined
     }
 
