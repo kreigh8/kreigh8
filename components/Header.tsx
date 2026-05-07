@@ -3,24 +3,28 @@
 import Link from 'next/link'
 import { Authenticated } from 'convex/react'
 import { usePathname } from 'next/navigation'
-import Image from 'next/image'
+import { Button } from './ui/button'
+import { useClerk } from '@clerk/nextjs'
 
 export default function Header() {
   const currentPathname = usePathname()
+  const { signOut } = useClerk()
 
   return (
     <header className="sticky top-0 z-10">
       <nav className="bg-background p-4 border-b-2 border-slate-200 dark:border-slate-800">
         <div className="container flex justify-between items-center mx-auto">
           <Link href="/">
-            <Image
-              src="/kreigh8-logo.svg"
-              className="dark:invert"
-              alt="kreigh8"
-              width={125}
-              height={40}
-            />
+            <h1>kreigh8</h1>
           </Link>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => signOut({ redirectUrl: '/' })}
+          >
+            Logout
+          </Button>
         </div>
       </nav>
 
