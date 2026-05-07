@@ -10,7 +10,7 @@ export default function ThemeToggle() {
   return (
     <Button
       size="icon"
-      variant="outline"
+      variant="ghost"
       onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
     >
       <Sun className="hidden dark:block" />

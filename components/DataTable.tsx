@@ -32,16 +32,22 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <div className="overflow-hidden rounded-md border">
-      <Table>
+    <div className="overflow-x-auto rounded-md border">
+      <Table className="w-full table-fixed">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
+                const colDef = header.column.columnDef
+                const hasSize = colDef.size !== undefined
+                const hasMaxSize = colDef.maxSize !== undefined
                 return (
                   <TableHead
                     key={header.id}
-                    style={{ width: `${header.getSize()}px` }}
+                    style={{
+                      width: hasSize ? `${colDef.size}px` : undefined,
+                      maxWidth: hasMaxSize ? `${colDef.maxSize}px` : undefined
+                    }}
                   >
                     {header.isPlaceholder
                       ? null
@@ -62,16 +68,25 @@ export function DataTable<TData, TValue>({
                 key={row.id}
                 data-state={row.getIsSelected() && 'selected'}
               >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    style={{
-                      width: cell.column.getSize()
-                    }}
-                    key={cell.id}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
+                {row.getVisibleCells().map((cell) => {
+                  const colDef = cell.column.columnDef
+                  const hasSize = colDef.size !== undefined
+                  const hasMaxSize = colDef.maxSize !== undefined
+                  return (
+                    <TableCell
+                      style={{
+                        width: hasSize ? `${colDef.size}px` : undefined,
+                        maxWidth: hasMaxSize ? `${colDef.maxSize}px` : undefined
+                      }}
+                      key={cell.id}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  )
+                })}
               </TableRow>
             ))
           ) : (

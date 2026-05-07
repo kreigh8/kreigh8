@@ -1,5 +1,4 @@
 import EditClientForm from '@/components/forms/EditClientForm'
-import EditTechnologyForm from '@/components/forms/EditTechnologyForm'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 import { preloadQuery } from 'convex/nextjs'

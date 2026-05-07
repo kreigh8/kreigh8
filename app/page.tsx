@@ -1,12 +1,12 @@
 import ActionButtons from '@/components/ActionButtons'
-import Blurb from '@/components/Blurb'
-import Clients from '@/components/common/Clients/Clients'
-import Skills from '@/components/common/Skills/Skills'
-import Technology from '@/components/common/Technology/Technology'
-import ContactMe from '@/components/ContactMe'
 import HomeImage from '@/components/HomeImage'
 import { flag } from 'flags/next'
 import { vercelAdapter } from '@flags-sdk/vercel'
+import TitleBlurb from '@/components/TitleBlurb'
+import NavigationButtons from '@/components/NavigationButtons'
+import About from '@/components/About'
+import Experience from '@/components/Experience'
+import Footer from '@/components/Footer'
 
 export const contactMe = flag({
   key: 'contact-me',
@@ -19,7 +19,6 @@ export const underConstruction = flag({
 })
 
 export default async function Home() {
-  const showContactMe = (await contactMe()) as boolean
   const showUnderConstruction = (await underConstruction()) as boolean
 
   if (showUnderConstruction) {
@@ -37,28 +36,19 @@ export default async function Home() {
   }
 
   return (
-    <>
-      <main className="container mx-auto grid grid-cols-1 gap-4">
-        <section className="grid grid-cols-1  md:grid-cols-2 gap-4 w-full">
-          <article className="flex flex-col w-full gap-4">
-            <Blurb />
+    <section className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 p-2 py-4">
+      <article className="flex flex-col items-start justify-center gap-4 md:sticky md:top-4 md:h-[calc(100dvh-2rem)]">
+        <TitleBlurb />
+        <ActionButtons />
+        <NavigationButtons />
+      </article>
 
-            <ActionButtons />
-          </article>
+      <article className="flex flex-col gap-4 pb-4 md:mt-8 md:pb-0">
+        <About />
+        <Experience />
 
-          <article className="flex flex-col items-center justify-center w-full">
-            <HomeImage />
-          </article>
-        </section>
-
-        <Skills />
-
-        <Clients />
-
-        <Technology />
-
-        {showContactMe && <ContactMe />}
-      </main>
-    </>
+        <Footer />
+      </article>
+    </section>
   )
 }
