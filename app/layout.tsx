@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, DM_Sans } from 'next/font/google'
 import ConvexClientProvider from '@/components/ConvexClientProvider'
 import { ImageDeleteProvider } from '@/components/context/ImageDeleteContext'
 import { ImageDeleteAlert } from '@/components/admin/ImageDeleteAlert'
@@ -12,6 +12,11 @@ import './globals.css'
 
 const inter = Inter({
   variable: '--font-inter',
+  subsets: ['latin']
+})
+
+const dmSans = DM_Sans({
+  variable: '--font-dm-sans',
   subsets: ['latin']
 })
 
@@ -32,7 +37,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body
-          className={`${inter.variable} antialiased flex flex-col min-h-dvh`}
+          className={`${inter.variable} ${dmSans.variable} antialiased flex flex-col min-h-dvh`}
         >
           <ConvexClientProvider>
             <ImageDeleteProvider>

@@ -22,7 +22,7 @@ export default function SocialButtons(props: {
             rel="noopener noreferrer"
             aria-label="LinkedIn"
           >
-            <Icons.linkedIn className="size-5" />
+            <Icons.linkedIn className="size-5 text-primary" />
           </a>
         </Button>
       )}
@@ -34,7 +34,7 @@ export default function SocialButtons(props: {
             rel="noopener noreferrer"
             aria-label="GitHub"
           >
-            <Icons.gitHub className="size-5" />
+            <Icons.gitHub className="size-5 text-primary" />
           </a>
         </Button>
       )}
@@ -46,7 +46,7 @@ export default function SocialButtons(props: {
             rel="noopener noreferrer"
             aria-label="Email"
           >
-            <Mail className="size-5" />
+            <Mail className="size-5 text-primary" />
           </a>
         </Button>
       )}

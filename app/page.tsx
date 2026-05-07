@@ -36,7 +36,7 @@ export default async function Home() {
   }
 
   return (
-    <section className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 p-2">
+    <section className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 p-2 py-4">
       <article className="flex flex-col items-start justify-center gap-4 md:sticky md:top-4 md:h-[calc(100dvh-2rem)]">
         <TitleBlurb />
         <ActionButtons />
