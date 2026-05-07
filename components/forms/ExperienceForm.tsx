@@ -105,8 +105,8 @@ type ExperienceSubmitValue = {
   description: string
   technologies: string[]
   active: boolean
-  start: string | number
-  end?: string | number
+  start: string
+  end?: string
 }
 
 type ExperienceFormProps = {
@@ -124,14 +124,6 @@ function toTemporalOrder(value: string) {
 
   const [year, month] = value.split('-')
   return Number(year) * 100 + Number(month)
-}
-
-function toSubmitValue(value: string) {
-  if (YEAR_REGEX.test(value)) {
-    return Number(value)
-  }
-
-  return value
 }
 
 function stringifyTemporalValue(value?: string | number) {
@@ -262,11 +254,11 @@ function ExperienceFormContent({
       description: values.description,
       technologies: values.technologies,
       active: values.active,
-      start: toSubmitValue(values.start),
+      start: values.start,
       end: values.active
         ? undefined
         : values.end?.trim()
-          ? toSubmitValue(values.end.trim())
+          ? values.end.trim()
           : undefined
     }
 
