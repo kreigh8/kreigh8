@@ -23,7 +23,7 @@ export default async function Home() {
 
   if (showUnderConstruction) {
     return (
-      <section className="container mx-auto grid grid-cols-1 items-center gap-4">
+      <section className="flex min-h-dvh items-center justify-center">
         <article className="flex flex-col items-center gap-4">
           <HomeImage />
 
