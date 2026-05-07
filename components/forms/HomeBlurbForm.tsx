@@ -9,12 +9,11 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from 'sonner'
 import { Field, FieldError, FieldLabel, FieldDescription } from '../ui/field'
-import { FormMinimalTiptapField } from './FormMinimalTiptapField'
 
 const formSchema = z.object({
   title: z.string().min(2, { message: 'Title must be at least 2 characters.' }),
   subTitle: z.string().min(2, {
-    message: 'Home blurb must be at least 2 characters.'
+    message: 'Subtitle must be at least 2 characters.'
   }),
   slogan: z
     .string()

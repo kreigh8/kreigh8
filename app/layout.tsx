@@ -9,6 +9,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { Analytics } from '@vercel/analytics/next'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import './globals.css'
+import '@/components/ui/minimal-tiptap/styles/index.css'
 
 const inter = Inter({
   variable: '--font-inter',

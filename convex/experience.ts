@@ -1,12 +1,9 @@
 import { v } from 'convex/values'
 import { mutation, query } from './_generated/server'
 import { checkForAuthenticatedUser } from './auth'
-import { updateImageRef } from './image'
 
 export const listExperience = query({
-  args: {
-    count: v.optional(v.number())
-  },
+  args: {},
   handler: async (ctx) => {
     const experiences = await ctx.db
       .query('experience')

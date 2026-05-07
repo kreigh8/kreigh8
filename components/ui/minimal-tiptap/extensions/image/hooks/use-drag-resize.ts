@@ -1,6 +1,7 @@
-import { useState, useCallback, useEffect } from "react"
+import { useState, useCallback, useEffect } from 'react'
+import type { PointerEvent as ReactPointerEvent } from 'react'
 
-type ResizeDirection = "left" | "right"
+type ResizeDirection = 'left' | 'right'
 export type ElementDimensions = { width: number; height: number }
 
 type HookParams = {
@@ -24,11 +25,11 @@ export function useDragResize({
   minWidth,
   minHeight,
   maxWidth,
-  onDimensionsChange,
+  onDimensionsChange
 }: HookParams) {
   const [dimensions, updateDimensions] = useState<ElementDimensions>({
     width: Math.max(initialWidth ?? minWidth, minWidth),
-    height: Math.max(initialHeight ?? minHeight, minHeight),
+    height: Math.max(initialHeight ?? minHeight, minHeight)
   })
   const [boundaryWidth, setBoundaryWidth] = useState(Infinity)
   const [resizeOrigin, setResizeOrigin] = useState(0)
@@ -58,7 +59,7 @@ export function useDragResize({
     (event: PointerEvent) => {
       event.preventDefault()
       const movementDelta =
-        (resizeDirection === "left"
+        (resizeDirection === 'left'
           ? resizeOrigin - event.pageX
           : event.pageX - resizeOrigin) * 2
       const gridUnitWidth = (gridInterval / 100) * boundaryWidth
@@ -76,7 +77,7 @@ export function useDragResize({
             ? finalWidth * aspectRatio
             : (contentHeight ?? minHeight),
           minHeight
-        ),
+        )
       })
     },
     [
@@ -89,7 +90,7 @@ export function useDragResize({
       contentWidth,
       initialDimensions.width,
       minWidth,
-      minHeight,
+      minHeight
     ]
   )
 
@@ -107,12 +108,12 @@ export function useDragResize({
 
   const handleKeydown = useCallback(
     (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
+      if (event.key === 'Escape') {
         event.preventDefault()
         event.stopPropagation()
         updateDimensions({
           width: Math.max(initialDimensions.width, minWidth),
-          height: Math.max(initialDimensions.height, minHeight),
+          height: Math.max(initialDimensions.height, minHeight)
         })
         setResizeDirection(undefined)
       }
@@ -122,7 +123,7 @@ export function useDragResize({
 
   const initiateResize = useCallback(
     (direction: ResizeDirection) =>
-      (event: React.PointerEvent<HTMLDivElement>) => {
+      (event: ReactPointerEvent<HTMLDivElement>) => {
         event.preventDefault()
         event.stopPropagation()
 
@@ -132,7 +133,7 @@ export function useDragResize({
             widthConstraint(dimensions.width, maxWidth),
             minWidth
           ),
-          height: Math.max(dimensions.height, minHeight),
+          height: Math.max(dimensions.height, minHeight)
         })
         setResizeOrigin(event.pageX)
         setResizeDirection(direction)
@@ -143,20 +144,20 @@ export function useDragResize({
       dimensions.width,
       dimensions.height,
       minWidth,
-      minHeight,
+      minHeight
     ]
   )
 
   useEffect(() => {
     if (resizeDirection) {
-      document.addEventListener("keydown", handleKeydown)
-      document.addEventListener("pointermove", handlePointerMove)
-      document.addEventListener("pointerup", handlePointerUp)
+      document.addEventListener('keydown', handleKeydown)
+      document.addEventListener('pointermove', handlePointerMove)
+      document.addEventListener('pointerup', handlePointerUp)
 
       return () => {
-        document.removeEventListener("keydown", handleKeydown)
-        document.removeEventListener("pointermove", handlePointerMove)
-        document.removeEventListener("pointerup", handlePointerUp)
+        document.removeEventListener('keydown', handleKeydown)
+        document.removeEventListener('pointermove', handlePointerMove)
+        document.removeEventListener('pointerup', handlePointerUp)
       }
     }
   }, [resizeDirection, handleKeydown, handlePointerMove, handlePointerUp])
@@ -166,6 +167,6 @@ export function useDragResize({
     isResizing: !!resizeDirection,
     updateDimensions,
     currentWidth: Math.max(dimensions.width, minWidth),
-    currentHeight: Math.max(dimensions.height, minHeight),
+    currentHeight: Math.max(dimensions.height, minHeight)
   }
 }
