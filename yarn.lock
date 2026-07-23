@@ -2848,14 +2848,14 @@ convex-test@^0.0.41:
   resolved "https://registry.npmjs.org/convex-test/-/convex-test-0.0.41.tgz"
   integrity sha512-GPHeYFOi70n7UtW0eCEQFVhzl/+m8PvbWkDCbKpHLybI1MrScf4sVpGeM0cC2qmtxiduxa2nLPbehPalhh9oyQ==
 
-convex@^1.36.1:
-  version "1.36.1"
-  resolved "https://registry.npmjs.org/convex/-/convex-1.36.1.tgz"
-  integrity sha512-NVnwNqU+h8jyPuS0Itvj4MPH9c2yF+tA/RNoSDpCqiLhmYD4+kZxm0dDkVM0QDzz66wem9NqheBb9YQGsHwzBQ==
+convex@^1.42.3:
+  version "1.42.3"
+  resolved "https://registry.yarnpkg.com/convex/-/convex-1.42.3.tgz#d226b720e9ac5acf52d0e5771781a1f4c9e4df0e"
+  integrity sha512-7Tz/lH6UlZdiqzLPF/zrlH6Rlo/DOp836dL+GZkUMEQ2jaGGNnBIiIDcOOiEqtfSehuQ65r/rdNMnb4LupowaA==
   dependencies:
     esbuild "0.27.0"
     prettier "^3.0.0"
-    ws "8.18.0"
+    ws "8.21.0"
 
 cross-spawn@^6.0.5:
   version "6.0.6"
@@ -5948,10 +5948,10 @@ word-wrap@^1.2.5:
   resolved "https://registry.npmjs.org/word-wrap/-/word-wrap-1.2.5.tgz"
   integrity sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==
 
-ws@8.18.0:
-  version "8.18.0"
-  resolved "https://registry.npmjs.org/ws/-/ws-8.18.0.tgz"
-  integrity sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==
+ws@8.21.0:
+  version "8.21.0"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.21.0.tgz#012e413fc07429945121b0c153158c4343086951"
+  integrity sha512-Vsp28b7DRcimFQvrqu2Wek3z1iYxDCWqHYB8Qsnk/S4RfaCQzPGPyBNuVjJV3cd6UiKtUtp6sNM77gWvzcCH+g==
 
 xml-name-validator@^5.0.0:
   version "5.0.0"
