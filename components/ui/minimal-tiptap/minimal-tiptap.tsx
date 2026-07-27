@@ -122,7 +122,7 @@ export const MainMinimalTiptapEditor = ({
       <Toolbar editor={editor} />
       <EditorContent
         editor={editor}
-        className={cn('minimal-tiptap-editor', editorContentClassName)}
+        className={cn('minimal-tiptap-editor p-2', editorContentClassName)}
       />
       <LinkBubbleMenu editor={editor} />
     </MeasuredContainer>
