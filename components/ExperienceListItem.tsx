@@ -17,8 +17,8 @@ type ExperienceListItemProps = {
 }
 
 const cardGrid = (experience: ExperienceListItemProps['experience']) => (
-  <div className="grid grid-cols-1 gap-4 md:grid-cols-[25%_75%]">
-    <h1 className="text-sm text-muted-foreground">
+  <div className="grid grid-cols-1 gap-2 lg:gap-4 md:grid-cols-[25%_75%]">
+    <h1 className="px-2 text-sm text-muted-foreground md:px-0">
       {experience.start} - {experience.end ? experience.end : 'Present'}
     </h1>
 
