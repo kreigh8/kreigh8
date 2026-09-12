@@ -17,7 +17,7 @@ type Experience = {
   start: number | string
   end?: number | string
   active: boolean
-  technologies: string[]
+  technologies: { _id: Id<'technologies'>; name: string }[]
 }
 
 const columns: ColumnDef<Experience>[] = [
@@ -76,13 +76,14 @@ const columns: ColumnDef<Experience>[] = [
     header: 'Technologies',
     size: 120,
     cell: ({ getValue }) => {
-      const techs = getValue<string[]>()
-      const preview = techs.slice(0, 2).join(', ')
-      const title = techs.join(', ')
+      const techs = getValue<{ _id: Id<'technologies'>; name: string }[]>()
+      const names = techs.map((tech) => tech.name)
+      const preview = names.slice(0, 2).join(', ')
+      const title = names.join(', ')
       return (
         <span className="block truncate" title={title}>
           {preview}
-          {techs.length > 2 ? ` +${techs.length - 2}` : ''}
+          {names.length > 2 ? ` +${names.length - 2}` : ''}
         </span>
       )
     }

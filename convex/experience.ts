@@ -1,6 +1,20 @@
 import { v } from 'convex/values'
-import { mutation, query } from './_generated/server'
+import { mutation, query, QueryCtx } from './_generated/server'
+import { Id } from './_generated/dataModel'
 import { checkForAuthenticatedUser } from './auth'
+
+async function resolveTechnologies(
+  ctx: QueryCtx,
+  technologyIds: Id<'technologies'>[]
+) {
+  const technologies = await Promise.all(
+    technologyIds.map((technologyId) => ctx.db.get(technologyId))
+  )
+
+  return technologies
+    .filter((technology) => technology !== null)
+    .map((technology) => ({ _id: technology._id, name: technology.name }))
+}
 
 export const listExperience = query({
   args: {},
@@ -14,9 +28,14 @@ export const listExperience = query({
     return Promise.all(
       experiences.map(async (experience) => {
         const client = await ctx.db.get(experience.clientId)
+        const technologies = await resolveTechnologies(
+          ctx,
+          experience.technologies
+        )
 
         return {
           ...experience,
+          technologies,
           clientName: client?.name ?? 'Unknown Client',
           clientUrl: client?.url
         }
@@ -37,9 +56,14 @@ export const getExperience = query({
     }
 
     const client = await ctx.db.get(experience.clientId)
+    const technologies = await resolveTechnologies(
+      ctx,
+      experience.technologies
+    )
 
     return {
       ...experience,
+      technologies,
       clientName: client?.name ?? 'Unknown Client',
       clientUrl: client?.url
     }
@@ -67,7 +91,7 @@ export const createExperience = mutation({
     subTitle: v.optional(v.string()),
     clientId: v.id('clients'),
     description: v.string(),
-    technologies: v.array(v.string()),
+    technologies: v.array(v.id('technologies')),
     active: v.boolean()
   },
   handler: async (ctx, args) => {
@@ -100,7 +124,7 @@ export const updateExperience = mutation({
       subTitle: v.optional(v.string()),
       clientId: v.id('clients'),
       description: v.string(),
-      technologies: v.array(v.string()),
+      technologies: v.array(v.id('technologies')),
       active: v.boolean()
     })
   },
