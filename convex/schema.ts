@@ -27,7 +27,7 @@ export default defineSchema({
     subTitle: v.optional(v.string()),
     clientId: v.id('clients'),
     description: v.string(),
-    technologies: v.array(v.string())
+    technologies: v.array(v.id('technologies'))
   })
     .index('by_active', ['active'])
     .index('by_start', ['start']),
@@ -44,10 +44,6 @@ export default defineSchema({
     name: v.string(),
     url: v.string(),
     imageId: v.id('images')
-  }),
-  messages: defineTable({
-    author: v.string(),
-    storageId: v.id('_storage')
   }),
   images: defineTable({
     refIds: v.optional(

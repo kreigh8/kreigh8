@@ -103,7 +103,7 @@ type ExperienceSubmitValue = {
   subTitle?: string
   clientId: Id<'clients'>
   description: string
-  technologies: string[]
+  technologies: Id<'technologies'>[]
   active: boolean
   start: string
   end?: string
@@ -174,7 +174,10 @@ function PreloadedExperienceForm({
 
   return (
     <ExperienceFormContent
-      initialValues={experience}
+      initialValues={{
+        ...experience,
+        technologies: experience.technologies.map((technology) => technology._id)
+      }}
       experienceId={experience._id}
       onSubmit={onSubmit}
       submitLabel={submitLabel ?? 'Update'}
@@ -218,10 +221,20 @@ function ExperienceFormContent({
   const technologyOptions = useMemo(
     () =>
       (technologies ?? [])
-        .map((technology) => technology.name)
-        .filter((name, index, arr) => arr.indexOf(name) === index)
-        .sort((a, b) => a.localeCompare(b)),
+        .map((technology) => ({ id: technology._id, name: technology.name }))
+        .sort((a, b) => a.name.localeCompare(b.name)),
     [technologies]
+  )
+
+  const technologyNameById = useMemo(
+    () =>
+      new Map<string, string>(
+        technologyOptions.map((technology) => [
+          String(technology.id),
+          technology.name
+        ])
+      ),
+    [technologyOptions]
   )
 
   const form = useForm<ExperienceFormValues>({
@@ -252,7 +265,7 @@ function ExperienceFormContent({
       subTitle: values.subTitle?.trim() || undefined,
       clientId: values.clientId as Id<'clients'>,
       description: values.description,
-      technologies: values.technologies,
+      technologies: values.technologies as Id<'technologies'>[],
       active: values.active,
       start: values.start,
       end: values.active
@@ -423,27 +436,25 @@ function ExperienceFormContent({
                   <DropdownMenuContent className="w-72">
                     <DropdownMenuLabel>Technologies</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    {technologyOptions.map((technologyName) => {
-                      const isChecked = field.value.includes(technologyName)
+                    {technologyOptions.map((technology) => {
+                      const isChecked = field.value.includes(technology.id)
 
                       return (
                         <DropdownMenuCheckboxItem
-                          key={technologyName}
+                          key={technology.id}
                           checked={isChecked}
                           onCheckedChange={(checked) => {
                             if (checked) {
-                              field.onChange([...field.value, technologyName])
+                              field.onChange([...field.value, technology.id])
                               return
                             }
 
                             field.onChange(
-                              field.value.filter(
-                                (name) => name !== technologyName
-                              )
+                              field.value.filter((id) => id !== technology.id)
                             )
                           }}
                         >
-                          {technologyName}
+                          {technology.name}
                         </DropdownMenuCheckboxItem>
                       )
                     })}
@@ -451,13 +462,13 @@ function ExperienceFormContent({
                 </DropdownMenu>
                 {selectedCount > 0 && (
                   <div className="text-muted-foreground flex flex-wrap gap-2 text-sm">
-                    {field.value.map((technologyName) => (
+                    {field.value.map((technologyId) => (
                       <span
-                        key={technologyName}
+                        key={technologyId}
                         className="bg-muted inline-flex items-center gap-1 rounded-md px-2 py-1"
                       >
                         <Check className="size-3" />
-                        {technologyName}
+                        {technologyNameById.get(technologyId) ?? technologyId}
                       </span>
                     ))}
                   </div>

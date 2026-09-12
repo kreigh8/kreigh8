@@ -84,10 +84,11 @@ export const updateTechnology = mutation({
 
     // Get the previous image before any changes
     const previousImageId = technology!.imageId
+    const previousImage = await getImageFromId(ctx, previousImageId)
 
     // Track if image is changed
     let imageChanged = false
-    if (args.body.image && args.body.image.name !== technology?.name) {
+    if (args.body.image && args.body.image.name !== previousImage?.name) {
       imageChanged = true
       // Upload or get new image
       let newImage = await getImageByName(ctx, args.body.image.name)

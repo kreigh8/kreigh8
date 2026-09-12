@@ -2,6 +2,7 @@ import { v } from 'convex/values'
 import { query, mutation } from './_generated/server'
 import {
   getImageByName,
+  getImageFromId,
   getImageFromImageId,
   getOrphanedImageResponse,
   removeImageRef,
@@ -57,10 +58,11 @@ export const updateClient = mutation({
 
     // Get the previous image before any changes
     const previousImageId = client!.imageId
+    const previousImage = await getImageFromId(ctx, previousImageId)
 
     // Track if image is changed
     let imageChanged = false
-    if (args.body.image && args.body.image.name !== client?.name) {
+    if (args.body.image && args.body.image.name !== previousImage?.name) {
       imageChanged = true
       // Upload or get new image
       let newImage = await getImageByName(ctx, args.body.image.name)

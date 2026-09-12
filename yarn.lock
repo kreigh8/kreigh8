@@ -2848,10 +2848,10 @@ convex-test@^0.0.41:
   resolved "https://registry.npmjs.org/convex-test/-/convex-test-0.0.41.tgz"
   integrity sha512-GPHeYFOi70n7UtW0eCEQFVhzl/+m8PvbWkDCbKpHLybI1MrScf4sVpGeM0cC2qmtxiduxa2nLPbehPalhh9oyQ==
 
-convex@^1.42.3:
-  version "1.42.3"
-  resolved "https://registry.yarnpkg.com/convex/-/convex-1.42.3.tgz#d226b720e9ac5acf52d0e5771781a1f4c9e4df0e"
-  integrity sha512-7Tz/lH6UlZdiqzLPF/zrlH6Rlo/DOp836dL+GZkUMEQ2jaGGNnBIiIDcOOiEqtfSehuQ65r/rdNMnb4LupowaA==
+convex@^1.45.0:
+  version "1.45.0"
+  resolved "https://registry.yarnpkg.com/convex/-/convex-1.45.0.tgz#81f19de4cc324877fabf0e9c92332376add22dfa"
+  integrity sha512-AV3B56Ptu/14d76g3urBJ50dwpiZa6uJaLT84OWox5aCwZIJiuAamdjv3lLHDzs8vv5kC31anEZohhUe3qJ2bA==
   dependencies:
     esbuild "0.27.0"
     prettier "^3.0.0"

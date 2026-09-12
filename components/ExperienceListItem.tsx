@@ -10,7 +10,7 @@ type ExperienceListItemProps = {
     title: string
     subTitle?: string
     description: string
-    technologies: string[]
+    technologies: { _id: Id<'technologies'>; name: string }[]
     clientName: string
     clientUrl?: string
   }
@@ -33,7 +33,7 @@ const cardGrid = (experience: ExperienceListItemProps['experience']) => (
       <p className="mt-2">{experience.description}</p>
       <div className="mt-2 flex flex-wrap gap-2">
         {experience.technologies.map((tech) => (
-          <Badge key={tech}>{tech}</Badge>
+          <Badge key={tech._id}>{tech.name}</Badge>
         ))}
       </div>
     </div>
