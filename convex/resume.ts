@@ -1,5 +1,5 @@
 import { v } from 'convex/values'
-import { mutation, query } from './_generated/server'
+import { internalQuery, mutation, query } from './_generated/server'
 import { checkForAuthenticatedUser } from './auth'
 import { Id } from './_generated/dataModel'
 
@@ -63,5 +63,32 @@ export const getResumeDownloadUrl = query({
 
     const downloadUrl = await ctx.storage.getUrl(resume.body)
     return downloadUrl
+  }
+})
+
+// Used by the /resume/download HTTP action, which needs the storage id,
+// original filename, and format to stream the file back with a
+// Content-Disposition header (httpAction handlers don't have ctx.db).
+export const getLatestResumeRecord = internalQuery({
+  args: {},
+  returns: v.union(
+    v.object({
+      name: v.string(),
+      body: v.id('_storage'),
+      format: v.string()
+    }),
+    v.null()
+  ),
+  handler: async (ctx) => {
+    const resume = await ctx.db.query('resume').first()
+    if (!resume) {
+      return null
+    }
+
+    return {
+      name: resume.name,
+      body: resume.body,
+      format: resume.format
+    }
   }
 })

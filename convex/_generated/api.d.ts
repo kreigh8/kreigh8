@@ -15,6 +15,7 @@ import type * as email from "../email.js";
 import type * as experience from "../experience.js";
 import type * as home from "../home.js";
 import type * as homeImage from "../homeImage.js";
+import type * as http from "../http.js";
 import type * as image from "../image.js";
 import type * as resume from "../resume.js";
 import type * as skills from "../skills.js";
@@ -35,6 +36,7 @@ declare const fullApi: ApiFromModules<{
   experience: typeof experience;
   home: typeof home;
   homeImage: typeof homeImage;
+  http: typeof http;
   image: typeof image;
   resume: typeof resume;
   skills: typeof skills;
