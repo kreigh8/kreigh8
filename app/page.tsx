@@ -10,6 +10,7 @@ import NavigationButtons from '@/components/NavigationButtons'
 import About from '@/components/About'
 import Experience from '@/components/Experience'
 import Footer from '@/components/Footer'
+import PersonJsonLd from '@/components/PersonJsonLd'
 
 export const contactMe = flag({
   key: 'contact-me',
@@ -66,6 +67,8 @@ export default async function Home() {
 
   return (
     <section className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 p-4 py-4">
+      <PersonJsonLd />
+
       <article className="flex flex-col items-start justify-center gap-4 md:sticky md:top-4 md:h-[calc(100dvh-2rem)]">
         <TitleBlurb />
         <ActionButtons />
