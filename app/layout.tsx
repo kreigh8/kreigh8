@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter, DM_Sans } from 'next/font/google'
+import { SITE_URL } from '@/lib/site'
 import ConvexClientProvider from '@/components/ConvexClientProvider'
 import { ImageDeleteProvider } from '@/components/context/ImageDeleteContext'
 import { ImageDeleteAlert } from '@/components/admin/ImageDeleteAlert'
@@ -22,7 +23,7 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://kreigh8.com'),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: 'kreigh8',
     template: '%s | kreigh8'
