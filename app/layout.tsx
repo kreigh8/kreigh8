@@ -22,7 +22,11 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'kreigh8',
+  metadataBase: new URL('https://kreigh8.com'),
+  title: {
+    default: 'kreigh8',
+    template: '%s | kreigh8'
+  },
   description: 'Portfolio site for Kreigh Hirschy',
   icons: {
     icon: '/kreigh8-favicon.svg'

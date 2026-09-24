@@ -1,3 +1,6 @@
+import type { Metadata } from 'next'
+import { fetchQuery } from 'convex/nextjs'
+import { api } from '@/convex/_generated/api'
 import ActionButtons from '@/components/ActionButtons'
 import HomeImage from '@/components/HomeImage'
 import { flag } from 'flags/next'
@@ -17,6 +20,32 @@ export const underConstruction = flag({
   key: 'under-construction',
   adapter: vercelAdapter()
 })
+
+// Keeps the page's title/description in sync with the same home blurb
+// content editable from /admin, instead of a hardcoded string that drifts
+// from what's actually on the page.
+export async function generateMetadata(): Promise<Metadata> {
+  const homeBlurb = await fetchQuery(api.home.getHomeBlurb, {})
+
+  const title = homeBlurb?.title || 'kreigh8'
+  const description = homeBlurb?.slogan || 'Portfolio site for Kreigh Hirschy'
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: 'website',
+      siteName: 'kreigh8'
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description
+    }
+  }
+}
 
 export default async function Home() {
   const showUnderConstruction = (await underConstruction()) as boolean
