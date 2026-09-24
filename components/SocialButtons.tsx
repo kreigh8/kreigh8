@@ -5,6 +5,7 @@ import { Preloaded, usePreloadedQuery } from 'convex/react'
 import { Button } from '@/components/ui/button'
 import { Icons } from '@/components/ui/icons'
 import ThemeToggle from './ThemeToggle'
+import ResumeDownloadButton from './ResumeButton'
 import { Mail } from 'lucide-react'
 
 export default function SocialButtons(props: {
@@ -50,6 +51,7 @@ export default function SocialButtons(props: {
           </a>
         </Button>
       )}
+      <ResumeDownloadButton />
       <ThemeToggle />
     </div>
   )
