@@ -10,12 +10,17 @@ export default function AboutText(props: {
   const blurb = usePreloadedQuery(props.preloadedAbout)
 
   return (
-    <div
+    <section
       id="about"
-      className="flex flex-col gap-4 scroll-mt-4 md:scroll-mt-8 [&_a]:font-medium [&_a]:underline [&_a]:underline-offset-4"
-      dangerouslySetInnerHTML={{
-        __html: DOMPurify.sanitize(blurb?.blurb ?? '')
-      }}
-    />
+      className="flex flex-col gap-4 scroll-mt-4 md:scroll-mt-8"
+    >
+      <h2 className="text-2xl font-semibold text-primary">About</h2>
+      <div
+        className="[&_a]:font-medium [&_a]:underline [&_a]:underline-offset-4"
+        dangerouslySetInnerHTML={{
+          __html: DOMPurify.sanitize(blurb?.blurb ?? '')
+        }}
+      />
+    </section>
   )
 }
