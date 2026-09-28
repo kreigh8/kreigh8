@@ -8,6 +8,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { Toaster } from '@/components/ui/sonner'
 import { Analytics } from '@vercel/analytics/next'
+import { GoogleAnalytics } from '@next/third-parties/google'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import './globals.css'
 import '@/components/ui/minimal-tiptap/styles/index.css'
@@ -56,6 +57,11 @@ export default function RootLayout({
                 <TooltipProvider>
                   <main>{children}</main>
                   <Analytics />
+                  {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+                    <GoogleAnalytics
+                      gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}
+                    />
+                  )}
                   <ImageDeleteAlert />
                   <Toaster />
                 </TooltipProvider>
